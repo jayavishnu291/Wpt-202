@@ -1,0 +1,104 @@
+{
+  "s01": {
+    "title": "Grow flowers by day. Collect stars by night.",
+    "primaryAction": "Get started",
+    "secondaryAction": "Continue"
+  },
+  "s02": {
+    "focusFeature": "Focus to grow flowers",
+    "nightFeature": "Put your phone down at night to collect stars",
+    "alarmFeature": "Wake up with a small mission",
+    "primaryAction": "Continue",
+    "skipAction": "Skip"
+  },
+  "notifications": {
+    "n01": "Your flower is still growing. Come back within 10 seconds.",
+    "n02": "Focus complete. A new flower bloomed.",
+    "n03": "Time to start your night.",
+    "n04": "Your night is still running. Come back to keep your star.",
+    "n06Focus": "Focus in progress",
+    "n06Night": "Night in progress",
+    "n07": "Still awake?"
+  },
+  "focus": {
+    "bloom": "A new flower bloomed. Added to your garden.",
+    "bud": "Your flower stayed a bud this time. Ready for another?",
+    "restingFocus": "This app is resting while you focus.",
+    "restingSleep": "This app is resting while you sleep.",
+    "closedQuestion": "WPT 202 was closed while you were away. Did you use other apps during your session?",
+    "backToFocus": "Back to focus"
+  },
+  "night": {
+    "outsideWindow": "It's outside your night window.",
+    "shortNightWarning": "Nights under 3 hours don't earn a star. End anyway?",
+    "phoneUseQuestion": "Did you use your phone after starting your night?",
+    "faintStar": "A faint star tonight. Tomorrow's a fresh sky.",
+    "noNight": "No night recorded. Tonight's a fresh start.",
+    "startNight": "Start night",
+    "imAwake": "I'm awake",
+    "endAnyway": "End anyway",
+    "keepGoing": "Keep going"
+  },
+  "sleep": {
+    "scoreLabel": "Sleep score (estimate)",
+    "estimatedDuration": "Estimated sleep duration",
+    "estimatedOnset": "Estimated sleep onset",
+    "sleepGoal": "Sleep goal",
+    "fallingAsleepAllowance": "Falling-asleep allowance",
+    "editEstimate": "Edit estimate",
+    "wakeTime": "Wake time",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "alarms": {
+    "addAlarm": "Add alarm",
+    "startMission": "Start mission",
+    "snooze": "Snooze",
+    "morningBell": "Morning Bell",
+    "fix": "Fix",
+    "alarmsTitle": "Alarms",
+    "saveAlarm": "Save alarm",
+    "deleteAlarm": "Delete alarm"
+  },
+  "history": {
+    "empty": "Your week will appear here."
+  },
+  "settings": {
+    "deleteEverything": "Delete everything? This can't be undone.",
+    "deleteAllData": "Delete all data",
+    "sendFeedback": "Send feedback",
+    "appBlockingComingSoon": "App blocking is coming to iPhone soon."
+  },
+  "common": {
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "confirm": "Confirm",
+    "close": "Close",
+    "retry": "Try again",
+    "loading": "Loading",
+    "errorTitle": "Something went wrong",
+    "errorBody": "Please try again.",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "faq": {
+    "alarmDidNotRing": "Why didn't my alarm ring?",
+    "missionRequired": "Why can't I stop the alarm without the mission?",
+    "appBlocking": "How does app blocking work? / Is it on iPhone?",
+    "nightPhoneUse": "What counts as using my phone at night?",
+    "pass": "What is a pass?",
+    "restNights": "What are rest nights?",
+    "budOrFaintStar": "Why did I get a bud or a faint star?",
+    "morningQuestion": "Why was I asked a question this morning?",
+    "sleepScore": "How is my sleep score worked out? (estimate, not medical)",
+    "privacy": "Is my data private, and how do I delete it?"
+  },
+  "sample": {
+    "eyebrow": "SPRINT 1 · SAMPLE SCREEN",
+    "helperStatus": "Text loaded from the English copy file",
+    "languageNote": "This sample demonstrates key-based copy. It is not the complete product UI.",
+    "actionSuccess": "Continue button works. Sample interaction completed."
+  }
+}
