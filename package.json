@@ -10,14 +10,29 @@
     "react-native": "0.88.0"
   },
   "devDependencies": {
+    "@types/jest": "30.0.0",
+    "@types/node": "^26.6.5",
     "@types/react": "~19.3.0",
-    "typescript": "~6.0.3"
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~58.0.4",
+    "jest": "~30.5.2",
+    "jest-expo": "~58.0.12",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9"
   },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "test": "jest",
+    "lint": "expo lint"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.ts"
+    ]
   },
   "private": true
 }
