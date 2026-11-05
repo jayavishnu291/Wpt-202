@@ -1,8 +1,13 @@
 import { registerRootComponent } from 'expo';
 
 import App from './App';
+import { getDatabase } from './src/data/db';
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+async function startApp(): Promise<void> {
+  await getDatabase();
+  registerRootComponent(App);
+}
+
+void startApp().catch((error: unknown) => {
+  console.error('Failed to initialize the local database.', error);
+});
