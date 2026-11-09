@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "WPT202 Sprint 1 Alarm App",
+    "slug": "wpt202-mobile-new",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wpt202.alarmkitdev"
+    },
+    "android": {
+      "package": "com.wpt202.alarmdemo"
+    },
+    "plugins": [
+      "expo-status-bar",
+      "@react-native-community/datetimepicker"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1d843ea2-80e4-44b7-9f20-1c2166794121"
+      }
+    }
+  }
+}
