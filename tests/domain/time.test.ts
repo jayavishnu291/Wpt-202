@@ -13,7 +13,13 @@ import {
   sleepDay,
   toIsoWithOffset,
 } from "../../src/domain/time";
-import { TIME_RULES } from "../../config/rules";
+import { rules } from "../../config/rules";
+import type { NightRules } from "../../src/domain/time";
+
+const TIME_RULES: NightRules = {
+  nightWindowHalfHours: rules.night.windowBeforeBedtimeHours,
+  lateStartHours: rules.night.lateStartHours,
+};
 
 const h = (hours: number, mins = 0) => hours * 60 + mins;
 const IST = 330;
