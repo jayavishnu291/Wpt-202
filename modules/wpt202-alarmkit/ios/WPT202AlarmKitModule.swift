@@ -13,5 +13,16 @@ public class WPT202AlarmKitModule: Module {
         return false
       }
     }
+
+    AsyncFunction("requestAlarmPermission") { () async throws -> Bool in
+      if #available(iOS 26.0, *) {
+        let manager = AlarmManager.shared
+        let state = try await manager.requestAuthorization()
+        return state == .authorized
+      } else {
+        return false
+      }
+    }
   }
 }
+

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { requestAlarmPermission } from './modules/wpt202-alarmkit/src';
 import {
   Alert, FlatList, SafeAreaView, ScrollView, StyleSheet, Switch,
   Text, TextInput, TouchableOpacity, View,
@@ -45,7 +46,23 @@ export default function App() {
       Alert.alert('Error', 'Could not save alarms');
     });
   }, [alarms, loaded]);
+const handleAlarmPermission = async () => {
+  try {
+    const granted = await requestAlarmPermission();
 
+    Alert.alert(
+      'AlarmKit Permission',
+      granted
+        ? 'Alarm permission granted!'
+        : 'Alarm permission not granted.'
+    );
+  } catch (error) {
+    Alert.alert(
+      'AlarmKit Unavailable',
+      'Native AlarmKit requires an iOS development build. It will not work in Expo Go.'
+    );
+  }
+};
   const resetForm = () => {
     setEditingId(null);
     setAlarmTime('09:00');
@@ -163,6 +180,14 @@ export default function App() {
           <View>
             <Text style={styles.title}>WPT202</Text>
             <Text style={styles.subtitle}>Sprint 1 - Alarm App</Text>
+            <TouchableOpacity
+  style={styles.permissionButton}
+  onPress={handleAlarmPermission}
+>
+  <Text style={styles.permissionText}>
+    Enable AlarmKit Permission
+  </Text>
+</TouchableOpacity>
 
             <Text style={styles.label}>
               {editingId !== null ? 'Edit Alarm Time (HH:MM)' : 'Alarm Time (HH:MM)'}
@@ -302,6 +327,18 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  permissionButton: {
+  backgroundColor: '#16A34A',
+  padding: 16,
+  borderRadius: 12,
+  alignItems: 'center',
+  marginBottom: 20,
+},
+permissionText: {
+  color: '#FFFFFF',
+  fontSize: 17,
+  fontWeight: 'bold',
+},
   container: { flex: 1, backgroundColor: '#EEF4FF' },
   content: { padding: 15, paddingTop: 45, paddingBottom: 35 },
   title: { fontSize: 38, fontWeight: 'bold', color: '#1D5FD3', textAlign: 'center' },

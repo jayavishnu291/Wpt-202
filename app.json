@@ -5,10 +5,15 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.wpt202.alarmkitdev"
-    },
+    
+"ios": {
+  "supportsTablet": true,
+  "bundleIdentifier": "com.wpt202.alarmkitdev",
+  "infoPlist": {
+    "NSAlarmKitUsageDescription": "WPT202 needs permission to schedule alarms and alert you at the selected time."
+  }
+},
+
     "android": {
       "package": "com.wpt202.alarmdemo"
     },
