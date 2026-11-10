@@ -31,9 +31,3 @@ the app **Alarms & reminders** access before recording FC-9 results. If exact
 alarm access is unavailable, the event log records `alarm_fallback`, and that
 run does not verify exact-alarm heartbeat timing.
 
-Local checks completed: TypeScript, Expo config evaluation, Android
-autolinking, and generated manifest assertions. Android Kotlin compilation
-has not passed yet: Gradle detects an incomplete NDK installation
-(`source.properties` is missing), and downloading the official NDK archive was
-interrupted by network errors. Do not report the native build or FC-9 as
-passing until rebuilt successfully and tested on the required phones.
