@@ -10,9 +10,12 @@
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/datetimepicker": "9.2.1",
     "expo": "~58.0.23",
+    "expo-build-properties": "~58.0.12",
+    "expo-dev-client": "~58.0.18",
     "expo-status-bar": "~58.0.4",
     "react": "19.3.0",
-    "react-native": "0.88.1"
+    "react-native": "0.88.1",
+    "wpt202-alarmkit": "file:modules/wpt202-alarmkit"
   },
   "devDependencies": {
     "@babel/generator": "^8.1.0",

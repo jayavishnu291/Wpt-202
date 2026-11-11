@@ -5,21 +5,31 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    
-"ios": {
-  "supportsTablet": true,
-  "bundleIdentifier": "com.wpt202.alarmkitdev",
-  "infoPlist": {
-    "NSAlarmKitUsageDescription": "WPT202 needs permission to schedule alarms and alert you at the selected time."
-  }
-},
-
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wpt202.alarmkitdev",
+      "entitlements": {
+        "com.apple.developer.alarmkit": true
+      },
+      "infoPlist": {
+        "NSAlarmKitUsageDescription": "WPT202 needs permission to schedule alarms and alert you at the selected time.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
     "android": {
       "package": "com.wpt202.alarmdemo"
     },
     "plugins": [
       "expo-status-bar",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "26.0"
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

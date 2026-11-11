@@ -1,5 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { requestAlarmPermission } from './modules/wpt202-alarmkit/src';
+
+import {
+  requestAlarmPermission,
+  scheduleAlarm,
+} from './modules/wpt202-alarmkit/src';
 import {
   Alert, FlatList, SafeAreaView, ScrollView, StyleSheet, Switch,
   Text, TextInput, TouchableOpacity, View,
@@ -71,7 +75,7 @@ const handleAlarmPermission = async () => {
     setShowTimePicker(false);
   };
 
-  const saveAlarm = () => {
+  const saveAlarm = async () => {
     if (!loaded) return;
     const time = alarmTime.trim();
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) {
@@ -87,6 +91,24 @@ const handleAlarmPermission = async () => {
       Alert.alert('Duplicate Alarm', 'An alarm with the same time and repeat days already exists.');
       return;
     }
+    try {
+  const [hour, minute] = time.split(':').map(Number);
+  const scheduled = await scheduleAlarm(hour, minute, repeatDays);
+
+  if (!scheduled) {
+    Alert.alert(
+      'Alarm Not Scheduled',
+      'Native AlarmKit scheduling was not successful. Alarm has not been saved.'
+    );
+    return;
+  }
+} catch (error) {
+  Alert.alert(
+    'AlarmKit Error',
+    String(error?.message || error)
+  );
+  return;
+}
     if (editingId !== null) {
       setAlarms(previous => previous.map(alarm =>
         alarm.id === editingId
@@ -102,7 +124,7 @@ const handleAlarmPermission = async () => {
         repeatDays: [...repeatDays],
         enabled: true,
       }]);
-      Alert.alert('Saved', `Demo alarm ${time} saved`);
+      Alert.alert('Alarm Scheduled', `Native iPhone alarm scheduled for ${time}`);
     }
     resetForm();
   };
