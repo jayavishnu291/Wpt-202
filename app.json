@@ -30,7 +30,7 @@
     },
     "plugins": [
       "expo-sqlite",
-      "./plugins/withBlockingQueries"
+      "./modules/session-monitor/app.plugin.js"
     ]
   }
 }
