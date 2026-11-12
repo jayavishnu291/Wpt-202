@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- S-14 (PRD "Key copy"): the on-screen text says "the app", never the app name. -->
+  <string name="resting_message_focus">This app is resting while you focus.</string>
+  <string name="resting_message_sleep">This app is resting while you sleep.</string>
+  <string name="go_back_button">Go back</string>
+
+  <!-- N-06 silent status notification (PRD 9.x / FR-NO-05: channel "Status", low, silent). -->
+  <string name="status_channel_name">Status</string>
+  <string name="status_focus_in_progress">Focus in progress</string>
+</resources>

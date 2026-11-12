@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "Wpt-202",
@@ -7,16 +8,22 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "in.whitepixeltechnologies.wpt202a.dev",
+      "infoPlist": {
+        "NSAlarmKitUsageDescription": "So your alarm can ring even in silent mode."
+      }
     },
     "android": {
+      "allowBackup": false,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.Wpt202"
     },
     "web": {
       "favicon": "./assets/favicon.png"

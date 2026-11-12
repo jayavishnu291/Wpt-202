@@ -3,21 +3,38 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
-    "expo": "~58.0.16",
+    "@shopify/react-native-skia": "2.14.0",
+    "expo": "^58.0.23",
     "expo-sqlite": "~58.0.13",
     "expo-status-bar": "~58.0.3",
     "react": "19.3.0",
     "react-native": "0.88.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/jest": "30.0.0",
+    "@types/node": "^26.6.5",
     "@types/react": "~19.3.0",
+    "better-sqlite3": "^13.0.3",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~58.0.4",
+    "jest": "~30.5.2",
+    "jest-expo": "~58.0.12",
+    "ts-jest": "^29.4.15",
+    "tsx": "^4.23.15",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "test": "jest",
+    "test:data": "jest tests/data",
+    "lint": "expo lint"
   },
-  "private": true
+  "private": true,
+  "allowScripts": {
+    "expo@58.0.23": true
+  }
 }
