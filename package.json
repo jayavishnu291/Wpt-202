@@ -5,10 +5,14 @@
   "dependencies": {
     "@shopify/react-native-skia": "2.14.0",
     "expo": "^58.0.23",
+    "expo-application": "~58.1.2",
+    "expo-device": "~58.0.5",
     "expo-sqlite": "~58.0.13",
     "expo-status-bar": "~58.0.3",
     "react": "19.3.0",
-    "react-native": "0.88.0"
+    "react-native": "0.88.0",
+    "react-native-safe-area-context": "~5.11.1",
+    "wpt202-alarmkit": "file:modules/alarmkit-bridge"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",

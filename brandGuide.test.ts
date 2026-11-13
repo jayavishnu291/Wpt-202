@@ -1,4 +1,4 @@
-import { needsBrandGuide } from "../../src/domain/brandGuide";
+import { needsBrandGuide } from "./brandGuide";
 
 const SUPPORTED = [
   "Xiaomi", "Redmi", "POCO", "Oppo", "Realme", "OnePlus",

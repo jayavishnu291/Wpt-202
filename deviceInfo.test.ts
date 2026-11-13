@@ -12,15 +12,15 @@ beforeEach(() => {
   Object.assign(mockApp, { nativeApplicationVersion: "1.2.3" });
 });
 
-import { getDeviceInfo } from "../../src/native/deviceInfo";
+import { getDeviceInfo } from "./deviceInfo";
 import {
   FAKE_DEVICE_INFO,
   createFakeDeviceInfoProvider,
   getFakeDeviceInfo,
-} from "../../src/native/deviceInfo.fake";
-import { formatDeviceInfoLines, logDeviceInfoInDev } from "../../src/native/devDeviceInfo";
-import { buildFeedbackBody } from "../../src/domain/feedbackBody";
-import { needsBrandGuide } from "../../src/domain/brandGuide";
+} from "./deviceInfo.fake";
+import { formatDeviceInfoLines, logDeviceInfoInDev } from "./devDeviceInfo";
+import { buildFeedbackBody } from "./feedbackBody";
+import { needsBrandGuide } from "./brandGuide";
 
 describe("getDeviceInfo (real wrapper, mocked Expo)", () => {
   test("maps the five fields", () => {
@@ -55,7 +55,7 @@ describe("fake DeviceInfo", () => {
     expect(createFakeDeviceInfoProvider({ brand: "Xiaomi" })().brand).toBe("Xiaomi");
   });
   test("real wrapper never imports the fake (no fake data in production)", () => {
-    const src = fs.readFileSync(path.join(__dirname, "../../src/native/deviceInfo.ts"), "utf8");
+    const src = fs.readFileSync(path.join(__dirname, "./deviceInfo.ts"), "utf8");
     expect(src).not.toMatch(/from\s+["'][^"']*fake/i);
     expect(src).not.toMatch(/require\(["'][^"']*fake/i);
   });
