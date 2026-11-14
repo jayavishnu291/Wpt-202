@@ -1,0 +1,18 @@
+
+{
+  "name": "lifecycle-state",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "expo": {
+    "autolinking": {
+      "nativeModulesDir": "ios"
+    }
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}
