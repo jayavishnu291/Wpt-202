@@ -6,12 +6,13 @@ type LifecycleStateNativeModule = {
   getLastEvent(): string;
   getLockSignalDelay(): number;
   getPreviousSessionInterrupted(): boolean;
+  startSession(): void;
+  endSession(): void;
+  wasClosedDuringSession(): boolean;
 };
 
 const LifecycleState =
-  requireNativeModule<LifecycleStateNativeModule>(
-    'LifecycleState'
-  );
+  requireNativeModule<LifecycleStateNativeModule>('LifecycleState');
 
 export function isLifecycleAvailable(): boolean {
   return LifecycleState.isAvailable();
@@ -27,4 +28,16 @@ export function getLockSignalDelay(): number {
 
 export function getPreviousSessionInterrupted(): boolean {
   return LifecycleState.getPreviousSessionInterrupted();
+}
+
+export function startSession(): void {
+  LifecycleState.startSession();
+}
+
+export function endSession(): void {
+  LifecycleState.endSession();
+}
+
+export function wasClosedDuringSession(): boolean {
+  return LifecycleState.wasClosedDuringSession();
 }

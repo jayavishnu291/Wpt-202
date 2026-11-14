@@ -6,6 +6,7 @@ public class LifecycleStateModule: Module {
 
   private var observers: [NSObjectProtocol] = []
   private var lastEvent = "none"
+  private var lastLeaveType = "unknown"
   private var previousSessionInterrupted = false
   private var leaveTime: TimeInterval = 0
   private var lockSignalDelay: TimeInterval = 0
@@ -13,20 +14,18 @@ public class LifecycleStateModule: Module {
   public func definition() -> ModuleDefinition {
 
     Name("LifecycleState")
-
+Function("isAvailable") {
+    return true
+}
     OnCreate {
-
-        self.previousSessionInterrupted =
-    SessionMarker.wasPreviousSessionInterrupted()
-
-let previousSessionInterrupted =
+self.previousSessionInterrupted =
     SessionMarker.wasPreviousSessionInterrupted()
 
 print(
-    "WPT202 FC-8: Previous session interrupted = \(previousSessionInterrupted)"
+    "WPT202 FC-8: Previous session interrupted = \(self.previousSessionInterrupted)"
 )
 
-SessionMarker.markSessionStarted()
+
 
       let center = NotificationCenter.default
 
@@ -53,6 +52,7 @@ SessionMarker.markSessionStarted()
         guard let self = self else { return }
 
         self.lastEvent = "lock"
+        self.lastLeaveType = "lock"
 
         if self.leaveTime > 0 {
           self.lockSignalDelay =
@@ -107,10 +107,22 @@ Function("getPreviousSessionInterrupted") {
     return self.previousSessionInterrupted
 }
 
-Function("getPreviousSessionInterrupted") {
-    return SessionMarker.wasPreviousSessionInterrupted()
+Function("startSession") {
+    SessionMarker.markSessionStarted()
+    print("WPT202 FC-8: Session started")
 }
 
+Function("endSession") {
+    SessionMarker.markSessionEnded()
+    print("WPT202 FC-8: Session ended normally")
+}
+
+Function("wasClosedDuringSession") {
+    return self.previousSessionInterrupted
+}
+Function("getLastLeaveType") {
+    return self.lastLeaveType
+}
     Function("getLastEvent") {
       return self.lastEvent
     }
