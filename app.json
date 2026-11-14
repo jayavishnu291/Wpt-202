@@ -11,7 +11,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "in.whitepixeltechnologies.wpt202a.dev",
       "infoPlist": {
-        "NSAlarmKitUsageDescription": "So your alarm can ring even in silent mode."
+        "NSAlarmKitUsageDescription": "So your alarm can ring even in silent mode.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -29,8 +30,19 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-sqlite",
-      "./modules/session-monitor/app.plugin.js"
-    ]
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "26.0"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8936662e-b13d-4bf2-aa57-abc862415dcd"
+      }
+    }
   }
 }
