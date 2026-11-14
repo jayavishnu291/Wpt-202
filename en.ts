@@ -342,4 +342,14 @@ export const en = {
     version: "Version {version}",
     licences: "Open-source licences",
   },
+
+  // ---- Alarm sounds (I10: the 6 free sounds in assets/sounds/) --------------
+  sounds: {
+    morningBell: "Morning Bell", // PROPOSED
+    softChimes: "Soft Chimes", // PROPOSED
+    birdsong: "Birdsong", // PROPOSED
+    risingTone: "Rising Tone", // PROPOSED
+    classicBeep: "Classic Beep", // PROPOSED
+    strongBell: "Strong Bell", // PROPOSED
+  },
 } as const;
