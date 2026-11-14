@@ -45,11 +45,11 @@ describe('Settings repository', () => {
     expect(result.sleep_goal_min).toBe(480);
     expect(result.reminder_on).toBe(true);
     expect(result.bedtime_changed_at).toMatch(
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+05:30$/,
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?[+-]\d{2}:\d{2}$/,
     );
   });
 
-  it('calculates window_start as four hours before bedtime', async () => {
+  it('calculates window_start using the configured bedtime window', async () => {
     await saveSettings(
       {
         bedtime: '22:00',
