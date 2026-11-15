@@ -1,0 +1,27 @@
+name: Android Debug Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - run: npm ci
+      - run: APP_VARIANT=dev npx expo prebuild --platform android --no-install --clean
+      - run: cd android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
