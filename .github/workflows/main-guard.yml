@@ -1,0 +1,113 @@
+name: Direct Push Alarm
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  detect-direct-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.sha;
+            const commitUrl = `https://github.com/${owner}/${repo}/commit/${sha}`;
+            const commitResponse = await github.rest.repos.getCommit({
+              owner,
+              repo,
+              ref: sha,
+            });
+            const message = commitResponse.data.commit.message;
+            const associated = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner,
+              repo,
+              commit_sha: sha,
+            });
+            const mergedPr = associated.data.find((pullRequest) => pullRequest.merged_at);
+
+            if (mergedPr) {
+              core.info(`Commit ${sha.slice(0, 7)} is associated with merged PR #${mergedPr.number}.`);
+              return;
+            }
+
+            const labelName = 'high';
+            let labelAvailable = false;
+            try {
+              let labels = await github.paginate(github.rest.issues.listLabelsForRepo, {
+                owner,
+                repo,
+                per_page: 100,
+              });
+              labelAvailable = labels.some((label) => label.name === labelName);
+              if (!labelAvailable) {
+                try {
+                  await github.rest.issues.createLabel({
+                    owner,
+                    repo,
+                    name: labelName,
+                    color: 'd73a4a',
+                    description: 'High priority repository policy alert',
+                  });
+                  labelAvailable = true;
+                } catch (error) {
+                  if (error.status === 422) {
+                    labels = await github.paginate(github.rest.issues.listLabelsForRepo, {
+                      owner,
+                      repo,
+                      per_page: 100,
+                    });
+                    labelAvailable = labels.some((label) => label.name === labelName);
+                  } else {
+                    core.warning(`Could not create the ${labelName} label: ${error.message}`);
+                  }
+                }
+              }
+            } catch (error) {
+              core.warning(`Could not verify the ${labelName} label: ${error.message}`);
+            }
+
+            const messageQuote = message.split('\n').map((line) => `> ${line}`).join('\n');
+            const issueBody = [
+              `**Pusher:** @${context.actor}`,
+              `**Commit:** [${sha.slice(0, 7)}](${commitUrl})`,
+              '',
+              '**Commit message:**',
+              messageQuote,
+            ].join('\n');
+            const summary = core.summary
+              .addHeading('Direct push detected')
+              .addTable([
+                [{ data: 'Pusher', header: true }, context.actor],
+                [{ data: 'Commit', header: true }, `[${sha.slice(0, 7)}](${commitUrl})`],
+                [{ data: 'Message', header: true }, message],
+              ]);
+
+            let issue;
+            try {
+              const issueResponse = await github.rest.issues.create({
+                owner,
+                repo,
+                title: 'Direct push to main',
+                body: issueBody,
+                labels: labelAvailable ? [labelName] : [],
+              });
+              issue = issueResponse.data;
+              summary.addLink(`Issue #${issue.number}`, issue.html_url);
+            } catch (error) {
+              core.warning(`Could not create a direct-push issue: ${error.message}`);
+              summary.addRaw(`\nIssue creation failed: ${error.message}\n`);
+              await summary.write();
+              core.setFailed(`Direct push ${sha.slice(0, 7)} detected; creating its issue failed.`);
+              return;
+            }
+
+            await summary.write();
+            core.setFailed(`Direct push ${sha.slice(0, 7)} detected. See issue #${issue.number}.`);
