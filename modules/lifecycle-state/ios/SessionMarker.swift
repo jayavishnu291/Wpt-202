@@ -1,87 +1,53 @@
-
 import Foundation
 
 final class SessionMarker {
-
-    private static let fileManager = FileManager.default
-
-    private static var lifecycleDirectory: URL {
-        let support = fileManager.urls(
+    private static var folder: URL {
+        let support = FileManager.default.urls(
             for: .applicationSupportDirectory,
             in: .userDomainMask
         )[0]
-
         return support
             .appendingPathComponent("wpt-data", isDirectory: true)
             .appendingPathComponent("lifecycle", isDirectory: true)
     }
 
-    private static var markerFile: URL {
-        lifecycleDirectory.appendingPathComponent("session-active")
+    private static var marker: URL {
+        folder.appendingPathComponent("active-session")
     }
 
-    // Create storage and exclude wpt-data from backup
-    private static func prepareStorage() throws {
-        let support = fileManager.urls(
-            for: .applicationSupportDirectory,
-            in: .userDomainMask
-        )[0]
-
-        let dataFolder = support.appendingPathComponent(
-            "wpt-data",
-            isDirectory: true
-        )
-
-        try fileManager.createDirectory(
-            at: lifecycleDirectory,
+    static func prepareStorage() throws {
+        let root = folder.deletingLastPathComponent()
+        try FileManager.default.createDirectory(
+            at: folder,
             withIntermediateDirectories: true
         )
 
-        var folder = dataFolder
         var values = URLResourceValues()
         values.isExcludedFromBackup = true
-        try folder.setResourceValues(values)
+        var mutableRoot = root
+        try mutableRoot.setResourceValues(values)
     }
 
-    // Read previous session marker
     static func wasPreviousSessionInterrupted() -> Bool {
-        do {
-            try prepareStorage()
-            return fileManager.fileExists(atPath: markerFile.path)
-        } catch {
-            print("WPT202 FC-8 storage error: \(error)")
-            return false
+        FileManager.default.fileExists(atPath: marker.path)
+    }
+
+    static func markSessionStarted() throws {
+        try prepareStorage()
+        try Data("active".utf8).write(
+            to: marker,
+            options: .atomic
+        )
+    }
+
+    static func markSessionEnded() throws {
+        if FileManager.default.fileExists(atPath: marker.path) {
+            try FileManager.default.removeItem(at: marker)
         }
     }
 
-    // Start session
-    static func markSessionStarted() {
-        do {
-            try prepareStorage()
-
-            let timestamp = ISO8601DateFormatter()
-                .string(from: Date())
-
-            try timestamp.write(
-                to: markerFile,
-                atomically: true,
-                encoding: .utf8
-            )
-        } catch {
-            print("WPT202 FC-8 start error: \(error)")
-        }
-    }
-
-    // End session normally
-    static func markSessionEnded() {
-        do {
-            try prepareStorage()
-
-            if fileManager.fileExists(atPath: markerFile.path) {
-                try fileManager.removeItem(at: markerFile)
-            }
-        } catch {
-            print("WPT202 FC-8 end error: \(error)")
-        }
+    static func eventsURL() throws -> URL {
+        try prepareStorage()
+        return folder.appendingPathComponent("events.json")
     }
 }

@@ -1,43 +1,55 @@
+import { requireNativeModule } from "expo-modules-core";
 
-import { requireNativeModule } from 'expo-modules-core';
+export type LifecycleEvent = {
+  seq: number;
+  action: "leave" | "return";
+  at: string;
+  elapsed: number;
+  type: "lock" | "switch" | "call" | "unknown";
+};
 
-type LifecycleStateNativeModule = {
+type LifecycleNativeModule = {
   isAvailable(): boolean;
-  getLastEvent(): string;
-  getLockSignalDelay(): number;
-  getPreviousSessionInterrupted(): boolean;
   startSession(): void;
   endSession(): void;
   wasClosedDuringSession(): boolean;
+  getPreviousSessionInterrupted(): boolean;
+  getLastLeaveType(): string;
+  getLastEvent(): string;
+  getLockSignalDelay(): number;
+  isCallActive(): boolean;
+  readEvents(): LifecycleEvent[];
 };
 
 const LifecycleState =
-  requireNativeModule<LifecycleStateNativeModule>('LifecycleState');
+  requireNativeModule<LifecycleNativeModule>("LifecycleState");
 
-export function isLifecycleAvailable(): boolean {
-  return LifecycleState.isAvailable();
-}
+export const isLifecycleAvailable = () =>
+  LifecycleState.isAvailable();
 
-export function getLastEvent(): string {
-  return LifecycleState.getLastEvent();
-}
-
-export function getLockSignalDelay(): number {
-  return LifecycleState.getLockSignalDelay();
-}
-
-export function getPreviousSessionInterrupted(): boolean {
-  return LifecycleState.getPreviousSessionInterrupted();
-}
-
-export function startSession(): void {
+export const startSession = () =>
   LifecycleState.startSession();
-}
 
-export function endSession(): void {
+export const endSession = () =>
   LifecycleState.endSession();
-}
 
-export function wasClosedDuringSession(): boolean {
-  return LifecycleState.wasClosedDuringSession();
-}
+export const wasClosedDuringSession = () =>
+  LifecycleState.wasClosedDuringSession();
+
+export const getPreviousSessionInterrupted = () =>
+  LifecycleState.getPreviousSessionInterrupted();
+
+export const getLastLeaveType = () =>
+  LifecycleState.getLastLeaveType();
+
+export const getLastEvent = () =>
+  LifecycleState.getLastEvent();
+
+export const getLockSignalDelay = () =>
+  LifecycleState.getLockSignalDelay();
+
+export const isCallActive = () =>
+  LifecycleState.isCallActive();
+
+export const readEvents = () =>
+  LifecycleState.readEvents();
