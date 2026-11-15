@@ -12,7 +12,7 @@ import { appConfig } from "./appConfig";
 const root = path.resolve(__dirname, "../../..");
 const name = appConfig.appName;
 
-function leaves(obj: any, prefix = ""): Array<[string, string]> {
+function leaves(obj: any, prefix = ""): [string, string][] {
   return Object.entries(obj).flatMap(([k, v]) =>
     typeof v === "string" ? [[`${prefix}${k}`, v] as [string, string]] : leaves(v, `${prefix}${k}.`),
   );
@@ -20,7 +20,7 @@ function leaves(obj: any, prefix = ""): Array<[string, string]> {
 const all = leaves(en);
 
 // [where in the PRD, key, exact PRD text]
-const prd: Array<[string, TextKey, string]> = [
+const prd: [string, TextKey, string][] = [
   // Section 17 Key copy
   ["17 S01", "onboarding.welcomeTitle", "Grow flowers by day. Collect stars by night."],
   ["17 S02 (1)", "onboarding.howPoint1", "Focus to grow flowers"],
