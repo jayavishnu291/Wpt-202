@@ -2,6 +2,11 @@
 const { defineConfig } = require('eslint/config');
 const expoConfig = require('eslint-config-expo/flat');
 
+const DEV_IMPORT_PATTERN = {
+  group: ['**/dev/**'],
+  message: 'Production code must not depend on developer tools.',
+};
+
 module.exports = defineConfig([
   expoConfig,
   {
@@ -24,54 +29,8 @@ module.exports = defineConfig([
   {
     // Layers: data owns persistence, services expose app operations, UI renders domain data,
     // and developer tools may depend on UI. Production code must not depend on developer tools.
-    files: ['src/ui/**/*.{js,jsx,ts,tsx}'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            {
-              group: ['**/data/db/**'],
-              message: 'UI must use services rather than importing the database layer directly.',
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    files: ['src/data/**/*.{js,jsx,ts,tsx}'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            {
-              group: ['**/ui/**', '**/services/**'],
-              message: 'The data layer must not depend on UI or services.',
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    files: ['src/services/**/*.{js,jsx,ts,tsx}'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            {
-              group: ['**/ui/**'],
-              message: 'Services must not depend on UI.',
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
+    // NOTE: in flat config the last matching `no-restricted-imports` replaces earlier ones,
+    // so the generic block comes first and each layer block repeats the dev pattern.
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: [
       'src/dev/**',
@@ -82,14 +41,58 @@ module.exports = defineConfig([
       'site/**',
     ],
     rules: {
+      'no-restricted-imports': ['error', { patterns: [DEV_IMPORT_PATTERN] }],
+    },
+  },
+  {
+    files: ['src/ui/**/*.{js,jsx,ts,tsx}'],
+    ignores: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}'],
+    rules: {
       'no-restricted-imports': [
         'error',
         {
           patterns: [
             {
-              group: ['**/dev/**'],
-              message: 'Production code must not depend on developer tools.',
+              group: ['**/data/db/**'],
+              message: 'UI must use services rather than importing the database layer directly.',
             },
+            DEV_IMPORT_PATTERN,
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/data/**/*.{js,jsx,ts,tsx}'],
+    ignores: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/ui/**', '**/services/**'],
+              message: 'The data layer must not depend on UI or services.',
+            },
+            DEV_IMPORT_PATTERN,
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/services/**/*.{js,jsx,ts,tsx}'],
+    ignores: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/ui/**'],
+              message: 'Services must not depend on UI.',
+            },
+            DEV_IMPORT_PATTERN,
           ],
         },
       ],
