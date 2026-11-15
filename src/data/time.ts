@@ -1,6 +1,5 @@
-const INDIA_OFFSET_MINUTES = 5 * 60 + 30;
+import { toIsoWithOffset } from '../domain/time';
 
-export function toIndiaISOString(date: Date = new Date()): string {
-  const indiaTime = new Date(date.getTime() + INDIA_OFFSET_MINUTES * 60_000);
-  return `${indiaTime.toISOString().slice(0, -1)}+05:30`;
+export function toLocalISOString(date: Date = new Date()): string {
+  return toIsoWithOffset(date.getTime(), -date.getTimezoneOffset());
 }
