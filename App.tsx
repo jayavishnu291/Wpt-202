@@ -26,10 +26,10 @@ import type {
   SessionKind,
 } from './modules/session-monitor/src';
 
-const SESSION_OPTIONS: Array<{
+const SESSION_OPTIONS: {
   kind: SessionKind;
   durationMs: number;
-}> = [
+}[] = [
   { kind: 'focus', durationMs: 15 * 60_000 },
   { kind: 'night', durationMs: 8 * 60 * 60_000 },
   { kind: 'nap', durationMs: 60 * 60_000 },
@@ -65,6 +65,7 @@ function SessionMonitorPanel() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- state updates follow the awaited event read.
     void refreshEvents();
   }, [refreshEvents]);
 
@@ -95,6 +96,7 @@ function SessionMonitorPanel() {
     kind: SessionKind,
     durationMs: number
   ) => {
+    // eslint-disable-next-line react-hooks/purity -- this runs from the button handler, not during render.
     const plannedEndMs = Date.now() + durationMs;
 
     void runAction(

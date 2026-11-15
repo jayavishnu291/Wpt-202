@@ -1,3 +1,4 @@
+/* eslint-disable import/first -- imports must come after jest.mock calls */
 import * as fs from "fs";
 import * as path from "path";
 

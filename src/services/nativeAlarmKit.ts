@@ -1,4 +1,4 @@
-﻿
+
 import { Platform } from 'react-native';
 
 type NativeAlarmKit =
@@ -8,6 +8,9 @@ function getAlarmKit(): NativeAlarmKit | null {
   if (Platform.OS !== 'ios') return null;
 
   try {
+     // Lazy require on purpose: the iOS-only native module must load only on iOS,
+    // and a failed load is caught below so Android and Jest don't crash.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require(
       '../../modules/alarmkit-bridge/src/index'
     ) as NativeAlarmKit;

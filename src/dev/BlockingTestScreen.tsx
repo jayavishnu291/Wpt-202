@@ -74,6 +74,9 @@ export default function BlockingTestScreen() {
 
   // Keep the status fresh: every second, and when we come back from a system settings screen.
   useEffect(() => {
+     // refresh() is async: it calls setState only after awaiting the native module,
+    // not synchronously. The lint rule can't see that, so we disable it for this line.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refresh();
     const timer = setInterval(refresh, 1000);
     const subscription = AppState.addEventListener('change', (state) => {

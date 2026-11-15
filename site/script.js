@@ -1,3 +1,4 @@
+/* global tailwind */
 // Global Config for App Name
     window.APP_CONFIG = {
       APP_NAME: "WPT 202",
