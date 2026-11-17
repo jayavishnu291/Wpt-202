@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WPT 202 – Focus by Day, Rest by Night</title>
+<meta content="WPT 202 is a free focus, sleep, and mission alarm app that helps you grow flowers, collect stars, and build better daily habits." name="description"/>
+<!-- Google Fonts: Nunito -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col selection:bg-day-accent selection:text-white">
+<!-- 1. NAVIGATION BAR -->
+<header class="sticky top-0 z-50 bg-[#F7F5EF]/90 backdrop-blur-md border-b border-day-border transition-all">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<!-- App Name / Logo -->
+<a class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-day-accent rounded-lg p-1" href="#home">
+<div class="w-10 h-10 rounded-xl bg-day-accent text-white flex items-center justify-center font-black text-xl shadow-sm transition-transform group-hover:scale-105">
+<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<!-- Leaf & Star hybrid motif -->
+<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<span class="text-2xl font-extrabold tracking-tight text-day-text app-name-label">WPT 202</span>
+</a>
+<!-- Desktop Nav Links -->
+<nav aria-label="Main Navigation" class="hidden md:flex items-center gap-2 lg:gap-3">
+<a class="nav-link px-3.5 py-1.5 rounded-full text-day-muted hover:text-day-text font-bold text-[15px] transition-all" href="#home">Home</a>
+<a class="nav-link px-3.5 py-1.5 rounded-full text-day-muted hover:text-day-text font-bold text-[15px] transition-all" href="#features">Features</a>
+<a class="nav-link px-3.5 py-1.5 rounded-full text-day-muted hover:text-day-text font-bold text-[15px] transition-all" href="#screenshots">Screenshots</a>
+<a class="nav-link px-3.5 py-1.5 rounded-full text-day-muted hover:text-day-text font-bold text-[15px] transition-all" href="#support">Support</a>
+</nav>
+<!-- Desktop CTA Button -->
+<div class="hidden md:block">
+<a class="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-day-accent hover:bg-day-accentHover text-white font-extrabold text-[15px] shadow-sm hover:shadow transition-all focus:outline-none focus:ring-2 focus:ring-day-accent focus:ring-offset-2 focus:ring-offset-[#F7F5EF]" href="#features">
+          Explore the App
+        </a>
+</div>
+<!-- Mobile Hamburger Button -->
+<div class="flex md:hidden">
+<button aria-label="Toggle navigation menu" class="p-2 rounded-lg text-day-text hover:bg-day-border focus:outline-none focus:ring-2 focus:ring-day-accent" id="mobile-menu-btn" type="button">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Mobile Nav Dropdown -->
+<div class="hidden md:hidden border-b border-day-border bg-[#F7F5EF] px-4 pt-3 pb-6 space-y-2" id="mobile-menu">
+<a class="mobile-nav-link block py-2.5 px-3.5 rounded-lg text-day-text font-bold hover:bg-day-accentLight hover:text-day-accent transition-colors" href="#home">Home</a>
+<a class="mobile-nav-link block py-2.5 px-3.5 rounded-lg text-day-text font-bold hover:bg-day-accentLight hover:text-day-accent transition-colors" href="#features">Features</a>
+<a class="mobile-nav-link block py-2.5 px-3.5 rounded-lg text-day-text font-bold hover:bg-day-accentLight hover:text-day-accent transition-colors" href="#screenshots">Screenshots</a>
+<a class="mobile-nav-link block py-2.5 px-3.5 rounded-lg text-day-text font-bold hover:bg-day-accentLight hover:text-day-accent transition-colors" href="#support">Support</a>
+<div class="pt-2">
+<a class="block w-full text-center py-3 rounded-xl bg-day-accent hover:bg-day-accentHover text-white font-bold" href="#features">
+          Explore the App
+        </a>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<!-- 2. HERO SECTION -->
+<section class="pt-12 pb-20 md:py-24 overflow-hidden relative scroll-mt-24" id="home">
+<!-- Soft nature-inspired subtle background shapes -->
+<div class="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-[#EBF2EB]/60 to-transparent rounded-[60px] pointer-events-none -z-10"></div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Left Column: Copy & CTA -->
+<div class="lg:col-span-7 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-day-accentLight border border-[#D3E3D6] text-day-accent text-[13px] font-bold mb-6">
+<span class="w-2 h-2 rounded-full bg-day-accent animate-pulse"></span>
+              Focus, Sleep &amp; Mission Alarm
+            </div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-day-text tracking-tight leading-[1.15] mb-6">
+              Focus by day.<br class="hidden sm:inline"/> Rest by night.
+            </h1>
+<!-- Exact verbatim product description from requirements -->
+<p class="text-base sm:text-lg text-day-muted leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8 font-medium">
+<span class="app-name-label font-bold text-day-text">WPT 202</span> helps people put their phone down: focus by day to grow flowers, keep the phone down at night to collect stars, and wake up properly with a mission alarm. Completely free.
+            </p>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-day-accent hover:bg-day-accentHover text-white font-extrabold text-base shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-day-accent focus:ring-offset-2" href="#features">
+                Explore Features
+              </a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white hover:bg-day-accentLight border border-day-border text-day-text font-bold text-base transition-colors" href="#screenshots">
+                View Screenshots
+              </a>
+</div>
+<!-- Soft Nature Badges -->
+<div class="mt-10 pt-8 border-t border-day-border/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-[13px] font-bold text-day-muted">
+<div class="flex items-center gap-2">
+<span class="text-day-accent">🌱</span> Calm Garden Focus
+              </div>
+<div class="flex items-center gap-2">
+<span class="text-amber-500">✨</span> Night Sky Stars
+              </div>
+<div class="flex items-center gap-2">
+<span class="text-emerald-600">⏰</span> Mindful Morning Missions
+              </div>
+</div>
+</div>
+<!-- Right Column: App Mockup Placeholder/Graphic -->
+<div class="lg:col-span-5 flex justify-center">
+<div class="relative w-full max-w-[320px] sm:max-w-[340px]">
+<!-- Ambient soft glow behind phone -->
+<div class="absolute inset-0 bg-day-accent/15 blur-3xl rounded-full transform -translate-y-4"></div>
+<!-- Clean Mobile Frame displaying Focus Garden -->
+<div class="phone-frame mockup-shadow mx-auto">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] bg-[#EBF3EC] relative overflow-hidden flex flex-col">
+<img alt="WPT 202 Focus Zen Garden Screen" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtSmTUUyMKa5o8bEE-KW4wp1940bS6MfH1r9fnBNNhqE2CMDvh4NTrQaBS6qeDvOFlKvs38jZhDX6liRCp9QIzgCea701Qv3pTcpBDnBGlRgCCNVEv5hXoeYLMvo7j0rHJKGQX0olxtAEdmnQ_tLRDoZ74NSME6HH8L7T7W5z2mA588hp5M778Xicl7r0_8aNJit6LnK3uc9s_YpHJEG-YJ4MgI6RE24sVwYGSSuJT73GFacws_MRQJQ"/>
+</div>
+</div>
+<!-- Organic Accent Tag -->
+<div class="absolute -bottom-4 -left-4 sm:-left-6 bg-white border border-day-border rounded-2xl p-3.5 shadow-lg flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-day-accentLight text-day-accent flex items-center justify-center font-bold text-lg">
+                  🌸
+                </div>
+<div>
+<div class="text-[13px] font-bold text-day-text">Zen Garden</div>
+<div class="text-[11px] font-medium text-day-muted">25m Focus Session</div>
+</div>
+</div>
+<!-- Night Sky Tag -->
+<div class="absolute -top-3 -right-4 sm:-right-6 bg-night-card border border-night-border rounded-2xl p-3 shadow-lg flex items-center gap-2.5 text-white">
+<div class="w-8 h-8 rounded-lg bg-night-accent/20 text-night-accent flex items-center justify-center text-sm">
+                  ⭐
+                </div>
+<div>
+<div class="text-[12px] font-bold text-night-accent">Star Collected</div>
+<div class="text-[10px] text-night-muted">Rest Mode Active</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. THREE CORE FEATURE SECTIONS -->
+<section class="py-20 border-t border-day-border/80 scroll-mt-24" id="features">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
+<!-- Header for Features -->
+<div class="text-center max-w-2xl mx-auto">
+<span class="text-day-accent font-extrabold text-[13px] tracking-wider uppercase">Built for Healthy Phone Habits</span>
+<h2 class="text-3xl sm:text-4xl font-black text-day-text tracking-tight mt-2">
+            Mindful tools crafted for everyday peace.
+          </h2>
+</div>
+<!-- Feature 01 – FOCUS BY DAY -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Text -->
+<div class="lg:col-span-6 lg:order-1 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-day-accentLight text-day-accent font-extrabold text-[13px] mb-4">
+<span>Feature 01</span> • <span>Focus By Day</span>
+</div>
+<h3 class="text-2xl sm:text-3xl font-extrabold text-day-text mb-4">
+              Grow something beautiful.
+            </h3>
+<p class="text-base text-day-muted leading-relaxed font-medium mb-6">
+              Start a focus session, put your phone aside, and watch a unique flower bloom in your digital garden.
+            </p>
+<ul class="space-y-3 text-left inline-block text-[15px] text-day-text font-bold">
+<li class="flex items-center gap-2.5">
+<span class="w-5 h-5 rounded-full bg-day-accent/20 text-day-accent flex items-center justify-center text-xs">✓</span>
+                Customizable focus intervals with Pomodoro rhythm
+              </li>
+<li class="flex items-center gap-2.5">
+<span class="w-5 h-5 rounded-full bg-day-accent/20 text-day-accent flex items-center justify-center text-xs">✓</span>
+                Visually calming plant and flower growth stages
+              </li>
+<li class="flex items-center gap-2.5">
+<span class="w-5 h-5 rounded-full bg-day-accent/20 text-day-accent flex items-center justify-center text-xs">✓</span>
+                Zero notifications or distractions during sessions
+              </li>
+</ul>
+</div>
+<!-- Visual -->
+<div class="lg:col-span-6 lg:order-2 flex justify-center">
+<div class="w-full max-w-[310px] phone-frame mockup-shadow">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] bg-[#FFFFFF] relative overflow-hidden">
+<img alt="Focus Timer and Tree Growth Interface" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi6Q-WcG8Eki8F5QoDv7tw9yr1_3nFCcfgqOZUrwbfFlvzm4grvNV10gelsvoW9eUDDeJdNDKprfaqqh1ffV8vYwUt_LyrVdfNOtkwj7acDP6wHcMCjRSzUdZmr62X5Ut1XAOqHXPmEf8imEp2SzkdyTeLVoGKQ_uCvK6TyEUPk8HlrEyiA2JZPRIhCsXU9XF3_Zs6KUxZs9cJQEpw0HxpvOJLR3vXlcj0SxkVV_UzWYymd2PXjRuNaw"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature 02 – REST BY NIGHT (Night Themed Visual Container) -->
+<div class="rounded-3xl bg-night-bg text-night-text p-8 sm:p-12 lg:p-16 border border-night-border relative overflow-hidden">
+<!-- Subtle star background styling -->
+<div class="absolute top-4 right-10 text-night-accent/30 text-2xl font-serif">✦</div>
+<div class="absolute top-20 left-12 text-night-accent/20 text-sm font-serif">★</div>
+<div class="absolute bottom-10 right-1/3 text-night-accent/30 text-xl font-serif">★</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Visual First (Alternating) -->
+<div class="lg:col-span-6 order-2 lg:order-1 flex justify-center">
+<div class="w-full max-w-[310px] phone-frame night-mockup-shadow border-[#2C3857]">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] bg-night-bg relative overflow-hidden">
+<img alt="Rest By Night Screen and Star Sky" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO3Agg6WIzv9IbAoMBDoSk98uilehdeMRtz8ujjJfWENbJphRyup3t0AcLfr1LcfwyXh3ZhLExKUbjqpTSS1MsuQbQ5qf7ikBgiDIKjrm338EEtifkJMFdWv4Cx0TXej3hXa1awNU3gqzWnSPi_vX34ZlZQNg2xr1LH6BriiQE7v3vSoQsgW4V7h8PVI8vCkzxkauRH8Gl3xUX2FKKgGzrGz9tmKUOr7lqVMO1s3lB6skiWCz1R1ruOA"/>
+</div>
+</div>
+</div>
+<!-- Text -->
+<div class="lg:col-span-6 order-1 lg:order-2 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-night-card border border-night-border text-night-accent font-extrabold text-[13px] mb-4">
+<span>Feature 02</span> • <span>Rest By Night</span>
+</div>
+<h3 class="text-2xl sm:text-3xl font-extrabold text-night-text mb-4">
+                Put your phone down. Collect stars.
+              </h3>
+<p class="text-base text-night-muted leading-relaxed font-medium mb-6">
+                Start your night, stay away from your phone, and earn a star for your night sky.
+              </p>
+<div class="bg-night-card/70 border border-night-border rounded-2xl p-5 mb-6 text-left">
+<div class="text-night-accent font-bold text-sm mb-1">Peaceful Night Mode</div>
+<p class="text-night-muted text-xs leading-normal">
+                  Sleep deeply without the temptation of late-night scrolling. Every night of rest adds a star to your personal constellation.
+                </p>
+</div>
+<div class="flex items-center justify-center lg:justify-start gap-4 text-xs font-bold text-night-muted">
+<span class="flex items-center gap-1.5"><span class="text-night-accent">★</span> Better Sleep Habits</span>
+<span class="flex items-center gap-1.5"><span class="text-night-accent">★</span> Gentle Ambience</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature 03 – WAKE UP WITH A MISSION -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Text -->
+<div class="lg:col-span-6 lg:order-1 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-day-accentLight text-day-accent font-extrabold text-[13px] mb-4">
+<span>Feature 03</span> • <span>Wake Up With A Mission</span>
+</div>
+<h3 class="text-2xl sm:text-3xl font-extrabold text-day-text mb-4">
+              Make mornings count.
+            </h3>
+<p class="text-base text-day-muted leading-relaxed font-medium mb-6">
+              Wake up and complete a small mission to stop your alarm and start your day.
+            </p>
+<div class="space-y-3.5 text-left inline-block w-full">
+<div class="p-4 rounded-xl bg-white border border-day-border flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm shrink-0">
+                  15+
+                </div>
+<div>
+<div class="text-sm font-bold text-day-text">Mental Kickstart</div>
+<div class="text-xs text-day-muted font-medium">Gentle maths puzzles that ensure you are fully alert and ready.</div>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white border border-day-border flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0">
+                  🔔
+                </div>
+<div>
+<div class="text-sm font-bold text-day-text">No More Snooze Loops</div>
+<div class="text-xs text-day-muted font-medium">Prevents accidental alarm dismissal so you wake up on schedule.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual -->
+<div class="lg:col-span-6 lg:order-2 flex justify-center">
+<div class="w-full max-w-[310px] phone-frame mockup-shadow">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] bg-white relative overflow-hidden">
+<img alt="Mission Alarm Maths Interface Screen" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0hE-LMe0-DrAblKlQb0GbbmmsL_17wl-LNcX8oVzGuAJHhQDQn6ogwcG3-IU6egQLwupKRZILQkpwcatD2vgz8KHqhPcRXmbridGYH60-jM7NvjRnWRHDlM-bSW8yUMK9FasOmHeo_KscUUb6CIiAyuJH_Si9eqPlbulon3UZR5SoVd8vG_EfmJx-oqNvFfuYuGaBzB4Emq4-BqJZHNniDV4i-C3Rqm3Rq3vA-mRfrX0kyKtskvl15w"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. 100% FREE SECTION -->
+<section class="py-20 bg-white border-y border-day-border relative">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<!-- Visual Badge -->
+<div class="inline-block px-4 py-1.5 rounded-full bg-emerald-100 text-day-accent font-black text-sm tracking-wider uppercase mb-5">
+          Pure &amp; Accessible
+        </div>
+<!-- 100% FREE highlight -->
+<div class="text-5xl sm:text-6xl lg:text-7xl font-black text-day-accent tracking-tight mb-4">
+          100% FREE
+        </div>
+<!-- Main heading -->
+<h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-day-text mb-4">
+          Everything you need. Completely free.
+        </h2>
+<!-- Supporting text -->
+<p class="text-base sm:text-lg text-day-muted max-w-xl mx-auto font-medium leading-relaxed mb-10">
+          No subscriptions. No payments. Just simple tools to help you focus, rest, and wake up better.
+        </p>
+<!-- Feature Points in Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+<div class="p-6 rounded-2xl bg-[#F7F5EF] border border-day-border/80">
+<div class="w-8 h-8 rounded-full bg-day-accent text-white flex items-center justify-center font-bold text-sm mb-3">✓</div>
+<h4 class="font-extrabold text-day-text text-base mb-1">Zero Paywalls</h4>
+<p class="text-day-muted text-xs leading-relaxed font-medium">All focus gardens, sleep tracking, and missions are unreservedly available.</p>
+</div>
+<div class="p-6 rounded-2xl bg-[#F7F5EF] border border-day-border/80">
+<div class="w-8 h-8 rounded-full bg-day-accent text-white flex items-center justify-center font-bold text-sm mb-3">✓</div>
+<h4 class="font-extrabold text-day-text text-base mb-1">No Subscriptions</h4>
+<p class="text-day-muted text-xs leading-relaxed font-medium">No hidden fees, trial periods, or credit card requirements ever.</p>
+</div>
+<div class="p-6 rounded-2xl bg-[#F7F5EF] border border-day-border/80">
+<div class="w-8 h-8 rounded-full bg-day-accent text-white flex items-center justify-center font-bold text-sm mb-3">✓</div>
+<h4 class="font-extrabold text-day-text text-base mb-1">Honest Design</h4>
+<p class="text-day-muted text-xs leading-relaxed font-medium">Built to cultivate positive habits without predatory engagement loops.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. APP SCREENSHOTS GALLERY -->
+<section class="py-20 md:py-28 scroll-mt-24" id="screenshots">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="text-day-accent font-extrabold text-[13px] tracking-wider uppercase">Visual Walkthrough</span>
+<h2 class="text-3xl sm:text-4xl font-black text-day-text tracking-tight mt-2 mb-3">
+            Take a closer look.
+          </h2>
+<p class="text-base text-day-muted font-medium">
+            Simple experiences designed to help you build better daily habits.
+          </p>
+</div>
+<!-- 6 Screen Gallery Grid: Exact order requested:
+             1. Focus Garden
+             2. Night Sky
+             3. Sleep Summary
+             4. Mission Alarm
+             5. Focus Session
+             6. App Experience
+        -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 lg:gap-8">
+<!-- 1. Focus Garden -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-[280px] phone-frame mockup-shadow bg-white hover:border-day-accent transition-all">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] overflow-hidden bg-[#F7F9F6] flex items-center justify-center">
+<img alt="Focus Garden - 25 minute session" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtSmTUUyMKa5o8bEE-KW4wp1940bS6MfH1r9fnBNNhqE2CMDvh4NTrQaBS6qeDvOFlKvs38jZhDX6liRCp9QIzgCea701Qv3pTcpBDnBGlRgCCNVEv5hXoeYLMvo7j0rHJKGQX0olxtAEdmnQ_tLRDoZ74NSME6HH8L7T7W5z2mA588hp5M778Xicl7r0_8aNJit6LnK3uc9s_YpHJEG-YJ4MgI6RE24sVwYGSSuJT73GFacws_MRQJQ"/>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="text-xs font-bold text-day-accent uppercase tracking-wide">Screen 01</span>
+<h4 class="text-base font-extrabold text-day-text">Focus Garden</h4>
+<p class="text-[13px] text-day-muted font-medium">Zen sand garden &amp; calm focus timer</p>
+</div>
+</div>
+<!-- 2. Night Sky -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-[280px] phone-frame night-mockup-shadow bg-night-bg hover:border-night-accent transition-all border-[#2C3857]">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] overflow-hidden bg-night-bg flex items-center justify-center">
+<img alt="Night Sky - Rest by night" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO3Agg6WIzv9IbAoMBDoSk98uilehdeMRtz8ujjJfWENbJphRyup3t0AcLfr1LcfwyXh3ZhLExKUbjqpTSS1MsuQbQ5qf7ikBgiDIKjrm338EEtifkJMFdWv4Cx0TXej3hXa1awNU3gqzWnSPi_vX34ZlZQNg2xr1LH6BriiQE7v3vSoQsgW4V7h8PVI8vCkzxkauRH8Gl3xUX2FKKgGzrGz9tmKUOr7lqVMO1s3lB6skiWCz1R1ruOA"/>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="text-xs font-bold text-amber-500 uppercase tracking-wide">Screen 02</span>
+<h4 class="text-base font-extrabold text-day-text">Night Sky</h4>
+<p class="text-[13px] text-day-muted font-medium">Peaceful star-collection sleep mode</p>
+</div>
+</div>
+<!-- 3. Sleep Summary -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-[280px] phone-frame mockup-shadow bg-white hover:border-day-accent transition-all">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] overflow-hidden bg-white flex items-center justify-center">
+<img alt="Sleep Summary &amp; Weekly Stats" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiDi-CiGSeARIpaXJa2T1AsIAuJt9tr1_59K-VUcUMobsIgu4YdZa5pCcAHPRBw2MuFM8igZjQm8m59g_G850ErYuvJTcuUSEjFqQ7fyYtxaCVzNr0PszwNQ8Dyc3uUUrxrm1N5wAPPFyrcLuuZ9_KwXRr9V6qG8d-MrDOhskaHHFiF4LP8KgO4KWy_GKkSPizbaFfFfP6vXynWkiBLwjNU3lZdwl6yn3JxEWBfdV2K3YClUNBHl-5aA"/>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="text-xs font-bold text-day-accent uppercase tracking-wide">Screen 03</span>
+<h4 class="text-base font-extrabold text-day-text">Sleep Summary</h4>
+<p class="text-[13px] text-day-muted font-medium">Nightly rest metrics &amp; recommendations</p>
+</div>
+</div>
+<!-- 4. Mission Alarm -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-[280px] phone-frame mockup-shadow bg-white hover:border-day-accent transition-all">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] overflow-hidden bg-white flex items-center justify-center">
+<img alt="Mission Alarm Challenge" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0hE-LMe0-DrAblKlQb0GbbmmsL_17wl-LNcX8oVzGuAJHhQDQn6ogwcG3-IU6egQLwupKRZILQkpwcatD2vgz8KHqhPcRXmbridGYH60-jM7NvjRnWRHDlM-bSW8yUMK9FasOmHeo_KscUUb6CIiAyuJH_Si9eqPlbulon3UZR5SoVd8vG_EfmJx-oqNvFfuYuGaBzB4Emq4-BqJZHNniDV4i-C3Rqm3Rq3vA-mRfrX0kyKtskvl15w"/>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="text-xs font-bold text-day-accent uppercase tracking-wide">Screen 04</span>
+<h4 class="text-base font-extrabold text-day-text">Mission Alarm</h4>
+<p class="text-[13px] text-day-muted font-medium">Simple maths challenge wake-up</p>
+</div>
+</div>
+<!-- 5. Focus Session -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-[280px] phone-frame mockup-shadow bg-white hover:border-day-accent transition-all">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] overflow-hidden bg-[#F8FAF7] flex items-center justify-center">
+<img alt="Focus Session &amp; Plant Growth" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi6Q-WcG8Eki8F5QoDv7tw9yr1_3nFCcfgqOZUrwbfFlvzm4grvNV10gelsvoW9eUDDeJdNDKprfaqqh1ffV8vYwUt_LyrVdfNOtkwj7acDP6wHcMCjRSzUdZmr62X5Ut1XAOqHXPmEf8imEp2SzkdyTeLVoGKQ_uCvK6TyEUPk8HlrEyiA2JZPRIhCsXU9XF3_Zs6KUxZs9cJQEpw0HxpvOJLR3vXlcj0SxkVV_UzWYymd2PXjRuNaw"/>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="text-xs font-bold text-day-accent uppercase tracking-wide">Screen 05</span>
+<h4 class="text-base font-extrabold text-day-text">Focus Session</h4>
+<p class="text-[13px] text-day-muted font-medium">Tree growth progress &amp; timer</p>
+</div>
+</div>
+<!-- 6. App Experience -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-[280px] phone-frame mockup-shadow bg-white hover:border-day-accent transition-all">
+<div class="phone-notch"></div>
+<div class="w-full aspect-[9/18.5] overflow-hidden bg-white flex items-center justify-center">
+<img alt="App Experience &amp; Settings" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzvf-3HF3oqjEnSgrIiU20RLKRCnxU7m7sgSbFyo1gJBmwwOvcfeN9TiQ7N0zGaqi9vtBTKEpTpj3OnI97Bt08_iHAMSY15RPXdAKQVlQz6mYZntawa1s8rL12tQvXpKJeWUcGhyeNkqsHO10nptBudZJ98hHKXMmIWSsZVQDVZmZnEPvcDDWJGm-mxkFN2SBtLSTxBD2_JwC0xIbwFi4K6cuUqbqJcDdFqIyw0yPYqIWUrFQmEKbjpQ"/>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="text-xs font-bold text-day-accent uppercase tracking-wide">Screen 06</span>
+<h4 class="text-base font-extrabold text-day-text">App Experience</h4>
+<p class="text-[13px] text-day-muted font-medium">Refined light &amp; dark preferences</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. APP AVAILABILITY SECTION -->
+<section class="py-16 bg-[#EEF2EB] border-y border-day-border">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h2 class="text-2xl sm:text-3xl font-extrabold text-day-text mb-2">
+          Coming soon to your phone.
+        </h2>
+<p class="text-sm text-day-muted font-medium mb-8">
+          Targeted release for Android and iOS devices. Initial rollout in India and worldwide.
+        </p>
+<!-- Store Button Placeholders -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<!-- Google Play Coming Soon -->
+<div class="w-full sm:w-auto inline-flex items-center gap-3.5 px-6 py-3.5 rounded-2xl bg-white border border-day-border text-day-text shadow-sm cursor-default select-none">
+<svg class="w-6 h-6 text-[#4285F4]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M3.609 1.814L13.792 12 3.61 22.186a1.748 1.748 0 0 1-.368-.992V2.806c0-.368.132-.71.367-.992zM15.206 13.414l2.42 2.42-12.723 7.34 10.303-9.76zm0-2.828L4.903.826l12.723 7.34-2.42 2.42zm1.414 1.414l3.197 1.846c.928.536.928 1.412 0 1.948l-3.197 1.846-2.12-2.12 2.12-2.12z"></path>
+</svg>
+<div class="text-left">
+<div class="text-[11px] font-bold text-day-muted uppercase tracking-wider">Google Play</div>
+<div class="text-sm font-extrabold text-day-text flex items-center gap-1.5">
+                Coming Soon
+                <span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span>
+</div>
+</div>
+</div>
+<!-- App Store Coming Soon -->
+<div class="w-full sm:w-auto inline-flex items-center gap-3.5 px-6 py-3.5 rounded-2xl bg-white border border-day-border text-day-text shadow-sm cursor-default select-none">
+<svg class="w-6 h-6 text-day-text" fill="currentColor" viewbox="0 0 24 24">
+<path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.4c.66-.82 1.11-1.95.99-3.09-.96.04-2.13.64-2.82 1.45-.61.71-1.14 1.87-1 2.98 1.08.08 2.18-.54 2.83-1.34z"></path>
+</svg>
+<div class="text-left">
+<div class="text-[11px] font-bold text-day-muted uppercase tracking-wider">App Store</div>
+<div class="text-sm font-extrabold text-day-text flex items-center gap-1.5">
+                Coming Soon
+                <span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span>
+</div>
+</div>
+</div>
+</div>
+<p class="text-[12px] text-day-muted mt-5 font-semibold">
+          100% Free on both platforms upon release.
+        </p>
+</div>
+</section>
+<!-- 7. SUPPORT SECTION -->
+<section class="py-20 scroll-mt-24" id="support">
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<div class="w-12 h-12 rounded-2xl bg-day-accentLight text-day-accent mx-auto flex items-center justify-center font-bold text-xl mb-4 shadow-sm">
+          💬
+        </div>
+<!-- Heading -->
+<h2 class="text-2xl sm:text-3xl font-extrabold text-day-text mb-3">
+          Need a little help?
+        </h2>
+<!-- Supporting text -->
+<p class="text-base text-day-muted font-medium mb-6">
+          Have a question or need assistance? Get in touch with our team.
+        </p>
+<!-- Clickable mailto support email -->
+<div class="inline-block">
+<a class="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-white border border-day-accent/40 text-day-accent hover:bg-day-accent hover:text-white font-extrabold text-base sm:text-lg transition-all shadow-sm hover:shadow group focus:outline-none focus:ring-2 focus:ring-day-accent" href="mailto:contactus@whitepixeltechnologies.in">
+<svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span>contactus@whitepixeltechnologies.in</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- 8. FOOTER -->
+<footer class="bg-white border-t border-day-border pt-12 pb-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-day-border/70">
+<!-- App info & description -->
+<div class="md:col-span-6 space-y-3">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-day-accent text-white flex items-center justify-center font-bold text-sm">
+              W
+            </div>
+<span class="text-xl font-extrabold tracking-tight text-day-text app-name-label">WPT 202</span>
+</div>
+<!-- Short product description -->
+<p class="text-sm text-day-muted font-medium max-w-sm leading-relaxed">
+            A free focus, sleep, and mission alarm companion designed to nurture mindful daily habits, productive days, and peaceful nights.
+          </p>
+</div>
+<!-- Contact & Official Links -->
+<div class="md:col-span-3 space-y-2">
+<h5 class="text-xs font-black uppercase tracking-wider text-day-text">Company &amp; Contact</h5>
+<div class="space-y-1.5 text-sm font-medium">
+<div class="text-day-muted">
+              Email: 
+              <a class="text-day-text hover:text-day-accent font-bold" href="mailto:contactus@whitepixeltechnologies.in">
+                contactus@whitepixeltechnologies.in
+              </a>
+</div>
+<div class="text-day-muted">
+              Website: 
+              <a class="text-day-text hover:text-day-accent font-bold" href="https://www.whitepixeltechnologies.in" rel="noopener noreferrer" target="_blank">
+                www.whitepixeltechnologies.in
+              </a>
+</div>
+</div>
+</div>
+<!-- Legal -->
+<div class="md:col-span-3 space-y-2">
+<h5 class="text-xs font-black uppercase tracking-wider text-day-text">Legal</h5>
+<ul class="space-y-1.5 text-sm font-medium">
+<li>
+<a class="text-day-muted hover:text-day-accent transition-colors" href="privacy.html">Privacy Policy</a>
+</li>
+<li>
+<a class="text-day-muted hover:text-day-accent transition-colors" href="terms.html">Terms of Use</a>
+</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar -->
+<div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-day-muted font-semibold gap-3">
+<p>© <span id="current-year">2025</span> White Pixel Technologies. All rights reserved.</p>
+<p><span class="app-name-label font-bold text-day-text">WPT 202</span> is 100% Free.</p>
+</div>
+</div>
+</footer>
+<!-- Central App Name, Mobile Menu & Scroll-Spy Handler -->
+  <script src="script.js"></script>
+</body></html>

@@ -1,7 +1,8 @@
 
 import { getDatabase } from '../db';
 import type { DatabaseAdapter } from '../db/adapter';
-import { toIndiaISOString } from '../time';
+import { rules } from '../../../config/rules';
+import { toLocalISOString } from '../time';
 
 export interface AppSettings {
   bedtime: string;
@@ -60,15 +61,16 @@ interface SettingsRow {
   bedtime_changed_at: string | null;
 }
 
-function subtractFourHours(time: string): string {
+function subtractWindowBeforeBedtime(time: string): string {
   const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(time);
 
   if (!match) {
     throw new Error(`Invalid time "${time}". Expected HH:mm.`);
   }
 
+  const windowMinutes = rules.night.windowBeforeBedtimeHours * 60;
   const minutes =
-    (Number(match[1]) * 60 + Number(match[2]) - 240 + 1440) % 1440;
+    (Number(match[1]) * 60 + Number(match[2]) - windowMinutes + 1440) % 1440;
 
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
@@ -138,13 +140,13 @@ export async function saveSettings(
   const next: AppSettings = {
     ...previous,
     ...settings,
-    window_start: subtractFourHours(
+    window_start: subtractWindowBeforeBedtime(
       settings.bedtime ?? previous.bedtime,
     ),
     bedtime_changed_at:
       settings.bedtime !== undefined &&
       settings.bedtime !== previous.bedtime
-        ? toIndiaISOString()
+        ? toLocalISOString()
         : previous.bedtime_changed_at,
   };
 

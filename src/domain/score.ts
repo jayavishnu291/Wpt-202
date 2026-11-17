@@ -227,3 +227,4 @@ export function scoreNight(input: ScoreNightInput): ScoreResult {
   const score = Math.min(rules.totalMaxPoints, Math.max(0, raw));
   return { duration, regularity, phoneFree, wakeUp, pickupsUsed, noAlarmInvolved, score };
 }
+
