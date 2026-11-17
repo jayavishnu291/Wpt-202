@@ -30,19 +30,18 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "expo-sqlite",
+      "expo-router",
       [
-        "expo-build-properties",
+        "expo-audio",
         {
-          "ios": {
-            "deploymentTarget": "26.0"
-          }
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundPlayback": false
         }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "8936662e-b13d-4bf2-aa57-abc862415dcd"
-      }
-    }
+      ],
+      "expo-font",
+      "expo-asset"
+    ]
   }
 }
