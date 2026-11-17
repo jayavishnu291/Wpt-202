@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <!-- Usage access: lets the app see WHICH app is in front (never what is inside it). PRD 13.1 -->
+  <uses-permission
+      android:name="android.permission.PACKAGE_USAGE_STATS"
+      tools:ignore="ProtectedPermissions" />
+
+  <!-- Display over other apps: lets us draw the "resting" screen on top of a blocked app. PRD 13.1 -->
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+  <!-- Foreground service that keeps the 1-second check alive while the test session runs. PRD 14.3 -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+  <!--
+    NOT used on purpose (PRD 13.1 / task card):
+    - no QUERY_ALL_PACKAGES
+    - no Accessibility service
+    - no READ_PHONE_STATE (calls are detected from the audio mode in Sprint 2)
+  -->
+
+  <application>
+    <!--
+      TEMPORARY choice: foregroundServiceType="specialUse". The final type is decided in PI-01
+      (end of Sprint 1; must not be dataSync). Change it here and in BlockMonitorService.kt together.
+    -->
+    <service
+        android:name="expo.modules.blockscreen.BlockMonitorService"
+        android:exported="false"
+        android:foregroundServiceType="specialUse">
+      <property
+          android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+          android:value="Checks which app is in front during a focus or night session, to show the resting screen over a blocked app" />
+    </service>
+  </application>
+</manifest>
