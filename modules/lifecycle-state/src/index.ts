@@ -1,4 +1,5 @@
-import { requireNativeModule } from "expo-modules-core";
+
+import { requireOptionalNativeModule } from "expo-modules-core";
 
 export type LifecycleEvent = {
   seq: number;
@@ -22,34 +23,38 @@ type LifecycleNativeModule = {
 };
 
 const LifecycleState =
-  requireNativeModule<LifecycleNativeModule>("LifecycleState");
+  requireOptionalNativeModule<LifecycleNativeModule>(
+    "LifecycleState"
+  );
 
-export const isLifecycleAvailable = () =>
-  LifecycleState.isAvailable();
+export const isLifecycleAvailable = (): boolean =>
+  LifecycleState?.isAvailable() ?? false;
 
-export const startSession = () =>
-  LifecycleState.startSession();
+export const startSession = (): void => {
+  LifecycleState?.startSession();
+};
 
-export const endSession = () =>
-  LifecycleState.endSession();
+export const endSession = (): void => {
+  LifecycleState?.endSession();
+};
 
-export const wasClosedDuringSession = () =>
-  LifecycleState.wasClosedDuringSession();
+export const wasClosedDuringSession = (): boolean =>
+  LifecycleState?.wasClosedDuringSession() ?? false;
 
-export const getPreviousSessionInterrupted = () =>
-  LifecycleState.getPreviousSessionInterrupted();
+export const getPreviousSessionInterrupted = (): boolean =>
+  LifecycleState?.getPreviousSessionInterrupted() ?? false;
 
-export const getLastLeaveType = () =>
-  LifecycleState.getLastLeaveType();
+export const getLastLeaveType = (): string =>
+  LifecycleState?.getLastLeaveType() ?? "unknown";
 
-export const getLastEvent = () =>
-  LifecycleState.getLastEvent();
+export const getLastEvent = (): string =>
+  LifecycleState?.getLastEvent() ?? "";
 
-export const getLockSignalDelay = () =>
-  LifecycleState.getLockSignalDelay();
+export const getLockSignalDelay = (): number =>
+  LifecycleState?.getLockSignalDelay() ?? 0;
 
-export const isCallActive = () =>
-  LifecycleState.isCallActive();
+export const isCallActive = (): boolean =>
+  LifecycleState?.isCallActive() ?? false;
 
-export const readEvents = () =>
-  LifecycleState.readEvents();
+export const readEvents = (): LifecycleEvent[] =>
+  LifecycleState?.readEvents() ?? [];

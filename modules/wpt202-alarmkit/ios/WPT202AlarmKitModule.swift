@@ -28,77 +28,94 @@ public class WPT202AlarmKitModule: Module {
     }
 
     AsyncFunction("scheduleAlarm") {
-      (hour: Int, minute: Int, repeatDays: [String]) async throws -> Bool in
+      (hour: Int, minute: Int, repeatDays: [String]) async throws -> String? in
 
       guard #available(iOS 26.0, *) else {
-        return false
+        return nil
       }
 
       guard (0...23).contains(hour),
             (0...59).contains(minute) else {
-        return false
+        return nil
       }
 
       let manager = AlarmManager.shared
 
       let authorization = try await manager.requestAuthorization()
       guard authorization == .authorized else {
+        return nil
+      }
+
+      let dayMap: [String: Locale.Weekday] = [
+        "Sun": .sunday,
+        "Mon": .monday,
+        "Tue": .tuesday,
+        "Wed": .wednesday,
+        "Thu": .thursday,
+        "Fri": .friday,
+        "Sat": .saturday
+      ]
+
+      let weekdays = repeatDays.compactMap { dayMap[$0] }
+
+      guard weekdays.count == repeatDays.count else {
+        return nil
+      }
+
+      let recurrence: Alarm.Schedule.Relative.Recurrence =
+        weekdays.isEmpty ? .never : .weekly(weekdays)
+
+      let schedule = Alarm.Schedule.relative(
+        .init(
+          time: .init(hour: hour, minute: minute),
+          repeats: recurrence
+        )
+      )
+
+      let attributes = AlarmAttributes<EmptyAlarmMetadata>(
+        presentation: AlarmPresentation(
+          alert: AlarmPresentation.Alert(
+            title: "WPT202 Alarm",
+            stopButton: AlarmButton(
+              text: "Stop",
+              textColor: .white,
+              systemImageName: "stop.circle"
+            )
+          )
+        ),
+        tintColor: .orange
+      )
+
+      let configuration = AlarmManager.AlarmConfiguration.alarm(
+        schedule: schedule,
+        attributes: attributes,
+        stopIntent: nil
+      )
+
+      let alarmID = UUID()
+
+      _ = try await manager.schedule(
+        id: alarmID,
+        configuration: configuration
+      )
+
+      return alarmID.uuidString
+    }
+
+    // H4: Cancel a scheduled native alarm
+    AsyncFunction("cancelAlarm") { (alarmId: String) async throws -> Bool in
+
+      guard #available(iOS 26.0, *) else {
         return false
       }
 
-      
+      guard let id = UUID(uuidString: alarmId) else {
+        return false
+      }
 
-let dayMap: [String: Locale.Weekday] = [
-  "Sun": .sunday,
-  "Mon": .monday,
-  "Tue": .tuesday,
-  "Wed": .wednesday,
-  "Thu": .thursday,
-  "Fri": .friday,
-  "Sat": .saturday
-]
+      try AlarmManager.shared.cancel(id: id)
 
-let weekdays = repeatDays.compactMap { dayMap[$0] }
-
-guard weekdays.count == repeatDays.count else {
-  return false
-}
-
-let recurrence: Alarm.Schedule.Relative.Recurrence =
-  weekdays.isEmpty ? .never : .weekly(weekdays)
-
-let schedule = Alarm.Schedule.relative(
-  .init(
-    time: .init(hour: hour, minute: minute),
-    repeats: recurrence
-  )
-)
-
-let attributes = AlarmAttributes<EmptyAlarmMetadata>(
-  presentation: AlarmPresentation(
-    alert: AlarmPresentation.Alert(
-      title: "WPT202 Alarm",
-      stopButton: AlarmButton(
-        text: "Stop",
-        textColor: .white,
-        systemImageName: "stop.circle"
-      )
-    )
-  ),
-  tintColor: .orange
-)
-
-let configuration = AlarmManager.AlarmConfiguration.alarm(
-  schedule: schedule,
-  attributes: attributes,
-  stopIntent: nil
-)
-
-_ = try await manager.schedule(
-  id: UUID(),
-  configuration: configuration
-)
-return true
+      return true
     }
   }
 }
