@@ -1,6 +1,1 @@
-{
-  "platforms": ["android"],
-  "android": {
-    "modules": ["AlarmEngineModule"]
-  }
-}
+{"platforms":["android"],"android":{"modules":["expo.modules.alarmengine.AlarmEngineModule"]}}

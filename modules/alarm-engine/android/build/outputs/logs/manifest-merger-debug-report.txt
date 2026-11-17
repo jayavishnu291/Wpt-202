@@ -1,0 +1,60 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:1:1-13:12
+INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:1:1-13:12
+	package
+		INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:2:3-12:17
+receiver#expo.modules.alarmengine.AlarmReceiver
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:3:5-96
+	android:exported
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:3:69-93
+	android:name
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:3:15-68
+receiver#expo.modules.alarmengine.BootReceiver
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:4:5-9:16
+	android:exported
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:4:68-91
+	android:name
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:4:15-67
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.MY_PACKAGE_REPLACED
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:5:7-8:23
+action#android.intent.action.BOOT_COMPLETED
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:6:9-71
+	android:name
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:6:17-68
+action#android.intent.action.MY_PACKAGE_REPLACED
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:7:9-76
+	android:name
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:7:17-73
+service#expo.modules.alarmengine.AlarmRingingService
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:10:5-147
+	android:exported
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:10:74-98
+	android:foregroundServiceType
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:10:99-144
+	android:name
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:10:14-73
+activity#expo.modules.alarmengine.AlarmRingActivity
+ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:11:5-222
+	android:turnScreenOn
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:11:128-155
+	android:showWhenLocked
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:11:98-127
+	android:exported
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:11:73-97
+	android:theme
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:11:156-219
+	android:name
+		ADDED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml:11:15-72
+uses-sdk
+INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml
+INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\AndroidManifest.xml
