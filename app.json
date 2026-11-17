@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "WPT202 Sprint 1 Alarm App",
@@ -17,7 +18,10 @@
       }
     },
     "android": {
-      "package": "com.wpt202.alarmdemo"
+      "package": "com.wpt202.alarmdemo",
+      "permissions": [
+        "android.permission.SCHEDULE_EXACT_ALARM"
+      ]
     },
     "plugins": [
       "expo-status-bar",
