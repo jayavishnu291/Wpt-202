@@ -4,6 +4,8 @@ export {
   saveAlarm,
 } from '../data/repos/alarms';
 export type { Alarm } from '../data/repos/alarms';
+export { listHistory } from '../data/repos/history';
+export type { HistoryEntry } from '../data/repos/history';
 export {
   getSettings,
   saveSettings,

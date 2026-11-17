@@ -63,8 +63,16 @@ export const rules = {
   alarms: {
     // Tech Architecture 11.1: alarm limits
     maximumAlarms: 5,
+    maximumLabelCharacters: 30,
     snoozeCount: 2,
     snoozeDurationMinutes: 5,
+    defaultTime: '07:00',
+    defaultRepeatDays: [0, 1, 2, 3, 4, 5, 6],
+    defaultMathsLevel: 2,
+    defaultMathsProblems: 2,
+    defaultSound: 'morning-bell',
+    defaultVibration: true,
+    defaultSnooze: false,
 
     // Tech Architecture 11.1: volume ramp (% and seconds)
     volumeRampStartPercent: 20,
@@ -86,6 +94,7 @@ export const rules = {
     // Tech Architecture 11.1: maths mission
     mathsMinimumProblems: 1,
     mathsMaximumProblems: 5,
+    mathsDifficultyLevels: [1, 2, 3],
 
     // Tech Architecture 11.1: shake mission levels
     shakeLevels: [20, 50, 100],
@@ -137,7 +146,7 @@ export const rules = {
 export const switches = {
   "SW-01": true, // iPhone lock detection
   "SW-02": true, // iPhone re-ring
-  "SW-03": "A", // iPhone snooze: "A" | "B" | "C"
+  "SW-03": "A" as "A" | "B" | "C", // iPhone snooze: "A" | "B" | "C"
   "SW-04": true, // iPhone volume ramp
   "SW-05": true, // Android blocking
   "SW-06": true, // Shake mission

@@ -1,0 +1,579 @@
+
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { rules } from '../../../config/rules';
+import { t } from '../../../t';
+import {
+  deleteAlarm,
+  listAlarms,
+  saveAlarm,
+  type Alarm,
+} from '../../services/data';
+
+interface Props {
+  onAdd: () => void;
+  onEdit: (alarm: Alarm) => void;
+}
+
+const DAYS = [
+  { key: 'mon', value: 1 },
+  { key: 'tue', value: 2 },
+  { key: 'wed', value: 3 },
+  { key: 'thu', value: 4 },
+  { key: 'fri', value: 5 },
+  { key: 'sat', value: 6 },
+  { key: 'sun', value: 0 },
+] as const;
+
+declare const __DEV__: boolean;
+
+export default function AlarmListScreen({ onAdd, onEdit }: Props) {
+  const [alarms, setAlarms] = useState<Alarm[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [busyAlarmId, setBusyAlarmId] = useState<string | null>(null);
+  const [showPermissionBanner, setShowPermissionBanner] = useState(false);
+  const [showVolumeBanner, setShowVolumeBanner] = useState(false);
+
+  const mounted = useRef(false);
+
+  // Load alarms from the database
+  const loadAlarms = useCallback(async () => {
+    try {
+      const result = await listAlarms();
+
+      if (mounted.current) {
+        setAlarms(result);
+      }
+    } catch (error) {
+      console.error('Unable to load alarms:', error);
+
+      if (mounted.current) {
+        Alert.alert(
+          t('common.error'),
+          t('alarmList.loadFailed'),
+        );
+      }
+    } finally {
+      if (mounted.current) {
+        setLoading(false);
+      }
+    }
+  }, []);
+
+  // Initial loading without synchronous state updates in the effect
+  useEffect(() => {
+    let active = true;
+    mounted.current = true;
+
+    const loadInitialAlarms = async () => {
+      try {
+        const result = await listAlarms();
+
+        if (active) {
+          setAlarms(result);
+        }
+      } catch (error) {
+        console.error('Unable to load alarms:', error);
+
+        if (active) {
+          Alert.alert(
+            t('common.error'),
+            t('alarmList.loadFailed'),
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadInitialAlarms();
+
+    return () => {
+      active = false;
+      mounted.current = false;
+    };
+  }, []);
+
+  // Enable or disable an alarm
+  const toggleAlarm = async (alarm: Alarm, enabled: boolean) => {
+    setBusyAlarmId(alarm.id);
+
+    try {
+      const updatedAlarm = {
+        ...alarm,
+        enabled,
+      };
+
+      await saveAlarm(updatedAlarm);
+
+      setAlarms((current) =>
+        current.map((item) =>
+          item.id === alarm.id ? updatedAlarm : item,
+        ),
+      );
+    } catch (error) {
+      console.error('Unable to update alarm:', error);
+
+      Alert.alert(
+        t('common.error'),
+        t('alarmList.updateFailed'),
+      );
+    } finally {
+      setBusyAlarmId(null);
+    }
+  };
+
+  // Delete the selected alarm
+  const removeAlarm = async (alarm: Alarm) => {
+    try {
+      setBusyAlarmId(alarm.id);
+
+      await deleteAlarm(alarm.id);
+
+      // Update the list immediately
+      setAlarms((current) =>
+        current.filter((item) => item.id !== alarm.id),
+      );
+
+      // Refresh the saved alarms
+      await loadAlarms();
+
+      console.log('Alarm deleted successfully:', alarm.id);
+    } catch (error) {
+      console.error('Unable to delete alarm:', error);
+
+      Alert.alert(
+        t('common.error'),
+        t('alarmList.deleteFailed'),
+      );
+    } finally {
+      setBusyAlarmId(null);
+    }
+  };
+
+  // Confirm before deleting
+  const confirmDelete = (alarm: Alarm) => {
+    const message = t('alarmList.deleteMessage', {
+      time: alarm.time,
+    });
+
+    // Browser confirmation for Expo Web
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm(message);
+
+      if (confirmed) {
+        void removeAlarm(alarm);
+      }
+
+      return;
+    }
+
+    // Android and iOS confirmation
+    Alert.alert(
+      t('alarmList.deleteTitle'),
+      message,
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('alarmEdit.delete'),
+          style: 'destructive',
+          onPress: () => void removeAlarm(alarm),
+        },
+      ],
+    );
+  };
+
+  // Format repeat days
+  const formatRepeat = (days: number[]) => {
+    if (days.length === 0) {
+      return t('alarmList.repeatOnce');
+    }
+
+    if (days.length === DAYS.length) {
+      return t('alarmList.repeatEveryDay');
+    }
+
+    return DAYS
+      .filter((day) => days.includes(day.value))
+      .map((day) => t(`common.day.${day.key}`))
+      .join(', ');
+  };
+
+  // Loading screen
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loading}>
+        <ActivityIndicator size="large" color="#F5D76E" />
+        <Text style={styles.muted}>
+          {t('alarmList.loading')}
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.header}>
+        <Text style={styles.heading}>
+          {t('alarmList.title')}
+        </Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.content}>
+        {__DEV__ && (
+          <View style={styles.devToggles}>
+            <TouchableOpacity
+              onPress={() =>
+                setShowPermissionBanner((current) => !current)
+              }
+              style={styles.devButton}
+            >
+              <Text style={styles.devText}>
+                {t(
+                  showPermissionBanner
+                    ? 'alarmList.hidePermissionBanner'
+                    : 'alarmList.showPermissionBanner',
+                )}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() =>
+                setShowVolumeBanner((current) => !current)
+              }
+              style={styles.devButton}
+            >
+              <Text style={styles.devText}>
+                {t(
+                  showVolumeBanner
+                    ? 'alarmList.hideVolumeBanner'
+                    : 'alarmList.showVolumeBanner',
+                )}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {showPermissionBanner && (
+          <View style={styles.banner}>
+            <Text style={styles.bannerText}>
+              {t('alarmList.bannerOff')}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() =>
+                Alert.alert(
+                  t('alarmList.permissionFixTitle'),
+                  t('alarmList.permissionFixMessage'),
+                )
+              }
+              accessibilityRole="button"
+              accessibilityLabel={t('common.fix')}
+              style={styles.fixButton}
+            >
+              <Text style={styles.fixText}>
+                {t('common.fix')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {showVolumeBanner && (
+          <View style={styles.banner}>
+            <Text style={styles.bannerText}>
+              {t('alarmList.lowVolume')}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() =>
+                Alert.alert(
+                  t('alarmList.volumeFixTitle'),
+                  t('alarmList.volumeFixMessage'),
+                )
+              }
+              accessibilityRole="button"
+              accessibilityLabel={t('common.fix')}
+              style={styles.fixButton}
+            >
+              <Text style={styles.fixText}>
+                {t('common.fix')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {alarms.length === 0 ? (
+          <View style={styles.emptyCard}>
+            <Text style={styles.emptyIcon}>◷</Text>
+            <Text style={styles.emptyTitle}>
+              {t('alarmList.empty')}
+            </Text>
+          </View>
+        ) : (
+          alarms.map((alarm) => (
+            <View key={alarm.id} style={styles.alarmCard}>
+              <TouchableOpacity
+                style={styles.alarmDetails}
+                onPress={() => onEdit(alarm)}
+                accessibilityRole="button"
+                accessibilityLabel={t('alarmList.editAlarm')}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.time}>
+                  {alarm.time}
+                </Text>
+
+                <Text style={styles.label}>
+                  {alarm.label || t('alarmList.alarmLabel')}
+                </Text>
+
+                <Text style={styles.repeat}>
+                  {formatRepeat(alarm.repeat_days)}
+                </Text>
+
+                {alarm.mission_type && (
+                  <Text style={styles.mission}>
+                    {t('alarmList.missionSummary', {
+                      mission:
+                        alarm.mission_type === 'shake'
+                          ? t('alarmEdit.missionShake')
+                          : t('alarmEdit.missionMaths'),
+                    })}
+                  </Text>
+                )}
+              </TouchableOpacity>
+
+              <View style={styles.actions}>
+                <View style={styles.switchRow}>
+                  <Text style={styles.switchLabel}>
+                    {t(
+                      alarm.enabled
+                        ? 'alarmList.on'
+                        : 'alarmList.off',
+                    )}
+                  </Text>
+
+                  <Switch
+                    value={alarm.enabled}
+                    disabled={busyAlarmId === alarm.id}
+                    onValueChange={(value) =>
+                      void toggleAlarm(alarm, value)
+                    }
+                    accessibilityLabel={t('alarmList.toggleAlarm')}
+                    trackColor={{
+                      false: '#465064',
+                      true: '#547D58',
+                    }}
+                    thumbColor={
+                      alarm.enabled ? '#F5D76E' : '#D5D8DF'
+                    }
+                  />
+                </View>
+
+                <TouchableOpacity
+                  onPress={() => confirmDelete(alarm)}
+                  disabled={busyAlarmId === alarm.id}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('alarmEdit.delete')}
+                  style={styles.deleteButton}
+                >
+                  <Text style={styles.deleteText}>
+                    {busyAlarmId === alarm.id
+                      ? '...'
+                      : t('alarmEdit.delete')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))
+        )}
+
+        {alarms.length < rules.alarms.maximumAlarms && (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={onAdd}
+            accessibilityRole="button"
+          >
+            <Text style={styles.addButtonText}>
+              + {t('alarmList.add')}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        <Text style={styles.limitText}>
+          {t('alarmList.alarmCount', {
+            count: alarms.length,
+            maximum: rules.alarms.maximumAlarms,
+          })}
+        </Text>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0B1020',
+  },
+  loading: {
+    flex: 1,
+    backgroundColor: '#0B1020',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
+  heading: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingBottom: 35,
+    gap: 12,
+  },
+  devToggles: {
+    gap: 8,
+  },
+  devButton: {
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#344156',
+  },
+  devText: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+  banner: {
+    backgroundColor: '#493728',
+    borderRadius: 14,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  bannerText: {
+    color: '#FFFFFF',
+    flex: 1,
+  },
+  fixButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  fixText: {
+    color: '#F5D76E',
+    fontWeight: 'bold',
+  },
+  emptyCard: {
+    backgroundColor: '#172235',
+    borderRadius: 18,
+    padding: 28,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  emptyIcon: {
+    color: '#F5D76E',
+    fontSize: 48,
+  },
+  emptyTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  muted: {
+    color: '#AAB3C5',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  alarmCard: {
+    backgroundColor: '#172235',
+    borderRadius: 18,
+    padding: 18,
+  },
+  alarmDetails: {
+    marginBottom: 12,
+  },
+  time: {
+    color: '#F5D76E',
+    fontSize: 36,
+    fontWeight: 'bold',
+  },
+  label: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '600',
+    marginTop: 4,
+  },
+  repeat: {
+    color: '#AAB3C5',
+    marginTop: 5,
+  },
+  mission: {
+    color: '#91B995',
+    marginTop: 7,
+    fontSize: 13,
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  switchLabel: {
+    color: '#AAB3C5',
+  },
+  deleteButton: {
+    padding: 9,
+  },
+  deleteText: {
+    color: '#FF8585',
+    fontWeight: '600',
+  },
+  addButton: {
+    backgroundColor: '#547D58',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  addButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  limitText: {
+    color: '#AAB3C5',
+    textAlign: 'center',
+    marginTop: 2,
+  },
+});
