@@ -1,9 +1,0 @@
-expo.modules.alarmengine.alarm-engine-pngs-0 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\build\generated\res\pngs\debug
-expo.modules.alarmengine.alarm-engine-updated_navigation_xml-1 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\build\generated\updated_navigation_xml\debug
-expo.modules.alarmengine.alarm-engine-mergeDebugResources-2 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
-expo.modules.alarmengine.alarm-engine-mergeDebugResources-3 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
-expo.modules.alarmengine.alarm-engine-debug-4 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\build\intermediates\merged_res\debug\mergeDebugResources
-expo.modules.alarmengine.alarm-engine-debug-5 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\build\intermediates\packaged_res\debug\packageDebugResources
-expo.modules.alarmengine.alarm-engine-debug-6 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\debug\res
-expo.modules.alarmengine.alarm-engine-main-7 D:\WPT202\WPT202-Office-AlarmKit\modules\alarm-engine\android\src\main\res
-gradleHome-0 D:\GradleCache
