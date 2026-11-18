@@ -1,7 +1,0 @@
-R_DEF: Internal format may change without notice
-local
-string go_back_button
-string resting_message_focus
-string resting_message_sleep
-string status_channel_name
-string status_focus_in_progress
