@@ -5,8 +5,7 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { t } from "../text/t";
-
+import { t } from "./t";
 type Props = { onGetStarted: () => void };
 
 export default function WelcomeSample({ onGetStarted }: Props) {

@@ -18,26 +18,8 @@ import {
   FC6_STAR_COUNT,
   FC6_STAR_LAYOUT_SEED,
   createGardenLayout,
-} from './gardenLayout';
-import type { GardenLayout } from './gardenLayout';
-
-// ---------------------------------------------------------------------------
-// Tiny test runner
-// ---------------------------------------------------------------------------
-let passed = 0;
-let failed = 0;
-
-function test(name: string, run: () => void): void {
-  try {
-    run();
-    passed += 1;
-    console.log('  PASS  ' + name);
-  } catch (error) {
-    failed += 1;
-    console.log('  FAIL  ' + name);
-    console.log('        ' + (error instanceof Error ? error.message : String(error)));
-  }
-}
+} from '../../src/domain/gardenLayout';
+import type { GardenLayout } from '../../src/domain/gardenLayout';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -105,7 +87,6 @@ function assertAllFinite(layout: GardenLayout, label: string): void {
   }
 }
 
-console.log('Garden layout tests\n');
 
 // ---------------------------------------------------------------------------
 // 1. Default counts
@@ -428,7 +409,3 @@ test('valid topInset does not move the flowers', () => {
   assert.deepStrictEqual(normal, inset);
 });
 // ---------------------------------------------------------------------------
-console.log(`\n${passed} passed, ${failed} failed`);
-if (failed > 0) {
-  process.exitCode = 1;
-}

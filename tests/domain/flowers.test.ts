@@ -18,27 +18,9 @@ import {
   PETAL_COUNT_MAX,
   PETAL_COUNT_MIN,
   PETAL_SHAPES,
-} from './flowerTypes';
-import type { FlowerSpec } from './flowerTypes';
-import { createSeededRandom, generateFlower, getSizeClass } from './flowers';
-
-// ---------------------------------------------------------------------------
-// Tiny test runner (prints PASS / FAIL, exit code 1 if anything fails)
-// ---------------------------------------------------------------------------
-let passed = 0;
-let failed = 0;
-
-function test(name: string, run: () => void): void {
-  try {
-    run();
-    passed += 1;
-    console.log('  PASS  ' + name);
-  } catch (error) {
-    failed += 1;
-    console.log('  FAIL  ' + name);
-    console.log('        ' + (error instanceof Error ? error.message : String(error)));
-  }
-}
+} from '../../src/domain/flowerTypes';
+import type { FlowerSpec } from '../../src/domain/flowerTypes';
+import { createSeededRandom, generateFlower, getSizeClass } from '../../src/domain/flowers';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -91,7 +73,6 @@ function makeFlowers(fromSeed: number, toSeed: number, durationMinutes: number):
   return flowers;
 }
 
-console.log('Flower generator tests\n');
 
 // ---------------------------------------------------------------------------
 // 1. Determinism (FR-GA-02, AC-GA-2)
@@ -305,7 +286,3 @@ test('150 flowers: all valid and exactly repeatable', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log(`\n${passed} passed, ${failed} failed`);
-if (failed > 0) {
-  process.exitCode = 1;
-}

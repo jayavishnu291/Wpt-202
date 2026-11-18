@@ -162,3 +162,8 @@ export function isOn(
 ): boolean {
   return switches[id] === true;
 }
+// Compatibility rules for time-domain tests.
+export const TIME_RULES = {
+  nightWindowHalfHours: rules.night.windowBeforeBedtimeHours,
+  lateStartHours: rules.night.lateStartHours,
+} as const;
