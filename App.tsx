@@ -4,6 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import AlarmKitTestScreen from './src/alarmkit/AlarmKitTestScreen';
 
 import {
+  isAvailable as isAndroidAlarmAvailable,
+  canScheduleExactAlarms,
+  scheduleTestAlarm,
+} from './modules/alarm-engine/src';
+
+import {
   ActivityIndicator,
   Platform,
   Pressable,
@@ -65,7 +71,7 @@ function SessionMonitorPanel() {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- state updates follow the awaited event read.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void refreshEvents();
   }, [refreshEvents]);
 
@@ -96,13 +102,58 @@ function SessionMonitorPanel() {
     kind: SessionKind,
     durationMs: number
   ) => {
-    // eslint-disable-next-line react-hooks/purity -- this runs from the button handler, not during render.
+    // eslint-disable-next-line react-hooks/purity
     const plannedEndMs = Date.now() + durationMs;
 
     void runAction(
       () => startTestSession(kind, plannedEndMs),
       `${capitalize(kind)} session started.`
     );
+  };
+
+  // H2 FC-5: Android native alarm scheduling test
+  const testAndroidAlarm = async () => {
+    if (Platform.OS !== 'android') {
+      setError('This test is available only on Android.');
+      return;
+    }
+
+    if (!isAndroidAlarmAvailable()) {
+      setError('Android native AlarmEngine module unavailable.');
+      return;
+    }
+
+    if (!canScheduleExactAlarms()) {
+      setError(
+        'Exact alarm permission required. Enable Alarms & reminders in Android Settings.'
+      );
+      return;
+    }
+
+    setBusy(true);
+    setError(null);
+    setMessage(null);
+
+    try {
+      const timeMs = Date.now() + 2 * 60 * 1000;
+      const success = await scheduleTestAlarm(timeMs);
+
+      if (success) {
+        setMessage(
+          'H2 Android alarm scheduled for 2 minutes from now.'
+        );
+      } else {
+        setError('H2 Android alarm scheduling failed.');
+      }
+    } catch (caught) {
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : String(caught)
+      );
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -123,6 +174,22 @@ function SessionMonitorPanel() {
         {Platform.OS === 'android' ? (
           <>
             <View style={styles.actions}>
+              {/* H2 FC-5 Android Alarm Test */}
+              <Pressable
+                accessibilityRole="button"
+                disabled={busy}
+                onPress={() => void testAndroidAlarm()}
+                style={[
+                  styles.button,
+                  busy && styles.disabled,
+                ]}
+              >
+                <Text style={styles.buttonText}>
+                  Test Android Alarm (2 Minutes)
+                </Text>
+              </Pressable>
+
+              {/* Existing H5 Session Tests */}
               {SESSION_OPTIONS.map(({ kind, durationMs }) => (
                 <Pressable
                   key={kind}
