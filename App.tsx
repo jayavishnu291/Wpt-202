@@ -1,4 +1,9 @@
 
+ golf/navigation
+export default function App() {
+  return null;
+}
+
 import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -37,3 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 export default withBlockingTestGate(App);
+ main
