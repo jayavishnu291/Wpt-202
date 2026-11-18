@@ -31,6 +31,10 @@
     },
     "plugins": [
       "expo-sqlite",
+      "expo-router",
+      ["expo-audio", { "microphonePermission": false, "recordAudioAndroid": false, "enableBackgroundPlayback": false }],
+      "expo-font",
+      "expo-asset",
       "./plugins/withBlockingQueries.js"
     ]
   }
