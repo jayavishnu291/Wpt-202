@@ -30,6 +30,13 @@ class ExpoSQLiteAdapter implements DatabaseAdapter {
   ): Promise<T> {
     let result!: T;
 
+    if (process.env.EXPO_OS === 'web') {
+      await this.db.withTransactionAsync(async () => {
+        result = await work(this);
+      });
+      return result;
+    }
+
     await this.db.withExclusiveTransactionAsync(async (transaction) => {
       result = await work(new ExpoSQLiteAdapter(transaction));
     });

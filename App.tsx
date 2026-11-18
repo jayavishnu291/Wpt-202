@@ -1,5 +1,8 @@
 
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+ hotel/h2-fc5-pr
 import { useCallback, useEffect, useState } from 'react';
 import AlarmKitTestScreen from './src/alarmkit/AlarmKitTestScreen';
 
@@ -339,6 +342,28 @@ function SessionMonitorPanel() {
       </ScrollView>
 
       <StatusBar style="auto" />
+
+import { StyleSheet, Text, View } from 'react-native';
+import { withBlockingTestGate } from './src/dev/DevBlockingGate';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <StatusBar style="light" />
+
+      {screen === 'list' ? (
+        <AlarmListScreen
+          onAdd={handleAdd}
+          onEdit={handleEdit}
+        />
+      ) : (
+        <AlarmEditScreen
+          initialAlarm={selectedAlarm}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
+      )}
+ main
     </View>
   );
 }
@@ -350,110 +375,7 @@ function capitalize(value: string) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f7f5',
-  },
-  content: {
-    flexGrow: 1,
-    padding: 24,
-    paddingTop: 64,
-  },
-  eyebrow: {
-    color: '#52786b',
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 1.2,
-    marginBottom: 8,
-  },
-  title: {
-    color: '#18352d',
-    fontSize: 28,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  body: {
-    color: '#52635d',
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  actions: {
-    gap: 10,
-    marginTop: 24,
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#245c4b',
-    borderRadius: 10,
-    minHeight: 48,
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  stopButton: {
-    backgroundColor: '#8b3c37',
-  },
-  secondaryButton: {
-    backgroundColor: '#e4ece7',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  secondaryButtonText: {
-    color: '#18352d',
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  disabled: {
-    opacity: 0.55,
-  },
-  spinner: {
-    marginTop: 20,
-  },
-  message: {
-    color: '#245c4b',
-    marginTop: 16,
-  },
-  error: {
-    color: '#a52f28',
-    marginTop: 16,
-  },
-  sectionTitle: {
-    color: '#18352d',
-    fontSize: 19,
-    fontWeight: '700',
-    marginBottom: 12,
-    marginTop: 32,
-  },
-  event: {
-    backgroundColor: '#fff',
-    borderColor: '#e3e9e5',
-    borderRadius: 10,
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 14,
-  },
-  eventHeader: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  eventType: {
-    color: '#18352d',
-    fontSize: 15,
-    fontWeight: '700',
-    textTransform: 'capitalize',
-  },
-  eventSequence: {
-    color: '#6b7b74',
-    fontSize: 12,
-  },
-  eventTime: {
-    color: '#52635d',
-    marginTop: 6,
-  },
-  eventDetails: {
-    color: '#6b7b74',
-    fontSize: 12,
-    marginTop: 4,
+    backgroundColor: '#0B1020',
   },
 });
+export default withBlockingTestGate(App);

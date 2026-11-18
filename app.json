@@ -33,19 +33,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "deploymentTarget": "26.0"
-          }
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "8936662e-b13d-4bf2-aa57-abc862415dcd"
-      }
-    }
+      "expo-sqlite",
+      "./plugins/withBlockingQueries.js"
+    ]
   }
 }

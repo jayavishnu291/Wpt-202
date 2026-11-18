@@ -98,6 +98,9 @@ class BlockMonitorService : Service() {
     workThread.start()
     workHandler = Handler(workThread.looper)
     ownPackage = packageName
+    BlockingState.bootCount = try {
+      android.provider.Settings.Global.getInt(contentResolver, android.provider.Settings.Global.BOOT_COUNT, 0)
+    } catch (e: Exception) { 0 }
     usageStats = getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
     windowManager = getSystemService(Context.WINDOW_SERVICE) as? WindowManager
     powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
