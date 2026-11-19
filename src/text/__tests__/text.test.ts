@@ -11,7 +11,7 @@ import { appConfig } from "../../../config/app";
 const root = path.resolve(__dirname, "../../..");
 const name = appConfig.appName;
 
-function leaves(obj: any, prefix = ""): Array<[string, string]> {
+function leaves(obj: any, prefix = ""): [string, string][] {
   return Object.entries(obj).flatMap(([k, v]) =>
     typeof v === "string" ? [[`${prefix}${k}`, v] as [string, string]] : leaves(v, `${prefix}${k}.`),
   );
@@ -19,7 +19,7 @@ function leaves(obj: any, prefix = ""): Array<[string, string]> {
 const all = leaves(en);
 
 // [where in the PRD, key, exact PRD text]
-const prd: Array<[string, TextKey, string]> = [
+const prd: [string, TextKey, string][] = [
   // Section 17 Key copy
   ["17 S01", "onboarding.welcomeTitle", "Grow flowers by day. Collect stars by night."],
   ["17 S02 (1)", "onboarding.howPoint1", "Focus to grow flowers"],
@@ -176,7 +176,7 @@ test("code scan: no on-screen text typed in src/app or src/ui; scanner catches a
 });
 
 // ---- Review round: every line the reviewer specified, exactly as written ----
-const review: Array<[TextKey, string]> = [
+const review: [TextKey, string][] = [
   ["focus.reminderDuringFocus", "Finish or end your focus to start your night."],
   ["focus.labelStudy", "Study"], ["focus.labelWork", "Work"], ["focus.labelReading", "Reading"], ["focus.labelOther", "Other"],
   ["night.startAnyway", "Start my night anyway"],
