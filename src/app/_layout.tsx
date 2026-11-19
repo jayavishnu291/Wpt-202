@@ -9,6 +9,9 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { getDatabase } from '../services/data';
+// TEST BRANCH ONLY - never merge into main.
+// eslint-disable-next-line no-restricted-imports
+import { DevToolsGate } from '../dev/DevToolsGate';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -53,12 +56,12 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <DevToolsGate>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
       </Stack>
-    </>
+    </DevToolsGate>
   );
 }
 
