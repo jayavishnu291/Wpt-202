@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -14,32 +13,18 @@ import {
   readEvents,
   serviceType,
   startTestSession,
-  stopSession,
   stopServiceForTest,
-} from './modules/session-monitor/src';
-import type { SessionEvent, SessionKind } from './modules/session-monitor/src';
+  stopSession,
+} from '../../modules/session-monitor/src';
+import type { SessionEvent, SessionKind } from '../../modules/session-monitor/src';
 
-const SESSION_OPTIONS: Array<{ kind: SessionKind; durationMs: number }> = [
+const SESSION_OPTIONS: { kind: SessionKind; durationMs: number }[] = [
   { kind: 'focus', durationMs: 15 * 60_000 },
-  { kind: 'night', durationMs: 8 * 60 * 60_000 },
-  { kind: 'nap', durationMs: 60 * 60_000 },
+  { kind: 'night', durationMs: 14 * 60 * 60_000 },
+  { kind: 'nap', durationMs: 4 * 60 * 60_000 },
 ];
 
-export default function App() {
-  if (!__DEV__) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Session monitor</Text>
-        <Text style={styles.body}>The session monitor panel is available in development builds.</Text>
-        <StatusBar style="auto" />
-      </View>
-    );
-  }
-
-  return <SessionMonitorPanel />;
-}
-
-function SessionMonitorPanel() {
+export default function SessionMonitorTestScreen() {
   const [events, setEvents] = useState<SessionEvent[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,10 +39,6 @@ function SessionMonitorPanel() {
       setError(caught instanceof Error ? caught.message : String(caught));
     }
   }, []);
-
-  useEffect(() => {
-    void refreshEvents();
-  }, [refreshEvents]);
 
   const runAction = async (action: () => Promise<void>, successMessage: string) => {
     setBusy(true);
@@ -75,9 +56,8 @@ function SessionMonitorPanel() {
   };
 
   const start = (kind: SessionKind, durationMs: number) => {
-    const plannedEndMs = Date.now() + durationMs;
     void runAction(
-      () => startTestSession(kind, plannedEndMs),
+      () => startTestSession(kind, Date.now() + durationMs),
       `${capitalize(kind)} session started.`,
     );
   };
@@ -106,9 +86,7 @@ function SessionMonitorPanel() {
               <Pressable
                 accessibilityRole="button"
                 disabled={busy}
-                onPress={() => {
-                  void runAction(stopSession, 'Session stopped.');
-                }}
+                onPress={() => void runAction(stopSession, 'Session stopped.')}
                 style={[styles.button, styles.stopButton, busy && styles.disabled]}
               >
                 <Text style={styles.buttonText}>Stop session</Text>
@@ -116,12 +94,12 @@ function SessionMonitorPanel() {
               <Pressable
                 accessibilityRole="button"
                 disabled={busy}
-                onPress={() => {
+                onPress={() =>
                   void runAction(
                     stopServiceForTest,
                     'Service stopped; the next heartbeat should record its recovery.',
-                  );
-                }}
+                  )
+                }
                 style={[styles.button, styles.stopButton, busy && styles.disabled]}
               >
                 <Text style={styles.buttonText}>Stop service (missing-service test)</Text>
@@ -164,7 +142,6 @@ function SessionMonitorPanel() {
           <Text style={styles.body}>The native session monitor is currently Android-only.</Text>
         )}
       </ScrollView>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -181,7 +158,7 @@ const styles = StyleSheet.create({
   content: {
     flexGrow: 1,
     padding: 24,
-    paddingTop: 64,
+    paddingTop: 72,
   },
   eyebrow: {
     color: '#52786b',

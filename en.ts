@@ -17,6 +17,7 @@ export const en = {
     cancel: "Cancel", // PROPOSED
     done: "Done", // PROPOSED
     fix: "Fix", // PRD AC-ON-3
+    error: "Error",
     later: "Later", // PRD FR-ON-10
     next: "Next", // PRD FR-ON-03
     save: "Save", // PRD FR-ON-04
@@ -30,6 +31,24 @@ export const en = {
 
   // Bottom tabs (PRD 7.1)
   nav: { home: "Home", history: "History", alarms: "Alarms", settings: "Settings" },
+
+  history: {
+    title: "History",
+    empty: "Your completed focus sessions and nights will appear here.", // PROPOSED
+    loading: "Loading history", // PROPOSED
+    loadFailed: "Could not load history.", // PROPOSED
+    focus: "Focus session", // PROPOSED
+    night: "Night", // PROPOSED
+    nap: "Nap", // PROPOSED
+    bloom: "Bloomed", // PROPOSED
+    bud: "Bud", // PROPOSED
+    star: "Star collected", // PROPOSED
+    faintStar: "Faint star", // PROPOSED
+    noStar: "No star", // PROPOSED
+    plannedDuration: "Planned: {minutes} min", // PROPOSED
+    estimatedSleep: "Estimated sleep: {duration}", // PROPOSED
+    pickups: "Pickups: {count}", // PROPOSED
+  },
 
   // ---- S-01 to S-05 -------------------------------------------------------
   onboarding: {
@@ -230,6 +249,28 @@ export const en = {
     off: "Off",
     bannerLate: "Alarms may be late", // PRD 9.1.1
     bannerOff: "Alarms are off. Tap Fix to allow them.", // PROPOSED
+    lowVolume: "Your alarm volume is very low.", // PRD FR-AL-31
+    permissionFixTitle: "Alarm permissions",
+    permissionFixMessage: "Open your device settings to allow alarms.",
+    volumeFixTitle: "Alarm volume",
+    volumeFixMessage: "Raise your device's alarm volume in settings.",
+    showPermissionBanner: "Show permission banner",
+    hidePermissionBanner: "Hide permission banner",
+    showVolumeBanner: "Show low-volume banner",
+    hideVolumeBanner: "Hide low-volume banner",
+    deleteTitle: "Delete alarm",
+    deleteMessage: "Delete the {time} alarm?",
+    deleteFailed: "Could not delete this alarm.",
+    loadFailed: "Could not load alarms.",
+    updateFailed: "Could not update this alarm.",
+    alarmLabel: "Alarm",
+    missionSummary: "{mission} mission",
+    alarmCount: "{count} / {maximum} alarms",
+    toggleAlarm: "Toggle alarm",
+    editAlarm: "Edit alarm",
+    loading: "Loading alarms",
+    limitReachedTitle: "Alarm limit reached",
+    limitReachedMessage: "You can create a maximum of {count} alarms.",
   },
   alarmEdit: {
     title: "Edit alarm", // PROPOSED
@@ -249,6 +290,33 @@ export const en = {
     problemsOne: "{count} problem",
     sound: "Sound",
     soundMorningBell: "Morning Bell", // PRD FR-AL-03 default sound
+    soundSoftChimes: "Soft Chimes",
+    soundBirdsong: "Birdsong",
+    soundRisingTone: "Rising Tone",
+    soundClassicBeep: "Classic Beep",
+    soundStrongBell: "Strong Bell",
+    previewSound: "Preview {sound}",
+    preview: "Preview",
+    timeHint: "Use 24-hour time (HH:mm).",
+    invalidTimeTitle: "Invalid time",
+    invalidTimeMessage: "Enter a time in 24-hour format, for example 07:30.",
+    labelCharacters: "{count}/{maximum} characters",
+    mathsDifficulty: "Difficulty",
+    mathsProblems: "Number of problems",
+    shakeLevel: "Shake level",
+    shakeLevelOption: "{difficulty} · {count} shakes",
+    once: "Alarm rings once.",
+    everyDay: "Alarm repeats every day.",
+    noSnoozeOnIphone: "Snooze is unavailable on this iPhone.",
+    snoozeLimit: "Up to {count} times, {minutes} minutes each.",
+    deleteTitle: "Delete alarm",
+    deleteMessage: "Delete this alarm?",
+    cancel: "Cancel",
+    saveFailed: "Could not save this alarm.",
+    shakeUnavailableTitle: "Unavailable",
+    shakeUnavailableMessage: "The Shake mission is currently disabled.",
+    previewFailed: "Could not play this sound preview.",
+    saving: "Saving...",
     vibration: "Vibration",
     snooze: "Snooze",
     skipNext: "Skip next alarm", // PRD FR-AL-13
@@ -341,5 +409,15 @@ export const en = {
     title: "About", // PROPOSED (S-66: name, version, licences, email, website)
     version: "Version {version}",
     licences: "Open-source licences",
+  },
+
+  // ---- Alarm sounds (I10: the 6 free sounds in assets/sounds/) --------------
+  sounds: {
+    morningBell: "Morning Bell", // PROPOSED
+    softChimes: "Soft Chimes", // PROPOSED
+    birdsong: "Birdsong", // PROPOSED
+    risingTone: "Rising Tone", // PROPOSED
+    classicBeep: "Classic Beep", // PROPOSED
+    strongBell: "Strong Bell", // PROPOSED
   },
 } as const;

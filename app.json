@@ -11,7 +11,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "in.whitepixeltechnologies.wpt202a.dev",
       "infoPlist": {
-        "NSAlarmKitUsageDescription": "So your alarm can ring even in silent mode."
+        "NSAlarmKitUsageDescription": "So your alarm can ring even in silent mode.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

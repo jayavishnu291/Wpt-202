@@ -1,5 +1,8 @@
 package expo.modules.blockscreen
 
+import android.os.SystemClock
+import java.time.OffsetDateTime
+
 /**
  * The only kinds of app we ever write into the event log (Tech Architecture 6 / task card).
  * We never store package names in logs: only this class.
@@ -15,6 +18,13 @@ enum class AppClass(val label: String) {
 
 /** One line of the event log. No package name inside, on purpose. */
 data class BlockLogEntry(
+  val seq: Long,
+  /** Wall time with offset, e.g. 2026-11-16T10:15:30+05:30. */
+  val at: String,
+  /** Monotonic time since the phone started; not changed by clock changes. */
+  val elapsedMs: Long,
+  val bootCount: Int,
+  /** Kept so the test screen keeps working. */
   val timeMs: Long,
   val event: String,
   val appClass: String,
@@ -33,13 +43,27 @@ object BlockingState {
   @Volatile var blockingActive: Boolean = false
   /** FR-BL-08: set when a permission disappeared during the session; the app shows a notice afterwards. */
   @Volatile var permissionLostDuringSession: Boolean = false
+  /** Phone restart counter, set by the service when it starts. */
+  @Volatile var bootCount: Int = 0
 
   private val lock = Any()
   private val entries = ArrayList<BlockLogEntry>()
+  private var nextSeq = 0L
 
   fun log(event: String, appClass: AppClass? = null, delayMs: Long = -1L) {
     synchronized(lock) {
-      entries.add(BlockLogEntry(System.currentTimeMillis(), event, appClass?.label ?: "", delayMs))
+      entries.add(
+        BlockLogEntry(
+          seq = nextSeq++,
+          at = OffsetDateTime.now().toString(),
+          elapsedMs = SystemClock.elapsedRealtime(),
+          bootCount = bootCount,
+          timeMs = System.currentTimeMillis(),
+          event = event,
+          appClass = appClass?.label ?: "",
+          delayMs = delayMs
+        )
+      )
       while (entries.size > BlockingConfig.MAX_LOG_ENTRIES) {
         entries.removeAt(0)
       }
@@ -51,6 +75,10 @@ object BlockingState {
     synchronized(lock) {
       return entries.map {
         mapOf<String, Any>(
+          "seq" to it.seq.toDouble(),
+          "at" to it.at,
+          "elapsedMs" to it.elapsedMs.toDouble(),
+          "bootCount" to it.bootCount.toDouble(),
           "timeMs" to it.timeMs.toDouble(),
           "event" to it.event,
           "appClass" to it.appClass,
