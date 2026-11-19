@@ -5,6 +5,7 @@
  *   t("help.feedbackSubject", { appName: appConfig.appName })
  */
 export const appConfig = {
+  developmentAndroidApplicationId: 'in.whitepixeltechnologies.wpt202a.dev',
   appName: "WPT 202",
   companyName: "White Pixel Technologies",
   supportEmail: "contactus@whitepixeltechnologies.in",

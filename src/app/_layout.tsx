@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { getDatabase } from '../data/db';
+import { getDatabase } from '../services/data';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
