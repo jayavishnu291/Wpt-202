@@ -3,25 +3,26 @@ import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { t } from '../../text/t';
 
 export default function FocusResultScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.emoji}>🌸</Text>
 
-      <Text style={styles.title}>Focus Completed!</Text>
+      <Text style={styles.title}>{t('focus.resultScreenTitle')}</Text>
 
       <Text style={styles.subtitle}>
-        Great job! You completed your focus session.
+        {t('focus.resultSubtitle')}
       </Text>
 
-      <Text style={styles.reward}>⭐ +1 Star</Text>
+      <Text style={styles.reward}>{t('focus.rewardStar')}</Text>
 
       <Pressable
         style={styles.button}
         onPress={() => router.replace('/(tabs)')}
       >
-        <Text style={styles.buttonText}>Back to Home</Text>
+        <Text style={styles.buttonText}>{t('focus.resultHome')}</Text>
       </Pressable>
     </SafeAreaView>
   );

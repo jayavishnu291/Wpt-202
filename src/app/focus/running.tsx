@@ -8,11 +8,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, Link } from 'expo-router';
+import { t } from '../../text/t';
 
 export default function FocusRunningScreen() {
   const { duration } = useLocalSearchParams<{ duration?: string }>();
 
   const minutes = Number(duration) || 25;
+  const timerText = `${minutes}:00`;
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
@@ -25,20 +27,20 @@ export default function FocusRunningScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Focus in Progress</Text>
+      <Text style={styles.title}>{t('focus.runScreenTitle')}</Text>
 
       <View style={styles.timerCircle}>
-        <Text style={styles.timer}>{minutes}:00</Text>
-        <Text style={styles.label}>minutes</Text>
+        <Text style={styles.timer}>{timerText}</Text>
+        <Text style={styles.label}>{t('focus.minutes')}</Text>
       </View>
 
       <Text style={styles.message}>
-        Stay focused. You are doing great!
+        {t('focus.runMessage')}
       </Text>
 
       <Link href="/focus/result" asChild>
         <View style={styles.button}>
-          <Text style={styles.buttonText}>Complete Focus</Text>
+          <Text style={styles.buttonText}>{t('focus.complete')}</Text>
         </View>
       </Link>
     </SafeAreaView>

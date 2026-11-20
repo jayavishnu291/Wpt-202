@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, StyleSheet, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 
 export default function HowItWorksScreen() {
   return (

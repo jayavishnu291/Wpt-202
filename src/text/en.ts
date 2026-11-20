@@ -21,6 +21,7 @@ export const en = {
     later: "Later", // PRD FR-ON-10
     next: "Next", // PRD FR-ON-03
     save: "Save", // PRD FR-ON-04
+    databaseInitFailed: "Unable to initialize the database.",
     yes: "Yes",
     no: "No",
     minutes: "{minutes} min",
@@ -55,6 +56,7 @@ export const en = {
     // S-01 Welcome
     welcomeTitle: "Grow flowers by day. Collect stars by night.", // PRD 17 S01
     getStarted: "Get started",
+    welcomeSubtitle: "Welcome! Let's build a healthy focus and sleep routine.",
     // S-02 How it works
     howTitle: "How it works",
     howPoint1: "Focus to grow flowers", // PRD 17 S02
@@ -67,6 +69,7 @@ export const en = {
     wakeTimeLabel: "Wake-up time",
     bedtimeReminder: "Remind me at bedtime",
     timesSave: "Save",
+    tapToChange: "Tap to change",
     // S-04 Brand guide [Android]
     brandGuideTitle: "Phone setup", // PROPOSED (PRD names the screen "Brand guide")
     brandGuideIntro: "Some phones close apps to save battery. A few quick settings keep your alarm ringing.", // PROPOSED
@@ -125,6 +128,7 @@ export const en = {
   // ---- S-10 Home -----------------------------------------------------------
   home: {
     title: "Home",
+    subtitle: "Grow flowers by day. Collect stars by night.",
     focusToday: "Focus today", // PROPOSED label for "today's focus minutes"
     nextAlarm: "Next alarm",
     nightStreak: "Night streak",
@@ -140,6 +144,16 @@ export const en = {
 
   // ---- S-11 to S-16 Focus --------------------------------------------------
   focus: {
+    setupScreenTitle: "Focus Setup",
+    setupSubtitle: "Choose how long you want to focus.",
+    minutes: "minutes",
+    runScreenTitle: "Focus in Progress",
+    runMessage: "Stay focused. You are doing great!",
+    complete: "Complete Focus",
+    resultScreenTitle: "Focus Completed!",
+    resultSubtitle: "Great job! You completed your focus session.",
+    rewardStar: "⭐ +1 Star",
+    resultHome: "Back to Home",
     // S-11 Focus setup
     setupTitle: "Focus", // PROPOSED
     custom: "Custom",
@@ -282,6 +296,8 @@ export const en = {
     mission: "Mission",
     missionMaths: "Maths",
     missionShake: "Shake",
+    selectedMark: "✓",
+    unselectedMark: "○",
     level: "Level",
     levelEasy: "Easy",
     levelMedium: "Medium",
@@ -300,6 +316,7 @@ export const en = {
     timeHint: "Use 24-hour time (HH:mm).",
     invalidTimeTitle: "Invalid time",
     invalidTimeMessage: "Enter a time in 24-hour format, for example 07:30.",
+    duplicateAlarmMessage: "An alarm with this time and repeat days already exists.",
     labelCharacters: "{count}/{maximum} characters",
     mathsDifficulty: "Difficulty",
     mathsProblems: "Number of problems",
@@ -395,6 +412,7 @@ export const en = {
 
   // ---- Settings, privacy, help, about --------------------------------------
   settings: {
+    subtitle: "Manage your app preferences here.",
     iphoneBlocking: "App blocking is coming to iPhone soon.", // PRD 17
   },
   privacy: {

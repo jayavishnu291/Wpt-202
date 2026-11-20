@@ -2,15 +2,13 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 
 export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{t('nav.settings')}</Text>
-      <Text style={styles.subtitle}>
-        Manage your app preferences here.
-      </Text>
+      <Text style={styles.subtitle}>{t('settings.subtitle')}</Text>
     </SafeAreaView>
   );
 }

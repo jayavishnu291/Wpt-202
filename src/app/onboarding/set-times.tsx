@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, Pressable, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 
 export default function SetTimesScreen() {
   const [bedtime, setBedtime] = useState('23:00');
@@ -26,7 +26,7 @@ export default function SetTimesScreen() {
         }
       >
         <Text style={styles.timeText}>{bedtime}</Text>
-        <Text style={styles.hint}>Tap to change</Text>
+        <Text style={styles.hint}>{t('onboarding.tapToChange')}</Text>
       </Pressable>
 
       <Text style={styles.label}>
@@ -39,7 +39,7 @@ export default function SetTimesScreen() {
         }
       >
         <Text style={styles.timeText}>{wakeTime}</Text>
-        <Text style={styles.hint}>Tap to change</Text>
+        <Text style={styles.hint}>{t('onboarding.tapToChange')}</Text>
       </Pressable>
 
       <View style={styles.reminderRow}>

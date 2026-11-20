@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 
 export default function HomeScreen() {
   return (
@@ -11,7 +11,7 @@ export default function HomeScreen() {
       <Text style={styles.title}>{t('nav.home')}</Text>
 
       <Text style={styles.subtitle}>
-        Grow flowers by day. Collect stars by night.
+        {t('home.subtitle')}
       </Text>
 
       <Link href="/onboarding/welcome" asChild>
@@ -22,7 +22,7 @@ export default function HomeScreen() {
 
       <Link href="/focus/setup" asChild>
         <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Start Focus</Text>
+          <Text style={styles.buttonText}>{t('focus.start')}</Text>
         </Pressable>
       </Link>
     </SafeAreaView>

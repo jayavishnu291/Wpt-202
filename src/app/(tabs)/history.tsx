@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 import { listHistory, type HistoryEntry } from '../../services/data';
 
 export default function HistoryScreen() {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 
 export default function WelcomeScreen() {
   return (
@@ -15,7 +15,7 @@ export default function WelcomeScreen() {
       </Text>
 
       <Text style={styles.subtitle}>
-        Welcome! Let&apos;s build a healthy focus and sleep routine.
+        {t('onboarding.welcomeSubtitle')}
       </Text>
 
       <Link href="/onboarding/how-it-works" asChild>
