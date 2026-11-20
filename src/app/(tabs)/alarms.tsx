@@ -11,7 +11,7 @@ import {
   type Alarm,
 } from '../../services/data';
 
-import { t } from '../../../t';
+import { t } from '../../text/t';
 import { rules } from '../../../config/rules';
 
 export default function AlarmsScreen() {
@@ -46,6 +46,20 @@ export default function AlarmsScreen() {
 
           setEditing(false);
           setSelectedAlarm(null);
+          return;
+        }
+
+        const duplicate = existingAlarms.some((item) =>
+          item.time === alarm.time &&
+          item.repeat_days.slice().sort().join(',') ===
+            alarm.repeat_days.slice().sort().join(','),
+        );
+
+        if (duplicate) {
+          Alert.alert(
+            t('alarmEdit.invalidTimeTitle'),
+            t('alarmEdit.duplicateAlarmMessage'),
+          );
           return;
         }
       }

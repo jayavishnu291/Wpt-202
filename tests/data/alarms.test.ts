@@ -40,4 +40,67 @@ describe('Alarm repository', () => {
 
     await expect(listAlarms(db)).resolves.toEqual([alarm]);
   });
+
+  it('rejects invalid and duplicate alarm entries', async () => {
+    const alarm: Alarm = {
+      id: 'alarm-1',
+      time: '06:30',
+      repeat_days: [1, 3, 5],
+      label: 'Wake up',
+      enabled: true,
+      mission_type: 'math',
+      level: 2,
+      count: 5,
+      sound: 'default',
+      vibration: true,
+      snooze_on: false,
+      snoozes_used: 0,
+      next_trigger_at: null,
+      skip_next: false,
+    };
+
+    await saveAlarm(alarm, db);
+    await expect(saveAlarm({ ...alarm, id: 'alarm-2' }, db))
+      .rejects.toThrow('Duplicate alarm.');
+    await expect(saveAlarm({ ...alarm, id: 'alarm-3', time: '25:00' }, db))
+      .rejects.toThrow('Alarm time must use HH:mm format.');
+  });
+
+  it('enforces the maximum alarm count', async () => {
+    for (let index = 0; index < 5; index += 1) {
+      await saveAlarm({
+        id: `alarm-${index}`,
+        time: `06:${String(index).padStart(2, '0')}`,
+        repeat_days: [1],
+        label: '',
+        enabled: true,
+        mission_type: 'math',
+        level: 2,
+        count: 2,
+        sound: 'morning-bell',
+        vibration: true,
+        snooze_on: false,
+        snoozes_used: 0,
+        next_trigger_at: null,
+        skip_next: false,
+      }, db);
+    }
+
+    await expect(saveAlarm({
+      id: 'alarm-6',
+      time: '07:00',
+      repeat_days: [1],
+      label: '',
+      enabled: true,
+      mission_type: 'math',
+      level: 2,
+      count: 2,
+      sound: 'morning-bell',
+      vibration: true,
+      snooze_on: false,
+      snoozes_used: 0,
+      next_trigger_at: null,
+      skip_next: false,
+    }, db)).rejects.toThrow('Alarm limit reached.');
+  });
 });

@@ -15,7 +15,7 @@ import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { isOn, rules, switches } from '../../../config/rules';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 import type { Alarm } from '../../services/data';
 
 interface Props {
@@ -182,6 +182,14 @@ export default function AlarmEditScreen({
   );
 
   const [saving, setSaving] = useState(false);
+  const headingKey = initialAlarm ? 'alarmEdit.title' : 'alarmEdit.titleNew';
+  const saveKey = saving ? 'alarmEdit.saving' : 'alarmEdit.save';
+  const mathMarkKey = mission === 'math'
+    ? 'alarmEdit.selectedMark'
+    : 'alarmEdit.unselectedMark';
+  const shakeMarkKey = mission === 'shake'
+    ? 'alarmEdit.selectedMark'
+    : 'alarmEdit.unselectedMark';
 
   useEffect(() => () => player.pause(), [player]);
 
@@ -285,7 +293,7 @@ export default function AlarmEditScreen({
         </TouchableOpacity>
 
         <Text style={styles.heading}>
-          {t(initialAlarm ? 'alarmEdit.title' : 'alarmEdit.titleNew')}
+          {t(headingKey)}
         </Text>
 
         <View style={styles.card}>
@@ -377,10 +385,11 @@ export default function AlarmEditScreen({
               {t('alarmEdit.missionMaths')}
             </Text>
             <Text style={styles.optionMark}>
-              {mission === 'math' ? '✓' : '○'}
+              {t(mathMarkKey)}
             </Text>
           </TouchableOpacity>
 
+          {/* text-ok: UI visibility condition */}
           {mission === 'math' && (
             <View style={styles.nestedSection}>
               <Text style={styles.hint}>
@@ -464,10 +473,11 @@ export default function AlarmEditScreen({
                   {t('alarmEdit.missionShake')}
                 </Text>
                 <Text style={styles.optionMark}>
-                  {mission === 'shake' ? '✓' : '○'}
+                  {t(shakeMarkKey)}
                 </Text>
               </TouchableOpacity>
 
+              {/* text-ok: UI visibility condition */}
               {mission === 'shake' && (
                 <View style={styles.nestedSection}>
                   <Text style={styles.hint}>
@@ -607,7 +617,7 @@ export default function AlarmEditScreen({
           ]}
         >
           <Text style={styles.saveText}>
-            {t(saving ? 'alarmEdit.saving' : 'alarmEdit.save')}
+            {t(saveKey)}
           </Text>
         </TouchableOpacity>
 

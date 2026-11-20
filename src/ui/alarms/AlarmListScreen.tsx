@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -14,7 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { rules } from '../../../config/rules';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 import {
   deleteAlarm,
   listAlarms,
@@ -48,31 +48,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
   const mounted = useRef(false);
 
-  // Load alarms from the database
-  const loadAlarms = useCallback(async () => {
-    try {
-      const result = await listAlarms();
-
-      if (mounted.current) {
-        setAlarms(result);
-      }
-    } catch (error) {
-      console.error('Unable to load alarms:', error);
-
-      if (mounted.current) {
-        Alert.alert(
-          t('common.error'),
-          t('alarmList.loadFailed'),
-        );
-      }
-    } finally {
-      if (mounted.current) {
-        setLoading(false);
-      }
-    }
-  }, []);
-
-  // Initial loading without synchronous state updates in the effect
+  // Load alarms when the screen opens
   useEffect(() => {
     let active = true;
     mounted.current = true;
@@ -110,6 +86,8 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
   // Enable or disable an alarm
   const toggleAlarm = async (alarm: Alarm, enabled: boolean) => {
+    if (busyAlarmId !== null) return;
+
     setBusyAlarmId(alarm.id);
 
     try {
@@ -120,11 +98,13 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
       await saveAlarm(updatedAlarm);
 
-      setAlarms((current) =>
-        current.map((item) =>
-          item.id === alarm.id ? updatedAlarm : item,
-        ),
-      );
+      if (mounted.current) {
+        setAlarms((current) =>
+          current.map((item) =>
+            item.id === alarm.id ? updatedAlarm : item,
+          ),
+        );
+      }
     } catch (error) {
       console.error('Unable to update alarm:', error);
 
@@ -133,45 +113,59 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
         t('alarmList.updateFailed'),
       );
     } finally {
-      setBusyAlarmId(null);
+      if (mounted.current) {
+        setBusyAlarmId(null);
+      }
     }
   };
 
   // Delete the selected alarm
   const removeAlarm = async (alarm: Alarm) => {
+    if (busyAlarmId !== null) return;
+
+    setBusyAlarmId(alarm.id);
+
     try {
-      setBusyAlarmId(alarm.id);
+      console.log('Starting alarm deletion...');
+      console.log('Alarm ID:', alarm.id);
 
       await deleteAlarm(alarm.id);
 
-      // Update the list immediately
-      setAlarms((current) =>
-        current.filter((item) => item.id !== alarm.id),
-      );
-
-      // Refresh the saved alarms
-      await loadAlarms();
-
       console.log('Alarm deleted successfully:', alarm.id);
+
+      if (mounted.current) {
+        setAlarms((current) =>
+          current.filter((item) => item.id !== alarm.id),
+        );
+      }
     } catch (error) {
-      console.error('Unable to delete alarm:', error);
+      console.error('DELETE ERROR DETAILS:', error);
+
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error name:', error.name);
+      }
 
       Alert.alert(
         t('common.error'),
         t('alarmList.deleteFailed'),
       );
     } finally {
-      setBusyAlarmId(null);
+      if (mounted.current) {
+        setBusyAlarmId(null);
+      }
     }
   };
 
   // Confirm before deleting
   const confirmDelete = (alarm: Alarm) => {
+    if (busyAlarmId !== null) return;
+
     const message = t('alarmList.deleteMessage', {
       time: alarm.time,
     });
 
-    // Browser confirmation for Expo Web
+    // Browser confirmation
     if (Platform.OS === 'web') {
       const confirmed = window.confirm(message);
 
@@ -335,6 +329,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
                 accessibilityRole="button"
                 accessibilityLabel={t('alarmList.editAlarm')}
                 activeOpacity={0.8}
+                disabled={busyAlarmId !== null}
               >
                 <Text style={styles.time}>
                   {alarm.time}
@@ -372,7 +367,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
                   <Switch
                     value={alarm.enabled}
-                    disabled={busyAlarmId === alarm.id}
+                    disabled={busyAlarmId !== null}
                     onValueChange={(value) =>
                       void toggleAlarm(alarm, value)
                     }
@@ -389,7 +384,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
                 <TouchableOpacity
                   onPress={() => confirmDelete(alarm)}
-                  disabled={busyAlarmId === alarm.id}
+                  disabled={busyAlarmId !== null}
                   accessibilityRole="button"
                   accessibilityLabel={t('alarmEdit.delete')}
                   style={styles.deleteButton}
@@ -410,6 +405,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
             style={styles.addButton}
             onPress={onAdd}
             accessibilityRole="button"
+            disabled={busyAlarmId !== null}
           >
             <Text style={styles.addButtonText}>
               + {t('alarmList.add')}
