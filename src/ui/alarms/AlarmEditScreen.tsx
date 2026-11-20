@@ -536,7 +536,9 @@ export default function AlarmEditScreen({
                   {t(item.textKey)}
                 </Text>
                 <Text style={styles.optionMark}>
-                  {sound === item.id ? '✓' : '○'}
+                  {t(sound === item.id
+                    ? 'alarmEdit.selectedMark'
+                    : 'alarmEdit.unselectedMark')}
                 </Text>
               </TouchableOpacity>
 

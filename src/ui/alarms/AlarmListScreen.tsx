@@ -126,12 +126,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
     setBusyAlarmId(alarm.id);
 
     try {
-      console.log('Starting alarm deletion...');
-      console.log('Alarm ID:', alarm.id);
-
       await deleteAlarm(alarm.id);
-
-      console.log('Alarm deleted successfully:', alarm.id);
 
       if (mounted.current) {
         setAlarms((current) =>
