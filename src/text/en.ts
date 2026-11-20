@@ -17,10 +17,10 @@ export const en = {
     cancel: "Cancel", // PROPOSED
     done: "Done", // PROPOSED
     fix: "Fix", // PRD AC-ON-3
-    error: "Error",
     later: "Later", // PRD FR-ON-10
     next: "Next", // PRD FR-ON-03
     save: "Save", // PRD FR-ON-04
+    error: "Error",
     databaseInitFailed: "Unable to initialize the database.",
     yes: "Yes",
     no: "No",
@@ -32,24 +32,6 @@ export const en = {
 
   // Bottom tabs (PRD 7.1)
   nav: { home: "Home", history: "History", alarms: "Alarms", settings: "Settings" },
-
-  history: {
-    title: "History",
-    empty: "Your completed focus sessions and nights will appear here.", // PROPOSED
-    loading: "Loading history", // PROPOSED
-    loadFailed: "Could not load history.", // PROPOSED
-    focus: "Focus session", // PROPOSED
-    night: "Night", // PROPOSED
-    nap: "Nap", // PROPOSED
-    bloom: "Bloomed", // PROPOSED
-    bud: "Bud", // PROPOSED
-    star: "Star collected", // PROPOSED
-    faintStar: "Faint star", // PROPOSED
-    noStar: "No star", // PROPOSED
-    plannedDuration: "Planned: {minutes} min", // PROPOSED
-    estimatedSleep: "Estimated sleep: {duration}", // PROPOSED
-    pickups: "Pickups: {count}", // PROPOSED
-  },
 
   // ---- S-01 to S-05 -------------------------------------------------------
   onboarding: {
@@ -160,7 +142,11 @@ export const en = {
     blockingCount: "Blocking: {count} apps", // PRD FR-FO-02 "Blocking: N apps"
     blockingCountOne: "Blocking: {count} app",
     blockingEdit: "Edit", // PROPOSED ("an edit link")
-    iphoneLockWarning: "Keep {appName} open. Locking your phone will count as leaving.", // PRD FR-FO-11b ({appName} = name from config)
+    labelStudy: "Study",
+    labelWork: "Work",
+    labelReading: "Reading",
+    labelOther: "Other",
+    iphoneLockWarning: "Keep the app open. Locking your phone will count as leaving.", // PRD FR-FO-11b
     start: "Start", // PRD FR-FO-03
     // S-12 Focus in progress
     runTitle: "Focus in progress", // PRD N-06
@@ -171,6 +157,7 @@ export const en = {
     giveUpConfirm: "End now? Your flower will stay a bud.", // PRD FR-FO-10
     giveUpYes: "End session", // PROPOSED
     giveUpNo: "Keep going", // PROPOSED
+    reminderDuringFocus: "Finish or end your focus to start your night.",
     // S-13 Focus result
     resultTitle: "Focus result", // PROPOSED
     resultBloom: "A new flower bloomed. Added to your garden.", // PRD 17
@@ -184,7 +171,7 @@ export const en = {
     passTimeLeft: "{time} left", // PROPOSED
     // S-16 Focus question
     questionTitle: "Quick question", // PROPOSED
-    questionBody: "{appName} was closed while you were away. Did you use other apps during your session?", // PRD 17 S16
+    questionBody: "The app was closed while you were away. Did you use other apps during your session?", // PRD 17 S16
     questionNo: "No",
     questionYes: "Yes",
     questionNote: "Your answer can't be changed.", // PROPOSED (PRD FR-FO-19: cannot be changed)
@@ -205,7 +192,9 @@ export const en = {
     outsideTitle: "Outside night window", // PRD 7.2 screen name
     outsideBody: "It's outside your night window.", // PRD 17 S20
     startNap: "Start as a nap (no star)", // PRD FR-NI-02
-    changeBedtime: "Change bedtime",
+    // Screen rule: in the late-start period S-20 shows "Start my night anyway", "Start as a nap (no star)" and "Cancel".
+    // At other times it shows only "Start as a nap (no star)" and "Cancel".
+    startAnyway: "Start my night anyway",
     // S-21
     runTitle: "Night in progress", // PRD N-06
     nextAlarm: "Next alarm {time}", // PROPOSED
@@ -216,6 +205,10 @@ export const en = {
     settingsLink: "Settings",
     noAlarm: "No alarm set. Add one?", // PRD FR-NI-18
     addAlarm: "Add alarm", // PROPOSED button for the line above
+    iphoneLockHint: "Lock your phone on this screen.",
+    napLabel: "Nap",
+    reminderDuringNap: "End your nap to start your night.",
+    stillRunning: "Your night is still running. Tap ‘I’m awake’ if you’re up.",
     passActiveTitle: "Night pass active", // PROPOSED
     passActiveBody: "Your night clock keeps running.", // PROPOSED
     passBack: "Back to night", // PROPOSED
@@ -263,7 +256,7 @@ export const en = {
     off: "Off",
     bannerLate: "Alarms may be late", // PRD 9.1.1
     bannerOff: "Alarms are off. Tap Fix to allow them.", // PROPOSED
-    lowVolume: "Your alarm volume is very low.", // PRD FR-AL-31
+    lowVolume: "Your alarm volume is very low.", // the button uses common.fix ("Fix")
     permissionFixTitle: "Alarm permissions",
     permissionFixMessage: "Open your device settings to allow alarms.",
     volumeFixTitle: "Alarm volume",
@@ -326,9 +319,6 @@ export const en = {
     everyDay: "Alarm repeats every day.",
     noSnoozeOnIphone: "Snooze is unavailable on this iPhone.",
     snoozeLimit: "Up to {count} times, {minutes} minutes each.",
-    deleteTitle: "Delete alarm",
-    deleteMessage: "Delete this alarm?",
-    cancel: "Cancel",
     saveFailed: "Could not save this alarm.",
     shakeUnavailableTitle: "Unavailable",
     shakeUnavailableMessage: "The Shake mission is currently disabled.",
@@ -337,7 +327,6 @@ export const en = {
     vibration: "Vibration",
     snooze: "Snooze",
     skipNext: "Skip next alarm", // PRD FR-AL-13
-    skipHint: "Finish this alarm's mission first.", // PROPOSED
     save: "Save",
     delete: "Delete alarm", // PROPOSED
   },
@@ -364,7 +353,7 @@ export const en = {
     details: "Details", // PROPOSED
     done: "Done", // PROPOSED
     napTitle: "Nap", // PROPOSED
-    napDuration: "Nap: {duration} (estimate)", // PROPOSED
+    napDuration: "Nap: {duration}", // PROPOSED (a nap length is measured, not estimated)
   },
   reportDetails: {
     title: "Night details", // PROPOSED
@@ -374,7 +363,7 @@ export const en = {
     wakeUp: "Wake-up",
     points: "{points} of {max}", // PROPOSED
     onset: "Estimated fall-asleep time", // PROPOSED
-    wakeTime: "Wake time",
+    wakeTime: "Estimated wake time", // PROPOSED
     pickupTimes: "Pickup times",
     unknownPeriods: "Unknown periods",
     none: "None",
@@ -382,6 +371,8 @@ export const en = {
     endAlarm: "Alarm mission completed",
     endAwake: "I'm awake",
     endAuto: "Ended automatically",
+    endWakePoint: "Ended after your wake-up time",
+    endStopNoMission: "Alarm stopped without the mission",
     edit: "Correct my times",
     save: "Save",
   },
@@ -393,6 +384,45 @@ export const en = {
     note: "Your answer can't be changed.", // PROPOSED
   },
 
+  // ---- Protected alarm change (used on both S-33 and S-34) -------------------
+  alarm: {
+    protectedChange: "This alarm rings within 12 hours. Complete its mission to make this change.",
+  },
+
+  // ---- S-50 History ----------------------------------------------------------
+  history: {
+    title: "History",
+    empty: "Your week will appear here.",
+    loading: "Loading history",
+    loadFailed: "Could not load history.",
+    focus: "Focus session",
+    night: "Night",
+    nap: "Nap",
+    bloom: "Bloomed",
+    bud: "Bud",
+    star: "Star collected",
+    faintStar: "Faint star",
+    noStar: "No star",
+    plannedDuration: "Planned: {minutes} min",
+    estimatedSleep: "Estimated sleep: {duration}",
+    pickups: "Pickups: {count}",
+    napRow: "Nap · {duration}",
+    focusMinutes: "{minutes} min focus",
+    flowers: "{count} flowers",
+    flowersOne: "{count} flower",
+    buds: "{count} buds",
+    budsOne: "{count} bud",
+    nightDuration: "{duration} (estimate)",
+    nightStreak: "Night streak",
+    focusStreak: "Focus streak",
+    current: "Current",
+    best: "Best",
+  },
+
+  // ---- S-70 Celebration and constellations -----------------------------------
+  celebration: { keepGoing: "Keep going" },
+  constellation: { sprout: "The Sprout", lantern: "The Lantern", great: "The Great Garden" },
+
   // ---- Notifications (PRD 9.11) --------------------------------------------
   notifications: {
     n01: "Your flower is still growing. Come back within 10 seconds.",
@@ -402,6 +432,7 @@ export const en = {
     n05: "Alarm",
     n06Focus: "Focus in progress",
     n06Night: "Night in progress",
+    n06Nap: "Nap in progress",
     n07: "Still awake?",
     // Android notification channel names (FR-NO-05)
     channelAlarms: "Alarms",
@@ -410,32 +441,89 @@ export const en = {
     channelStatus: "Status",
   },
 
-  // ---- Settings, privacy, help, about --------------------------------------
+  // ---- S-60 Settings: section names ------------------------------------------
   settings: {
+    title: "Settings",
     subtitle: "Manage your app preferences here.",
+    nightSleep: "Night and sleep",
+    focus: "Focus",
+    alarms: "Alarms",
+    blocking: "App blocking",
+    phoneSetup: "Phone setup",
+    privacy: "Privacy and data",
+    help: "Help",
+    about: "About",
     iphoneBlocking: "App blocking is coming to iPhone soon.", // PRD 17
   },
+  // ---- S-62 Night and sleep ---------------------------------------------------
+  nightSettings: {
+    bedtime: "Bedtime",
+    windowStart: "Night window start",
+    sleepGoal: "Sleep goal",
+    allowance: "Falling-asleep allowance",
+    reminder: "Bedtime reminder",
+    reminderOffset: "Remind me",
+    offsetValue: "{minutes} min before",
+    offsetZero: "At bedtime",
+  },
+  // ---- S-63 Focus -------------------------------------------------------------
+  focusSettings: {
+    defaultLength: "Default length",
+    dailyGoal: "Daily focus goal",
+    sessionSound: "Session sound",
+  },
+  // ---- Alarms (in Settings) ---------------------------------------------------
+  alarmSettings: {
+    defaultWake: "Default wake-up time",
+  },
+  // ---- S-61 Blocked and allowed apps (Android only) ----------------------------
+  blocking: {
+    focusList: "Focus list",
+    nightList: "Night list",
+    sameList: "Use the same list for both",
+    allowedApps: "Allowed apps",
+    search: "Search apps",
+    offBanner: "Blocking is off: permissions needed",
+  },
+  // ---- Phone setup (Android only) ---------------------------------------------
+  phoneSetup: {
+    reopen: "Phone setup guide",
+  },
+  // ---- S-64 Privacy and data ---------------------------------------------------
   privacy: {
+    adConsent: "Ad consent",
+    crashReports: "Crash reports",
+    policy: "Privacy policy",
+    terms: "Terms of use",
+    deleteAll: "Delete all data",
     deletePrompt: "Delete everything? This can't be undone.", // PRD 17
     deleteConfirm: "Yes, delete everything", // PROPOSED (PRD FR-PR-04: second confirm button)
     deleteCancel: "Keep my data", // PROPOSED
   },
+  // ---- S-65 Help and FAQ (the 10 answers are a separate step) -------------------
   help: {
-    feedbackSubject: "{appName} feedback", // PRD FR-SU-02 (name passed from config/app.ts)
+    faqTitle: "FAQ",
+    sendFeedback: "Send feedback",
+    copy: "Copy",
+    noEmailApp: "No email app found. Copy our address:", // PROPOSED
+    faq1: "Why didn’t my alarm ring?",
+    faq2: "Why can’t I stop or switch off my alarm without the mission?",
+    faq3: "How does app blocking work? Is it on iPhone?",
+    faq4: "What counts as using my phone at night?",
+    faq5: "What is a pass?",
+    faq6: "What are rest nights?",
+    faq7: "Why did I get a bud or a faint star?",
+    faq8: "Why was I asked a question this morning?",
+    faq9: "How is my sleep score worked out?",
+    faq10: "Is my data private, and how do I delete it?",
+    feedbackSubject: "{appName} feedback", // PRD FR-SU-02 (the app name is allowed here; passed from config/app.ts)
   },
+  // ---- S-66 About --------------------------------------------------------------
   about: {
     title: "About", // PROPOSED (S-66: name, version, licences, email, website)
-    version: "Version {version}",
-    licences: "Open-source licences",
-  },
-
-  // ---- Alarm sounds (I10: the 6 free sounds in assets/sounds/) --------------
-  sounds: {
-    morningBell: "Morning Bell", // PROPOSED
-    softChimes: "Soft Chimes", // PROPOSED
-    birdsong: "Birdsong", // PROPOSED
-    risingTone: "Rising Tone", // PROPOSED
-    classicBeep: "Classic Beep", // PROPOSED
-    strongBell: "Strong Bell", // PROPOSED
+    version: "Version {version}", // PROPOSED
+    licences: "Open-source licences", // PROPOSED
+    email: "contactus@whitepixeltechnologies.in",
+    website: "www.whitepixeltechnologies.in",
   },
 } as const;

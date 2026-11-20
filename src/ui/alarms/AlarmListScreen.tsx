@@ -167,7 +167,10 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
     // Browser confirmation
     if (Platform.OS === 'web') {
-      const confirmed = window.confirm(message);
+      const browserGlobal = globalThis as unknown as {
+        confirm?: (message?: string) => boolean;
+      };
+      const confirmed = browserGlobal.confirm?.(message) ?? false;
 
       if (confirmed) {
         void removeAlarm(alarm);

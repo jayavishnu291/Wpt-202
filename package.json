@@ -46,7 +46,9 @@
     "test": "jest",
     "test:data": "jest tests/data",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "check:text": "node check-no-raw-text.mjs",
+    "test:text": "tsx --test src/text/__tests__/text.test.ts"
   },
   "private": true
 }
