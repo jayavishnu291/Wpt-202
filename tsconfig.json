@@ -1,7 +1,9 @@
+
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "target": "ES2020", "module": "esnext", "moduleResolution": "bundler", "lib": ["ES2020"], "jsx": "react-native",
-    "strict": true, "esModuleInterop": true, "skipLibCheck": true, "noEmit": true, "types": ["node"]
-  },
-  "include": ["src", "config"]
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "types": ["jest", "node"]
+  }
 }
