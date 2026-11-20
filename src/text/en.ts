@@ -130,10 +130,10 @@ export const en = {
     setupSubtitle: "Choose how long you want to focus.",
     minutes: "minutes",
     runScreenTitle: "Focus in Progress",
-    runMessage: "Stay focused. You are doing great!",
+    runMessage: "Stay focused. You are doing great.",
     complete: "Complete Focus",
-    resultScreenTitle: "Focus Completed!",
-    resultSubtitle: "Great job! You completed your focus session.",
+    resultScreenTitle: "Focus Completed",
+    resultSubtitle: "Great job. You completed your focus session.",
     rewardStar: "⭐ +1 Star",
     resultHome: "Back to Home",
     // S-11 Focus setup

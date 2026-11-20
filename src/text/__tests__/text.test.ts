@@ -124,7 +124,7 @@ test("values and one/many forms fill in", () => {
 });
 
 test("every key renders with sample values and no warning", () => {
-  const sample = { appName: name, count: 2, minutes: 25, hours: 7, time: "5:00", current: 1, total: 3, slept: "6 h", goal: "8 h", duration: "30 m", points: 40, max: 50, version: "1.0" };
+  const sample = { appName: name, count: 2, minutes: 25, hours: 7, time: "5:00", current: 1, total: 3, slept: "6 h", goal: "8 h", duration: "30 m", points: 40, max: 50, maximum: 5, mission: "Maths", sound: "Morning Bell", difficulty: "Easy", version: "1.0" };
   const original = console.warn;
   const seen: string[] = [];
   console.warn = (m: string) => void seen.push(m);
@@ -160,7 +160,7 @@ test("PRD 17 sentences appear in en.ts only, nowhere else in src (checklist step
   for (const [where, key, expected] of prd.filter(([w]) => w.startsWith("17"))) {
     const needle = expected.replace(name, "{appName}");
     const hits = files.filter((f) => fs.readFileSync(f, "utf8").includes(needle) || fs.readFileSync(f, "utf8").includes(expected));
-    assert.deepEqual(hits.map((f) => path.relative(root, f)), ["src/text/en.ts"], `${where}: ${key}`);
+    assert.deepEqual(hits.map((f) => path.relative(root, f).replace(/\\/g, "/")), ["src/text/en.ts"], `${where}: ${key}`);
   }
 });
 
