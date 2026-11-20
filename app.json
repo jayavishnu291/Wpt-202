@@ -1,40 +1,52 @@
-
-{
-  "expo": {
-    "name": "Wpt-202",
-    "slug": "Wpt-202",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "in.whitepixeltechnologies.wpt202a.dev",
-      "infoPlist": {
-        "NSAlarmKitUsageDescription": "So your alarm can ring even in silent mode.",
-        "ITSAppUsesNonExemptEncryption": false
-      }
-    },
-    "android": {
-      "allowBackup": false,
-      "permissions": [
-        "android.permission.SCHEDULE_EXACT_ALARM"
-      ],
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.Wpt202"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-sqlite",
-      "./plugins/withBlockingQueries.js"
-    ]
-  }
+﻿{
+    "expo":  {
+                 "name":  "Wpt-202",
+                 "slug":  "Wpt-202",
+                 "version":  "1.0.0",
+                 "orientation":  "portrait",
+                 "icon":  "./assets/icon.png",
+                 "userInterfaceStyle":  "light",
+                 "ios":  {
+                             "supportsTablet":  true,
+                             "bundleIdentifier":  "in.whitepixeltechnologies.wpt202a.dev",
+                             "infoPlist":  {
+                                               "NSAlarmKitUsageDescription":  "So your alarm can ring even in silent mode.",
+                                               "ITSAppUsesNonExemptEncryption":  false
+                                           }
+                         },
+                 "android":  {
+                                 "allowBackup":  false,
+                                 "permissions":  [
+                                                     "android.permission.SCHEDULE_EXACT_ALARM"
+                                                 ],
+                                 "adaptiveIcon":  {
+                                                      "backgroundColor":  "#E6F4FE",
+                                                      "foregroundImage":  "./assets/android-icon-foreground.png",
+                                                      "backgroundImage":  "./assets/android-icon-background.png",
+                                                      "monochromeImage":  "./assets/android-icon-monochrome.png"
+                                                  },
+                                 "predictiveBackGestureEnabled":  false,
+                                 "package":  "com.anonymous.Wpt202"
+                             },
+                 "web":  {
+                             "favicon":  "./assets/favicon.png"
+                         },
+                 "plugins":  [
+                                 "expo-sqlite",
+                                 "./plugins/withBlockingQueries.js",
+                                 [
+                                     "expo-build-properties",
+                                     {
+                                         "ios":  {
+                                                     "deploymentTarget":  "26.0"
+                                                 }
+                                     }
+                                 ]
+                             ],
+                 "extra":  {
+                               "eas":  {
+                                           "projectId":  "8936662e-b13d-4bf2-aa57-abc862415dcd"
+                                       }
+                           }
+             }
 }

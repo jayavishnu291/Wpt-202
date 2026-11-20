@@ -9,12 +9,16 @@
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      }
-    },
+   "preview": {
+  "distribution": "internal",
+  "android": {
+    "buildType": "apk"
+  },
+  "env": {
+    "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
+    "GRADLE_OPTS": "-Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=false"
+  }
+},
     "production": {
       "autoIncrement": true
     },

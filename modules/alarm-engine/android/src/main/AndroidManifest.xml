@@ -1,4 +1,3 @@
-﻿
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Exact alarm scheduling -->
@@ -28,11 +27,15 @@
 
         <receiver
             android:name="expo.modules.alarmengine.BootReceiver"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="false">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
 

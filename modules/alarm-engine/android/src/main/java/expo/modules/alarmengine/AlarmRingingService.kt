@@ -1,4 +1,3 @@
-
 package expo.modules.alarmengine
 
 import android.app.*
@@ -15,6 +14,16 @@ class AlarmRingingService : Service() {
 
     private var player: MediaPlayer? = null
     private var vibrator: Vibrator? = null
+    private val rampHandler = Handler(Looper.getMainLooper())
+    private var rampStep = 0
+    private val rampRunnable = object : Runnable {
+        override fun run() {
+            val p = player ?: return
+            val volume = (0.2f + 0.8f * (rampStep / 30f)).coerceAtMost(1f)
+            p.setVolume(volume, volume)
+            if (rampStep < 30) { rampStep++; rampHandler.postDelayed(this, 1000L) }
+        }
+    }
 
     private val channelId = "wpt202_h2_ringing_v2"
     private val notificationId = 4001
@@ -186,8 +195,12 @@ class AlarmRingingService : Service() {
 
                 isLooping = true
                 prepare()
+                setVolume(0.2f, 0.2f)
                 start()
             }
+            rampStep = 0
+            rampHandler.removeCallbacks(rampRunnable)
+            rampHandler.post(rampRunnable)
         }
 
         if (vibrator == null) {
@@ -215,6 +228,7 @@ class AlarmRingingService : Service() {
     }
 
     private fun stopRinging() {
+        rampHandler.removeCallbacks(rampRunnable)
 
         Log.i(
             "WPT202AlarmEngine",
@@ -239,6 +253,7 @@ class AlarmRingingService : Service() {
     }
 
     override fun onDestroy() {
+        rampHandler.removeCallbacks(rampRunnable)
 
         player?.run {
             try {

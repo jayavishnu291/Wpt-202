@@ -173,7 +173,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
     // Browser confirmation for Expo Web
     if (Platform.OS === 'web') {
-      const confirmed = window.confirm(message);
+      const confirmed = (globalThis as typeof globalThis & { confirm: (message: string) => boolean }).confirm(message);
 
       if (confirmed) {
         void removeAlarm(alarm);
@@ -321,7 +321,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
         {alarms.length === 0 ? (
           <View style={styles.emptyCard}>
-            <Text style={styles.emptyIcon}>◷</Text>
+            <Text style={styles.emptyIcon}>Ã¢â€”Â·</Text>
             <Text style={styles.emptyTitle}>
               {t('alarmList.empty')}
             </Text>
