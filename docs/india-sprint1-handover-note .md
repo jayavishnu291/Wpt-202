@@ -1,6 +1,5 @@
 # Handover note: India · Sprint 1
-
-**Written by:** Sanjay Kumar.A · **Date:** Wednesday, 18 November 2026 · **Sprint end:** Day 26
+**Sprint end:** Day 26
 **For:** Sprint 2 testing team. Nobody signs off their own work.
 
 ---
