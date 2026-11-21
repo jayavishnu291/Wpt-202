@@ -93,6 +93,27 @@ test("every screen S-01..S-05, S-10..S-16, S-20..S-22, S-30..S-34, S-40..S-42 ha
   for (const k of buttons) assert.ok(t(k).length > 0, k);
 });
 
+test("brand guide contains all nine public guides with two to four concise steps", () => {
+  const brands = [
+    "xiaomi", "oppo", "realme", "oneplus", "vivo", "samsung", "huawei", "tecno", "infinix",
+  ];
+  assert.deepEqual(Object.keys(en.brandGuide), brands);
+
+  for (const brand of brands) {
+    const guide = en.brandGuide[brand as keyof typeof en.brandGuide];
+    assert.equal(guide.status, "public", `${brand} has not been verified on device`);
+    assert.ok(guide.brands.length > 0, `${brand} has no display name`);
+    assert.ok(guide.version.length > 0, `${brand} has no version information`);
+    const steps = Object.entries(guide).filter(([key]) => key.startsWith("step"));
+    assert.ok(steps.length >= 2 && steps.length <= 4, `${brand} must have two to four steps`);
+    for (const [key, value] of steps) {
+      assert.ok(value.trim().split(/\s+/).length < 15, `${brand}.${key} must have fewer than 15 words`);
+      assert.match(value, /^(Open|Turn|Choose|Allow|Lock|Add|Tap)\b/, `${brand}.${key} must start with a verb`);
+      assert.equal(t(`brandGuide.${brand}.${key}` as TextKey), value);
+    }
+  }
+});
+
 test("the app name is never typed in en.ts; it only arrives through {appName}", () => {
   for (const [key, value] of all) assert.ok(!/WPT\s*202/i.test(value), `${key} has the app name typed in`);
   const source = fs.readFileSync(path.join(root, "src/text/en.ts"), "utf8");
