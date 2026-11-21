@@ -255,10 +255,13 @@ test("review round: every specified line is in en.ts exactly as written", () => 
   assert.ok(src.length > 0);
 });
 
-test("review round: removed lines are gone and the FAQ answers are not written yet", () => {
+test("review round: removed lines are gone and FAQ answers are present", () => {
   assert.equal((en as any).night.changeBedtime, undefined);
   assert.equal((en as any).alarmEdit.skipHint, undefined);
   assert.equal((en as any).faq, undefined);
+  for (let n = 1; n <= 10; n++) {
+    assert.equal(typeof (en.help as any)[`faq${n}Answer`], "string");
+  }
 });
 
 test("review round: {appName} appears only in the feedback subject", () => {

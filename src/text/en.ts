@@ -510,22 +510,42 @@ export const en = {
     deleteConfirm: "Yes, delete everything", // PROPOSED (PRD FR-PR-04: second confirm button)
     deleteCancel: "Keep my data", // PROPOSED
   },
-  // ---- S-65 Help and FAQ (the 10 answers are a separate step) -------------------
+  // ---- S-65 Help and FAQ -------------------------------------------------------
   help: {
     faqTitle: "FAQ",
     sendFeedback: "Send feedback",
     copy: "Copy",
     noEmailApp: "No email app found. Copy our address:", // PROPOSED
     faq1: "Why didn’t my alarm ring?",
+    faq1Answer:
+      "Please check three things. First, your phone's alarm volume is up and the alarm is on. Second, on Android open Settings → Phone setup and follow the steps for your phone brand. Third, fix any permission banner on the Alarms screen. The alarm may stay quiet if the app was force-stopped or Do Not Disturb blocks alarms. Still stuck? Write to contactus@whitepixeltechnologies.in and we'll help.",
     faq2: "Why can’t I stop or switch off my alarm without the mission?",
+    faq2Answer:
+      "The alarm stops only after you finish its mission, and skipping the next alarm needs that mission too. This helps you really wake up. You are never locked in: \"Delete all data\" and uninstalling the app are never blocked.",
     faq3: "How does app blocking work? Is it on iPhone?",
+    faq3Answer:
+      "On Android, the apps you choose show a calm \"resting\" screen when opened during focus or night. Phone, emergency calls, clock, Settings and the home screen always stay open. It needs the permissions the app asks for.",
     faq4: "What counts as using my phone at night?",
+    faq4Answer:
+      "On Android, it counts when you use an app that isn't allowed,for more than 30 seconds in a row. On iPhone, it counts when you leave the app for more than 30 seconds. Calls, the alarm and its mission, the app itself, allowed apps (Android), locking your phone and passes never count.",
     faq5: "What is a pass?",
+    faq5Answer:
+      "A pass lets you step away without losing your session. In focus, you get one pass of up to 3 minutes; your timer pauses. At night, you get one pass of up to 5 minutes; nothing you do in that time counts as phone use.",
     faq6: "What are rest nights?",
+    faq6Answer:
+      "Rest nights are a gentle safety net. If a night ends with a faint star, or a day has no night, the app uses a rest night, so your streak stays the same. You get two rest nights in any seven sleep days. They start once your streak is at least 1.",
     faq7: "Why did I get a bud or a faint star?",
+    faq7Answer:
+      "A bud is a focus flower that ended early, for example you left the app, gave up, or said you used other apps. A faint star means you slept 3 hours or more (estimate) but used your phone. Under 3 hours doesn't earn a star. Tomorrow is a fresh sky.",
     faq8: "Why was I asked a question this morning?",
+    faq8Answer:
+      "Sometimes the app can't see what happened, for example when the phone closed it while you slept or focused. So it asks one simple question to keep your result fair. There's no blame, and a quick honest answer is all it needs.",
     faq9: "How is my sleep score worked out?",
+    faq9Answer:
+      "Your sleep score is an estimate from 0 to 100, not a medical measurement. It looks at four things: how long you slept compared with your goal (estimate), how close you started to your usual bedtime, how phone-free your night was, and how you woke up. It's just a gentle guide.",
     faq10: "Is my data private, and how do I delete it?",
+    faq10Answer:
+      "Yes. Your data stays on your phone. No account is needed, nothing is backed up elsewhere, and nothing is sent to us unless you choose to email. To delete it, open Settings → Privacy and data → \"Delete all data\" and confirm twice.",
     feedbackSubject: "{appName} feedback", // PRD FR-SU-02 (the app name is allowed here; passed from config/app.ts)
   },
   // ---- S-66 About --------------------------------------------------------------
