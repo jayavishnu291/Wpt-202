@@ -197,6 +197,7 @@ export const en = {
     outsideTitle: "Outside night window", // PRD 7.2 screen name
     outsideBody: "It's outside your night window.", // PRD 17 S20
     startNap: "Start as a nap (no star)", // PRD FR-NI-02
+    changeBedtime: "Change bedtime",
     // Screen rule: in the late-start period S-20 shows "Start my night anyway", "Start as a nap (no star)" and "Cancel".
     // At other times it shows only "Start as a nap (no star)" and "Cancel".
     startAnyway: "Start my night anyway",

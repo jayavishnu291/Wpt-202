@@ -180,6 +180,7 @@ const review: [TextKey, string][] = [
   ["focus.reminderDuringFocus", "Finish or end your focus to start your night."],
   ["focus.labelStudy", "Study"], ["focus.labelWork", "Work"], ["focus.labelReading", "Reading"], ["focus.labelOther", "Other"],
   ["night.startAnyway", "Start my night anyway"],
+  ["night.changeBedtime", "Change bedtime"],
   ["night.iphoneLockHint", "Lock your phone on this screen."],
   ["night.napLabel", "Nap"],
   ["night.reminderDuringNap", "End your nap to start your night."],
@@ -235,7 +236,7 @@ test("review round: every specified line is in en.ts exactly as written", () => 
 });
 
 test("review round: removed lines are gone and the FAQ answers are not written yet", () => {
-  assert.equal((en as any).night.changeBedtime, undefined);
+  assert.equal(en.night.changeBedtime, "Change bedtime");
   assert.equal((en as any).alarmEdit.skipHint, undefined);
   assert.equal((en as any).faq, undefined);
 });
