@@ -14,7 +14,7 @@ export default function HomeScreen() {
         {t('home.subtitle')}
       </Text>
 
-      <Link href="/onboarding/welcome" asChild>
+      <Link href="/onboarding" asChild>
         <Pressable style={styles.button}>
           <Text style={styles.buttonText}>{t('onboarding.getStarted')}</Text>
         </Pressable>
