@@ -60,8 +60,8 @@ No iPhone was used by India in Sprint 1.
 |---|---|---|
 | PR CI failed on pull requests (typecheck) for a few days because `package.json` on `main` had been cut to 16 lines. `main` now has the full `package.json`, and PR CI passed on PR #33 after the branch was re-run. Branches cut before that fix need a re-run (close and reopen the PR) to pass | not filed yet | Low |
 | I3: some screens still import the old root `t.ts` and still have typed-in text, so two text tests fail | not filed yet | Medium |
-| I5 brand guide steps are in `brandGuide.ts`, not merged into `src/text/en.ts`. No brand was checked on a team phone. Hotel's FC-5 depends on this | not filed yet | High |
-| I8 device info files are still in the repo root. Not checked on 2 Android brands or an iPhone | not filed yet | Medium |
+| I5 brand guide steps are in `src/domain/brandGuide.ts`, not merged into `src/text/en.ts`. No brand was checked on a team phone. Hotel's FC-5 depends on this | not filed yet | High |
+| I8 device info files are now in `src/native/` and `src/domain/`. Not checked on 2 Android brands or an iPhone | not filed yet | Medium |
 | I1: the Android package and app name still need the final values from `config/app.ts`. `.gitignore` is missing `*.keystore` and `.env*` | not filed yet | Medium |
 | I1: backup rules plugin is not built (Hotel owns it) | not filed yet | Medium |
 | I13: the pull request template still says "Trello card" instead of "Planka card" | not filed yet | Low |
@@ -71,7 +71,7 @@ No iPhone was used by India in Sprint 1.
 - I10: the six sound names are now in `src/text/en.ts` (PR #33, merged). Checks done: all six sounds were played on a Realme C61 (Android 16) and are clear and loud enough. iPhone sound format: not confirmed. The sounds are WAV; Hotel's FC-10 result decides whether they need converting (for example to CAF). Not tested on an iPhone by India. Licences: `LICENCES.md` says all six sounds were synthesised from scratch for WPT 202, so there are no third-party links to check.
 - I3: point every screen at `src/text/t.ts`, move the typed-in text into `en.ts`, delete the root copies, and get both text tests green.
 - Merge I5 brand steps into `src/text/en.ts`, check brands on real phones, then tell Hotel.
-- Move I8 files into `src/native/` and `src/domain/`, check on 2 Android brands, then on an iPhone.
+- Check I8 on 2 Android brands, then on an iPhone.
 - I9: move the FAQ answers into `src/text/en.ts` and delete `i9/`.
 - Fix I1 app name and Android package; ask Hotel for the backup rules plugin.
 - I11, I12: delete `i11/`, rename the landing page to `index.html`, and fix the app name once it is final.

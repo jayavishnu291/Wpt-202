@@ -20,8 +20,8 @@ import {
   getFakeDeviceInfo,
 } from "./deviceInfo.fake";
 import { formatDeviceInfoLines, logDeviceInfoInDev } from "./devDeviceInfo";
-import { buildFeedbackBody } from "./feedbackBody";
-import { needsBrandGuide } from "./brandGuide";
+import { buildFeedbackBody } from "../../feedbackBody";
+import { needsBrandGuide } from "../domain/brandGuide";
 
 describe("getDeviceInfo (real wrapper, mocked Expo)", () => {
   test("maps the five fields", () => {
