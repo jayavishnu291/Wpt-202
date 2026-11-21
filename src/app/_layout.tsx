@@ -10,6 +10,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { getDatabase } from '../services/data';
 import { t } from '../text/t';
+
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(false);
@@ -59,6 +60,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="focus" />
+        <Stack.Screen name="dev/session-monitor" />
       </Stack>
     </>
   );

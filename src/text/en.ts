@@ -33,6 +33,11 @@ export const en = {
   // Bottom tabs (PRD 7.1)
   nav: { home: "Home", history: "History", alarms: "Alarms", settings: "Settings" },
 
+  // Developer-only tools
+  developer: {
+    sessionMonitorTestTools: "Session monitor test tools",
+  },
+
   // ---- S-01 to S-05 -------------------------------------------------------
   onboarding: {
     // S-01 Welcome
