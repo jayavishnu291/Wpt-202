@@ -27,7 +27,7 @@ ESLint enforces these layer boundaries:
 - `src/state/**`, `src/ui/**`, and `src/app/**` must not import `src/data/**` or `src/native/**`.
 - Production code must not import from `**/dev/**`.
 
-Use the [pull request template](.github/pull_request_template.md) for the Trello card, PRD and Tech Architecture references, change summary, and required reviews.
+Use the [pull request template](.github/pull_request_template.md) for the Planka card, PRD and Tech Architecture references, change summary, and required reviews.
 
 The **Direct Push Alarm** workflow checks pushes to `main` for an associated merged pull request. If none is found, it creates a high-priority issue titled `Direct push to main` with the pusher, commit link, and message, then fails the workflow. Branch protection is unavailable for private repositories on the GitHub Free plan, so this alarm detects direct pushes after they happen; it cannot block them.
 
