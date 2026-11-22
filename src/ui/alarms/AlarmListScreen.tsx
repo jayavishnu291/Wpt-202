@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -21,6 +21,7 @@ import {
   saveAlarm,
   type Alarm,
 } from '../../services/data';
+import { useTheme } from '../theme';
 
 interface Props {
   onAdd: () => void;
@@ -40,6 +41,11 @@ const DAYS = [
 declare const __DEV__: boolean;
 
 export default function AlarmListScreen({ onAdd, onEdit }: Props) {
+  const { colors, spacing, radius, layout } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, spacing, radius, layout),
+    [colors, spacing, radius, layout],
+  );
   const [alarms, setAlarms] = useState<Alarm[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyAlarmId, setBusyAlarmId] = useState<string | null>(null);
@@ -212,7 +218,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
   if (loading) {
     return (
       <SafeAreaView style={styles.loading}>
-        <ActivityIndicator size="large" color="#F5D76E" />
+        <ActivityIndicator size="large" color={colors.accent} />
         <Text style={styles.muted}>
           {t('alarmList.loading')}
         </Text>
@@ -371,11 +377,11 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
                     }
                     accessibilityLabel={t('alarmList.toggleAlarm')}
                     trackColor={{
-                      false: '#465064',
-                      true: '#547D58',
+                      false: colors.controlOff,
+                      true: colors.accent,
                     }}
                     thumbColor={
-                      alarm.enabled ? '#F5D76E' : '#D5D8DF'
+                      alarm.enabled ? colors.onAccent : colors.surface
                     }
                   />
                 </View>
@@ -422,152 +428,165 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-  },
-  loading: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 12,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-  heading: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 35,
-    gap: 12,
-  },
-  devToggles: {
-    gap: 8,
-  },
-  devButton: {
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: '#344156',
-  },
-  devText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-  banner: {
-    backgroundColor: '#493728',
-    borderRadius: 14,
-    padding: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
-  },
-  bannerText: {
-    color: '#FFFFFF',
-    flex: 1,
-  },
-  fixButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  fixText: {
-    color: '#F5D76E',
-    fontWeight: 'bold',
-  },
-  emptyCard: {
-    backgroundColor: '#172235',
-    borderRadius: 18,
-    padding: 28,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  emptyIcon: {
-    color: '#F5D76E',
-    fontSize: 48,
-  },
-  emptyTitle: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 12,
-    textAlign: 'center',
-  },
-  muted: {
-    color: '#AAB3C5',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  alarmCard: {
-    backgroundColor: '#172235',
-    borderRadius: 18,
-    padding: 18,
-  },
-  alarmDetails: {
-    marginBottom: 12,
-  },
-  time: {
-    color: '#F5D76E',
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  label: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '600',
-    marginTop: 4,
-  },
-  repeat: {
-    color: '#AAB3C5',
-    marginTop: 5,
-  },
-  mission: {
-    color: '#91B995',
-    marginTop: 7,
-    fontSize: 13,
-  },
-  actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  switchLabel: {
-    color: '#AAB3C5',
-  },
-  deleteButton: {
-    padding: 9,
-  },
-  deleteText: {
-    color: '#FF8585',
-    fontWeight: '600',
-  },
-  addButton: {
-    backgroundColor: '#547D58',
-    borderRadius: 14,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  limitText: {
-    color: '#AAB3C5',
-    textAlign: 'center',
-    marginTop: 2,
-  },
-});
+function createStyles(
+  colors: ReturnType<typeof useTheme>['colors'],
+  spacing: ReturnType<typeof useTheme>['spacing'],
+  radius: ReturnType<typeof useTheme>['radius'],
+  layout: ReturnType<typeof useTheme>['layout'],
+) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    loading: {
+      flex: 1,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: spacing.md,
+    },
+    header: {
+      paddingHorizontal: spacing.xl,
+      paddingTop: 16,
+      paddingBottom: 16,
+    },
+    heading: {
+      color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+    },
+    content: {
+      paddingHorizontal: layout.screenPadding,
+      paddingBottom: 35,
+      gap: spacing.md,
+    },
+    devToggles: {
+      gap: spacing.sm,
+    },
+    devButton: {
+      borderRadius: radius.sm,
+      padding: 10,
+      backgroundColor: colors.disabledBackground,
+    },
+    devText: {
+      color: colors.text,
+      textAlign: 'center',
+    },
+    banner: {
+      backgroundColor: colors.warningBackground,
+      borderRadius: radius.card,
+      padding: spacing.lg,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    bannerText: {
+      color: colors.warningText,
+      flex: 1,
+    },
+    fixButton: {
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+    },
+    fixText: {
+      color: colors.warningText,
+      fontWeight: 'bold',
+    },
+    emptyCard: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: 28,
+      alignItems: 'center',
+      marginTop: spacing.sm,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    emptyIcon: {
+      color: colors.accent,
+      fontSize: 48,
+    },
+    emptyTitle: {
+      color: colors.text,
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: spacing.md,
+      textAlign: 'center',
+    },
+    muted: {
+      color: colors.mutedText,
+      fontSize: 14,
+      textAlign: 'center',
+    },
+    alarmCard: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: 18,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    alarmDetails: {
+      marginBottom: spacing.md,
+    },
+    time: {
+      color: colors.accent,
+      fontSize: 36,
+      fontWeight: 'bold',
+    },
+    label: {
+      color: colors.text,
+      fontSize: 17,
+      fontWeight: '600',
+      marginTop: 4,
+    },
+    repeat: {
+      color: colors.textSecondary,
+      marginTop: 5,
+    },
+    mission: {
+      color: colors.textSecondary,
+      marginTop: 7,
+      fontSize: 13,
+    },
+    actions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    switchRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    switchLabel: {
+      color: colors.textSecondary,
+    },
+    deleteButton: {
+      padding: 9,
+    },
+    deleteText: {
+      color: colors.danger,
+      fontWeight: '600',
+    },
+    addButton: {
+      backgroundColor: colors.accent,
+      borderRadius: radius.button,
+      padding: spacing.lg,
+      alignItems: 'center',
+      marginTop: 4,
+    },
+    addButtonText: {
+      color: colors.onAccent,
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    limitText: {
+      color: colors.mutedText,
+      textAlign: 'center',
+      marginTop: 2,
+    },
+  });
+}

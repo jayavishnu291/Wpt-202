@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -12,8 +12,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
 import { t } from '../../text/t';
 import { listHistory, type HistoryEntry } from '../../services/data';
+import { useTheme } from '../../ui/theme';
 
 export default function HistoryScreen() {
+  const { colors, spacing, radius, layout } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, spacing, radius, layout),
+    [colors, spacing, radius, layout],
+  );
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +51,7 @@ export default function HistoryScreen() {
   if (loading) {
     return (
       <SafeAreaView style={styles.loading} edges={['top']}>
-        <ActivityIndicator size="large" color="#F5D76E" />
+        <ActivityIndicator size="large" color={colors.accent} />
         <Text style={styles.muted}>{t('history.loading')}</Text>
       </SafeAreaView>
     );
@@ -76,6 +82,11 @@ export default function HistoryScreen() {
 }
 
 function HistoryCard({ entry }: { entry: HistoryEntry }) {
+  const { colors, spacing, radius, layout } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, spacing, radius, layout),
+    [colors, spacing, radius, layout],
+  );
   const start = new Date(entry.startAt);
   const date = start.toLocaleDateString(undefined, {
     weekday: 'short',
@@ -151,112 +162,123 @@ function HistoryCard({ entry }: { entry: HistoryEntry }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-  },
-  loading: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 12,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 35,
-    gap: 12,
-  },
-  emptyContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  emptyCard: {
-    backgroundColor: '#172235',
-    borderRadius: 18,
-    padding: 28,
-    alignItems: 'center',
-  },
-  emptyIcon: {
-    color: '#F5D76E',
-    fontSize: 48,
-  },
-  emptyText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '600',
-    lineHeight: 24,
-    marginTop: 12,
-    textAlign: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  muted: {
-    color: '#AAB3C5',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  card: {
-    backgroundColor: '#172235',
-    borderRadius: 18,
-    padding: 18,
-    gap: 12,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
-  },
-  headingGroup: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  icon: {
-    fontSize: 28,
-  },
-  cardTitle: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  date: {
-    color: '#AAB3C5',
-    fontSize: 13,
-    marginTop: 3,
-  },
-  badge: {
-    borderRadius: 12,
-    fontSize: 12,
-    fontWeight: '600',
-    overflow: 'hidden',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-  },
-  bloomBadge: {
-    backgroundColor: '#31563F',
-    color: '#C4E8C9',
-  },
-  budBadge: {
-    backgroundColor: '#3A4559',
-    color: '#D5D8DF',
-  },
-  details: {
-    gap: 5,
-  },
-  detail: {
-    color: '#C5CDDA',
-    fontSize: 13,
-  },
-});
+function createStyles(
+  colors: ReturnType<typeof useTheme>['colors'],
+  spacing: ReturnType<typeof useTheme>['spacing'],
+  radius: ReturnType<typeof useTheme>['radius'],
+  layout: ReturnType<typeof useTheme>['layout'],
+) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    loading: {
+      flex: 1,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: spacing.md,
+    },
+    header: {
+      paddingHorizontal: spacing.xl,
+      paddingTop: 16,
+      paddingBottom: 16,
+    },
+    content: {
+      paddingHorizontal: layout.screenPadding,
+      paddingBottom: 35,
+      gap: spacing.md,
+    },
+    emptyContent: {
+      flexGrow: 1,
+      justifyContent: 'center',
+    },
+    emptyCard: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: 28,
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    emptyIcon: {
+      color: colors.accent,
+      fontSize: 48,
+    },
+    emptyText: {
+      color: colors.text,
+      fontSize: 17,
+      fontWeight: '600',
+      lineHeight: 24,
+      marginTop: spacing.md,
+      textAlign: 'center',
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    muted: {
+      color: colors.mutedText,
+      fontSize: 14,
+      textAlign: 'center',
+    },
+    card: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: 18,
+      gap: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing.md,
+    },
+    headingGroup: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+    },
+    icon: {
+      fontSize: 28,
+    },
+    cardTitle: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    date: {
+      color: colors.textSecondary,
+      fontSize: 13,
+      marginTop: 3,
+    },
+    badge: {
+      borderRadius: radius.pill,
+      fontSize: 12,
+      fontWeight: '600',
+      overflow: 'hidden',
+      paddingHorizontal: 10,
+      paddingVertical: 6,
+    },
+    bloomBadge: {
+      backgroundColor: colors.accentPressed,
+      color: colors.onAccent,
+    },
+    budBadge: {
+      backgroundColor: colors.disabledBackground,
+      color: colors.textSecondary,
+    },
+    details: {
+      gap: 5,
+    },
+    detail: {
+      color: colors.textSecondary,
+      fontSize: 13,
+    },
+  });
+}

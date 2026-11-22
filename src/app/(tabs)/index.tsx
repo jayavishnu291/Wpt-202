@@ -1,11 +1,18 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { t } from '../../text/t';
+import { useTheme } from '../../ui/theme';
 
 export default function HomeScreen() {
+  const { colors, spacing, radius } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, spacing, radius),
+    [colors, spacing, radius],
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{t('nav.home')}</Text>
@@ -29,34 +36,40 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    padding: 24,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: 12,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#777777',
-    marginBottom: 30,
-  },
-  button: {
-    backgroundColor: '#6C63FF',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 14,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
+function createStyles(
+  colors: ReturnType<typeof useTheme>['colors'],
+  spacing: ReturnType<typeof useTheme>['spacing'],
+  radius: ReturnType<typeof useTheme>['radius'],
+) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      padding: spacing.xl,
+      justifyContent: 'center',
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: colors.text,
+      marginBottom: spacing.md,
+    },
+    subtitle: {
+      fontSize: 16,
+      color: colors.mutedText,
+      marginBottom: 30,
+    },
+    button: {
+      backgroundColor: colors.accent,
+      padding: spacing.lg,
+      borderRadius: radius.button,
+      marginBottom: 14,
+      alignItems: 'center',
+    },
+    buttonText: {
+      color: colors.onAccent,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+  });
+}
