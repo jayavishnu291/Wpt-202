@@ -1,0 +1,10 @@
+apply plugin: 'com.android.library'
+apply plugin: 'expo-module-gradle-plugin'
+group = 'expo.modules.alarmengine'
+version = '1.0.0'
+android {
+  namespace "expo.modules.alarmengine"
+  defaultConfig {
+    minSdkVersion 24
+  }
+}

@@ -138,6 +138,23 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
         setAlarms((current) =>
           current.filter((item) => item.id !== alarm.id),
         );
+
+        try {
+          const refreshedAlarms = await listAlarms();
+
+          if (mounted.current) {
+            setAlarms(refreshedAlarms);
+          }
+        } catch (error) {
+          console.error('Unable to refresh alarms after deletion:', error);
+
+          if (mounted.current) {
+            Alert.alert(
+              t('common.error'),
+              t('alarmList.loadFailed'),
+            );
+          }
+        }
       }
     } catch (error) {
       console.error('DELETE ERROR DETAILS:', error);

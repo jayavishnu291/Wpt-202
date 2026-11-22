@@ -117,6 +117,12 @@ class SessionMonitorService : Service() {
       Notification.Builder(this)
     }
     builder.setSmallIcon(R.drawable.session_monitor_notification)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      builder.setOnlyAlertOnce(true)
+    } else {
+      @Suppress("DEPRECATION")
+      builder.setSound(null).setVibrate(longArrayOf(0L)).setLights(0, 0, 0)
+    }
     return builder
       .setContentTitle(title)
       .setCategory(Notification.CATEGORY_SERVICE)
