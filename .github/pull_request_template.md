@@ -1,4 +1,4 @@
-**Trello card:** (link)
+**Planka card:** (link)
 **PRD / Tech Architecture refs:**
 **What changed (2–3 lines):**
 

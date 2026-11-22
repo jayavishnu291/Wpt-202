@@ -64,7 +64,7 @@ No iPhone was used by India in Sprint 1.
 | I8 device info files are now in `src/native/` and `src/domain/`. Not checked on 2 Android brands or an iPhone | not filed yet | Medium |
 | I1: the Android package and app name still need the final values from `config/app.ts`. `.gitignore` is missing `*.keystore` and `.env*` | not filed yet | Medium |
 | I1: backup rules plugin is not built (Hotel owns it) | not filed yet | Medium |
-| I13: the pull request template still says "Trello card" instead of "Planka card" | not filed yet | Low |
+| I13: PR template now says "Planka card" (done) | done | Low |
 | Old copies are still in the repo root (`en.ts`, `t.ts`, `text.test.ts`, `i9/`, `i11/`). They can confuse imports | not filed yet | Low |
 
 ## 7. Not finished
@@ -75,7 +75,7 @@ No iPhone was used by India in Sprint 1.
 - I9: move the FAQ answers into `src/text/en.ts` and delete `i9/`.
 - Fix I1 app name and Android package; ask Hotel for the backup rules plugin.
 - I11, I12: delete `i11/`, rename the landing page to `index.html`, and fix the app name once it is final.
-- I13: change "Trello card" to "Planka card" in the PR template. Confirm one Android build run passes.
+- I13: PR template now says "Planka card" (done). Confirm one Android build run passes.
 - Delete the old root copies and the `i5/`, `i9/`, `i11/` folders once their content is merged.
 
 ## 8. Decisions or questions for the Product Owner
