@@ -117,6 +117,8 @@ module.exports = defineConfig([
       'src/ui/**/*.{js,jsx,ts,tsx}',
       'src/app/**/*.{js,jsx,ts,tsx}',
     ],
+    // Developer-only routes may open the test screens in src/dev and the native test modules.
+    ignores: ['src/app/dev/**'],
     rules: {
       'no-restricted-imports': noRestrictedImports([
         layerPattern(
