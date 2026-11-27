@@ -18,7 +18,7 @@ class AlarmRingingService : Service() {
     private var rampStep = 0
 
 
-private var rampStep = 0
+
 
 private val rampStartFraction
     get() = AlarmEngineConfig.rampStart(this) / 100f
@@ -62,7 +62,7 @@ private val rampRunnable = object : Runnable {
             AlarmEngineConfig.text(this, "channelName", "Alarms"),
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = AlarmEngineConfig.text(this, "channelName", "Alarms")
+            description = AlarmEngineConfig.text(this@AlarmRingingService, "channelName", "Alarms")
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             enableVibration(true)
             setSound(null, null)
@@ -213,14 +213,20 @@ if (Build.VERSION.SDK_INT >= 34) {
             )
 
         } catch (e: Exception) {
-            Log.e(
-                "WPT202AlarmEngine",
-                "Alarm ringing failed",
-                e
-                AlarmEngineConfig.log(this, "ring_failed", e.javaClass.simpleName)
-            )
-            stopRinging()
-        }
+    Log.e(
+        "WPT202AlarmEngine",
+        "Alarm ringing failed",
+        e
+    )
+
+    AlarmEngineConfig.log(
+        this,
+        "ring_failed",
+        e.javaClass.simpleName
+    )
+
+    stopRinging()
+}
 
         return START_NOT_STICKY
     }
