@@ -16,15 +16,39 @@ class AlarmRingingService : Service() {
     private var vibrator: Vibrator? = null
     private val rampHandler = Handler(Looper.getMainLooper())
     private var rampStep = 0
-    private val rampRunnable = object : Runnable {
-        override fun run() {
-            val p = player ?: return
-            val volume = (0.2f + 0.8f * (rampStep / 30f)).coerceAtMost(1f)
-            p.setVolume(volume, volume)
-            if (rampStep < 30) { rampStep++; rampHandler.postDelayed(this, 1000L) }
+
+
+private var rampStep = 0
+
+private val rampStartFraction
+    get() = AlarmEngineConfig.rampStart(this) / 100f
+
+private val rampEndFraction
+    get() = AlarmEngineConfig.rampEnd(this) / 100f
+
+private val rampSteps
+    get() = AlarmEngineConfig.rampSeconds(this).coerceAtLeast(1)
+
+private val rampRunnable = object : Runnable {
+    override fun run() {
+        val p = player ?: return
+
+        val progress = rampStep / rampSteps.toFloat()
+
+        val volume = (
+            rampStartFraction +
+            (rampEndFraction - rampStartFraction) * progress
+        ).coerceIn(0f, 1f)
+
+        p.setVolume(volume, volume)
+
+        if (rampStep < rampSteps) {
+            rampStep++
+            rampHandler.postDelayed(this, 1000L)
         }
     }
-
+}
+    private var usedServiceType = "none"
     private val channelId = "wpt202_h2_ringing_v2"
     private val notificationId = 4001
 
@@ -35,10 +59,10 @@ class AlarmRingingService : Service() {
 
         val channel = NotificationChannel(
             channelId,
-            "WPT202 Active Alarm",
+            AlarmEngineConfig.text(this, "channelName", "Alarms"),
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Alarm ringing and STOP control"
+            description = AlarmEngineConfig.text(this, "channelName", "Alarms")
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             enableVibration(true)
             setSound(null, null)
@@ -104,10 +128,8 @@ class AlarmRingingService : Service() {
                 .setSmallIcon(
                     android.R.drawable.ic_lock_idle_alarm
                 )
-                .setContentTitle("WPT202 Alarm Ringing")
-                .setContentText(
-                    "Your alarm is ringing. Tap STOP to silence."
-                )
+               .setContentTitle(AlarmEngineConfig.text(this, "title", "Alarm"))
+.setContentText(AlarmEngineConfig.text(this, "body", ""))
                 .setCategory(
                     NotificationCompat.CATEGORY_ALARM
                 )
@@ -128,19 +150,54 @@ class AlarmRingingService : Service() {
                 )
                 .addAction(
                     android.R.drawable.ic_media_pause,
-                    "STOP ALARM",
+                    AlarmEngineConfig.text(this, "stop", "Stop"),
                     stopPendingIntent
                 )
                 .build()
 
         try {
-            if (Build.VERSION.SDK_INT >= 29) {
-                startForeground(
-                    notificationId,
-                    notification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-                )
-            } else {
+
+if (Build.VERSION.SDK_INT >= 34) {
+
+    usedServiceType = try {
+
+        startForeground(
+            notificationId,
+            notification,
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED
+        )
+
+        "systemExempted"
+
+    } catch (e: Exception) {
+
+        Log.w(
+            "WPT202AlarmEngine",
+            "systemExempted refused, using mediaPlayback",
+            e
+        )
+
+        startForeground(
+            notificationId,
+            notification,
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+        )
+
+        "mediaPlayback"
+    }
+
+} else if (Build.VERSION.SDK_INT >= 29) {
+
+    startForeground(
+        notificationId,
+        notification,
+        ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+    )
+
+    usedServiceType = "mediaPlayback"
+
+} else {
+
                 startForeground(
                     notificationId,
                     notification
@@ -148,6 +205,7 @@ class AlarmRingingService : Service() {
             }
 
             startSoundAndVibration()
+            AlarmEngineConfig.log(this, "ringing", "service=$usedServiceType")
 
             Log.i(
                 "WPT202AlarmEngine",
@@ -159,6 +217,7 @@ class AlarmRingingService : Service() {
                 "WPT202AlarmEngine",
                 "Alarm ringing failed",
                 e
+                AlarmEngineConfig.log(this, "ring_failed", e.javaClass.simpleName)
             )
             stopRinging()
         }
@@ -228,6 +287,7 @@ class AlarmRingingService : Service() {
     }
 
     private fun stopRinging() {
+        AlarmEngineConfig.log(this, "stopped")
         rampHandler.removeCallbacks(rampRunnable)
 
         Log.i(
