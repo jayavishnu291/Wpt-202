@@ -34,7 +34,7 @@
                  "plugins":  [
                                  "expo-sqlite",
                                  "./plugins/withBlockingQueries.js",
-                                 "./modules/session-monitor/app.app.plugin.js",
+                                 "./modules/session-monitor/app.plugin.js",
                                  "./plugins/withBackupRules.js",
                                  [
                                      "expo-build-properties",
