@@ -33,6 +33,7 @@ export const en = {
 
   // Developer-only tools
   developer: {
+    devTools: "Developer tools", // DEV ONLY, never in a store build
     sessionMonitorTestTools: "Session monitor test tools",
   },
 
