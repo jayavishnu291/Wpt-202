@@ -12,8 +12,8 @@ export default function SettingsScreen() {
       <Text style={styles.subtitle}>
         Manage your app preferences here.
       </Text>
-      {__DEV__ ? (
-        <Link href="/dev/session-monitor" asChild>
+      {__DEV__ || process.env.EXPO_PUBLIC_BLOCKING_TEST === '1' ? (
+        <Link href="/dev" asChild>
           <Pressable accessibilityRole="button" style={styles.devButton}>
             <Text style={styles.devButtonText}>{t('developer.sessionMonitorTestTools')}</Text>
           </Pressable>
