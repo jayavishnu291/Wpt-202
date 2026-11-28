@@ -11,7 +11,7 @@ import {
   type Alarm,
 } from '../../services/data';
 
-import { t } from '../../../t';
+import { t } from '../../text/t';
 import { rules } from '../../../config/rules';
 
 export default function AlarmsScreen() {
@@ -48,6 +48,20 @@ export default function AlarmsScreen() {
           setSelectedAlarm(null);
           return;
         }
+
+        const duplicate = existingAlarms.some((item) =>
+          item.time === alarm.time &&
+          item.repeat_days.slice().sort().join(',') ===
+            alarm.repeat_days.slice().sort().join(','),
+        );
+
+        if (duplicate) {
+          Alert.alert(
+            t('alarmEdit.invalidTimeTitle'),
+            t('alarmEdit.duplicateAlarmMessage'),
+          );
+          return;
+        }
       }
 
       await saveAlarm(alarm);
@@ -56,11 +70,35 @@ export default function AlarmsScreen() {
       setSelectedAlarm(null);
     } catch (error) {
       console.error('Unable to save alarm:', error);
-
-      Alert.alert(
-        t('common.error'),
-        t('alarmEdit.saveFailed'),
-      );
+      if (error instanceof Error && error.message === 'Duplicate alarm.') {
+        Alert.alert(
+          t('alarmEdit.invalidTimeTitle'),
+          t('alarmEdit.duplicateAlarmMessage'),
+        );
+      } else if (
+        error instanceof Error &&
+        error.message === 'Alarm limit reached.'
+      ) {
+        Alert.alert(
+          t('alarmList.limitReachedTitle'),
+          t('alarmList.limitReachedMessage', {
+            count: rules.alarms.maximumAlarms,
+          }),
+        );
+      } else if (
+        error instanceof Error &&
+        error.message === 'Alarm label is too long.'
+      ) {
+        Alert.alert(
+          t('alarmEdit.labelTitle'),
+          t('alarmEdit.labelLimitMessage'),
+        );
+      } else {
+        Alert.alert(
+          t('common.error'),
+          t('alarmEdit.saveFailed'),
+        );
+      }
     }
   };
 

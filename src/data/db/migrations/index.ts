@@ -2,9 +2,11 @@
 import type { DatabaseAdapter } from '../adapter';
 import { SCHEMA_VERSION } from '../schema';
 import { migrate001Initial } from './001_initial';
+import { migrate002AlarmDefaults } from './002_alarm_defaults';
 
 const MIGRATIONS = [
   { version: 1, migrate: migrate001Initial },
+  { version: 2, migrate: migrate002AlarmDefaults },
 ] as const;
 
 export const CURRENT_SCHEMA_VERSION = SCHEMA_VERSION;

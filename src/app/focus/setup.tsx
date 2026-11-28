@@ -3,22 +3,25 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
+import { t } from '../../text/t';
 
 export default function FocusSetupScreen() {
   const [duration, setDuration] = useState(25);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Focus Setup</Text>
+      <Text style={styles.title}>{t('focus.setupScreenTitle')}</Text>
 
       <Text style={styles.subtitle}>
-        Choose how long you want to focus.
+        {t('focus.setupSubtitle')}
       </Text>
 
       <View style={styles.durationBox}>
         <Pressable
           style={styles.adjustButton}
           onPress={() => setDuration(Math.max(5, duration - 5))}
+          accessibilityRole="button"
+          accessibilityLabel={t('focus.decreaseDuration')}
         >
           <Text style={styles.adjustText}>−</Text>
         </Pressable>
@@ -28,12 +31,14 @@ export default function FocusSetupScreen() {
         <Pressable
           style={styles.adjustButton}
           onPress={() => setDuration(Math.min(120, duration + 5))}
+          accessibilityRole="button"
+          accessibilityLabel={t('focus.increaseDuration')}
         >
           <Text style={styles.adjustText}>+</Text>
         </Pressable>
       </View>
 
-      <Text style={styles.minutes}>minutes</Text>
+      <Text style={styles.minutes}>{t('focus.minutes')}</Text>
 
       <Link
         href={{
@@ -43,7 +48,7 @@ export default function FocusSetupScreen() {
         asChild
       >
         <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Start Focus</Text>
+          <Text style={styles.buttonText}>{t('focus.start')}</Text>
         </Pressable>
       </Link>
     </SafeAreaView>

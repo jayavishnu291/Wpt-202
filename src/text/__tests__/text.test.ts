@@ -145,7 +145,7 @@ test("values and one/many forms fill in", () => {
 });
 
 test("every key renders with sample values and no warning", () => {
-  const sample = { appName: name, count: 2, minutes: 25, hours: 7, time: "5:00", current: 1, total: 3, slept: "6 h", goal: "8 h", duration: "30 m", points: 40, max: 50, version: "1.0" };
+  const sample = { appName: name, count: 2, minutes: 25, hours: 7, time: "5:00", current: 1, total: 3, slept: "6 h", goal: "8 h", duration: "30 m", points: 40, max: 50, maximum: 5, mission: "Maths", sound: "Morning Bell", difficulty: "Easy", version: "1.0" };
   const original = console.warn;
   const seen: string[] = [];
   console.warn = (m: string) => void seen.push(m);
@@ -181,7 +181,7 @@ test("PRD 17 sentences appear in en.ts only, nowhere else in src (checklist step
   for (const [where, key, expected] of prd.filter(([w]) => w.startsWith("17"))) {
     const needle = expected.replace(name, "{appName}");
     const hits = files.filter((f) => fs.readFileSync(f, "utf8").includes(needle) || fs.readFileSync(f, "utf8").includes(expected));
-    assert.deepEqual(hits.map((f) => path.relative(root, f)), ["src/text/en.ts"], `${where}: ${key}`);
+    assert.deepEqual(hits.map((f) => path.relative(root, f).replace(/\\/g, "/")), ["src/text/en.ts"], `${where}: ${key}`);
   }
 });
 
@@ -201,6 +201,7 @@ const review: [TextKey, string][] = [
   ["focus.reminderDuringFocus", "Finish or end your focus to start your night."],
   ["focus.labelStudy", "Study"], ["focus.labelWork", "Work"], ["focus.labelReading", "Reading"], ["focus.labelOther", "Other"],
   ["night.startAnyway", "Start my night anyway"],
+  ["night.changeBedtime", "Change bedtime"],
   ["night.iphoneLockHint", "Lock your phone on this screen."],
   ["night.napLabel", "Nap"],
   ["night.reminderDuringNap", "End your nap to start your night."],
@@ -255,8 +256,8 @@ test("review round: every specified line is in en.ts exactly as written", () => 
   assert.ok(src.length > 0);
 });
 
-test("review round: removed lines are gone and FAQ answers are present", () => {
-  assert.equal((en as any).night.changeBedtime, undefined);
+test("review round: removed lines are gone and required translations are present", () => {
+  assert.equal(en.night.changeBedtime, "Change bedtime");
   assert.equal((en as any).alarmEdit.skipHint, undefined);
   assert.equal((en as any).faq, undefined);
   for (let n = 1; n <= 10; n++) {

@@ -84,6 +84,27 @@ describe('Local SQLite database', () => {
     }
   });
 
+  it('uses a disabled snooze default for new alarm rows', async () => {
+    const db = new TestSQLiteAdapter();
+
+    try {
+      await runMigrations(db);
+      await db.run(
+        'INSERT INTO alarms (id, time) VALUES (?, ?);',
+        ['default-alarm', '07:00'],
+      );
+
+      const rows = await db.all<{ snooze_on: number }>(
+        'SELECT snooze_on FROM alarms WHERE id = ?;',
+        ['default-alarm'],
+      );
+
+      expect(rows[0]?.snooze_on).toBe(0);
+    } finally {
+      db.close();
+    }
+  });
+
   it('preserves version 1 data through a test version 2 migration', async () => {
     const db = new TestSQLiteAdapter();
 
@@ -169,7 +190,7 @@ describe('Local SQLite database', () => {
       const schemaVersion = await db.all<{ user_version: number }>(
         'PRAGMA user_version;',
       );
-      expect(schemaVersion[0]?.user_version).toBe(1);
+      expect(schemaVersion[0]?.user_version).toBe(2);
     } finally {
       db.close();
     }

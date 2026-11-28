@@ -14,12 +14,16 @@
 export const en = {
   common: {
     back: "Back", // PROPOSED
-    cancel: "Cancel", // PRD S-20
+    close: "Close",
+    cancel: "Cancel", // PROPOSED
+    estimate: "(estimate)",
     done: "Done", // PROPOSED
     fix: "Fix", // PRD AC-ON-3
     later: "Later", // PRD FR-ON-10
     next: "Next", // PRD FR-ON-03
     save: "Save", // PRD FR-ON-04
+    error: "Error",
+    databaseInitFailed: "Unable to initialize the database.",
     yes: "Yes",
     no: "No",
     minutes: "{minutes} min",
@@ -35,6 +39,8 @@ export const en = {
   developer: {
     devTools: "Developer tools", // DEV ONLY, never in a store build
     sessionMonitorTestTools: "Session monitor test tools",
+    gardenTest: "FC-6 Garden Test",
+    openGardenTest: "Open FC-6 Garden Test",
   },
 
   // ---- S-01 to S-05 -------------------------------------------------------
@@ -42,18 +48,38 @@ export const en = {
     // S-01 Welcome
     welcomeTitle: "Grow flowers by day. Collect stars by night.", // PRD 17 S01
     getStarted: "Get started",
+    welcomeSubtitle: "Welcome! Let's build a healthy focus and sleep routine.",
+    welcomeMessage: "Put your phone down and watch your garden and night sky grow. Free, with no account needed.",
+    welcomeButtonHint: "Goes to the next screen, How it works",
     // S-02 How it works
     howTitle: "How it works",
     howPoint1: "Focus to grow flowers", // PRD 17 S02
     howPoint2: "Put your phone down at night to collect stars",
     howPoint3: "Wake up with a small mission",
     howNext: "Next",
+    howBack: "Go back",
+    howSubtitle: "Small steps during the day and night help your garden grow.",
+    howPoint1Description: "Stay focused on what matters. Each completed focus session helps your garden grow.",
+    howPoint2Description: "Give yourself a break from your phone at night and collect stars for your garden.",
+    howPoint3Description: "Begin your morning with a gentle reminder and enjoy the garden you have grown.",
+    continueButton: "Continue",
     // S-03 Set your times
     timesTitle: "Set your times",
     bedtimeLabel: "Bedtime",
     wakeTimeLabel: "Wake-up time",
     bedtimeReminder: "Remind me at bedtime",
     timesSave: "Save",
+    tapToChange: "Tap to change",
+    timesSubtitle: "Choose when your day ends and when your morning begins. You can change these later.",
+    earlier: "Earlier",
+    later: "Later",
+    adjustTimeHint: "Adjust in 30-minute steps",
+    timeAm: "AM",
+    timePm: "PM",
+    reminderHint: "Get a gentle reminder when bedtime arrives.",
+    loadError: "Unable to load your settings. Please restart the app.",
+    saveError: "Unable to save your settings. Please try again.",
+    finishError: "Unable to finish setup. Please try again.",
     // S-04 Brand guide [Android]
     brandGuideTitle: "Phone setup", // PROPOSED (PRD names the screen "Brand guide")
     brandGuideIntro: "Some phones close apps to save battery. A few quick settings keep your alarm ringing.", // PROPOSED
@@ -73,6 +99,81 @@ export const en = {
     permissionSheetTitle: "Why we ask", // PROPOSED
     permissionContinue: "Continue", // PROPOSED
     permissionNotNow: "Not now", // PROPOSED
+    permissionNote: "You can make this choice later in your settings.",
+    permissionContent: {
+      notifications: {
+        title: "Allow notifications",
+        message: "Notifications can gently remind you when bedtime arrives and help you stay connected with your daily routine.",
+      },
+      alarms: {
+        title: "Allow alarms",
+        message: "Alarm access helps the app remind you when it is time to wake up.",
+      },
+      exactAlarms: {
+        title: "Allow exact alarms",
+        message: "Exact alarm access helps schedule your wake-up alarm at the time you choose.",
+      },
+      fullScreenAlarm: {
+        title: "Allow full-screen alarms",
+        message: "Full-screen alarm access helps your wake-up alarm appear clearly when it is time to wake up.",
+      },
+      usageAccess: {
+        title: "Allow usage access",
+        message: "Usage access helps the app understand when your phone is being used so it can support your nighttime routine.",
+      },
+      displayOverApps: {
+        title: "Allow display over other apps",
+        message: "This access can help important alarm screens appear above other apps when needed.",
+      },
+    },
+    oemGuide: {
+      title: "Phone settings guide",
+      subtitle: "Some Android phones limit background activity to save battery. Choose your phone brand to see where these settings may be found.",
+      disclaimer: "Settings names and availability vary by phone model and Android version. You can skip these steps and review them later.",
+      continueToGarden: "Continue to garden",
+      xiaomi: {
+        brand: "Xiaomi / Redmi / POCO",
+        step1: "Open Settings and select Apps.",
+        step2: "Find your app under Manage apps.",
+        step3: "Open Battery saver and choose No restrictions, if available.",
+        step4: "Check Autostart and allow it if your device provides that option.",
+      },
+      samsung: {
+        brand: "Samsung",
+        step1: "Open Settings and select Battery.",
+        step2: "Open Background usage limits.",
+        step3: "Check Sleeping apps and Deep sleeping apps.",
+        step4: "If needed, add your app to Never sleeping apps.",
+      },
+      oneplus: {
+        brand: "OnePlus / OPPO / realme",
+        step1: "Open Settings and find Battery settings.",
+        step2: "Look for App battery management or Background activity.",
+        step3: "Allow background activity for your app, if available.",
+        step4: "Check Auto launch or Startup manager if your device provides it.",
+      },
+      vivo: {
+        brand: "Vivo / iQOO",
+        step1: "Open Settings and find Battery.",
+        step2: "Look for Background power consumption management.",
+        step3: "Allow background activity for your app, if available.",
+        step4: "Check Autostart settings if your device provides them.",
+      },
+      huawei: {
+        brand: "Huawei / HONOR",
+        step1: "Open Settings and select Apps.",
+        step2: "Find your app and open App launch settings.",
+        step3: "If available, manage automatic launch and background activity manually.",
+        step4: "Allow the background activity needed by your app.",
+      },
+      pixel: {
+        brand: "Pixel / Stock Android",
+        step1: "Open Settings and select Apps.",
+        step2: "Choose your app and open App battery usage.",
+        step3: "Review the background usage setting.",
+        step4: "Allow background usage if required by your device.",
+      },
+    },
   },
 
   brandGuide: {
@@ -194,7 +295,25 @@ export const en = {
   // ---- S-10 Home -----------------------------------------------------------
   home: {
     title: "Home",
+    subtitle: "Grow flowers by day. Collect stars by night.",
     focusToday: "Focus today", // PROPOSED label for "today's focus minutes"
+    startFocusHint: "Starts a focus session to grow a flower",
+    startNightHint: "Starts night mode to collect stars",
+    lastNightTapHint: "Opens morning report",
+    starEarned: "Star earned",
+    faintStarEarned: "Faint star earned",
+    blockingDescription: "Block distracting apps during focus and sleep.",
+    blockingSetup: "Set up",
+    blockingSetupHint: "Opens app blocking setup",
+    scoreEstimateLabel: "Sleep score (estimate)",
+    morningReportTitle: "Morning Report (S-40)",
+    morningReportSubtitle: "Sleep summary and star reveal",
+    focusSetupTitle: "Focus Setup (S-11)",
+    focusSetupSubtitle: "Choose duration and start session",
+    nightModeTitle: "Night Mode (S-21)",
+    nightModeSubtitle: "Night session in progress",
+    appBlockingTitle: "App Blocking Setup (S-61)",
+    appBlockingSubtitle: "Choose apps to block during focus and sleep",
     nextAlarm: "Next alarm",
     nightStreak: "Night streak",
     streak: "{count} nights", // PROPOSED
@@ -209,6 +328,18 @@ export const en = {
 
   // ---- S-11 to S-16 Focus --------------------------------------------------
   focus: {
+    setupScreenTitle: "Focus Setup",
+    setupSubtitle: "Choose how long you want to focus.",
+    decreaseDuration: "Decrease focus duration",
+    increaseDuration: "Increase focus duration",
+    minutes: "minutes",
+    runScreenTitle: "Focus in Progress",
+    runMessage: "Stay focused. You are doing great.",
+    complete: "Complete Focus",
+    resultScreenTitle: "Focus Completed",
+    resultSubtitle: "Great job. You completed your focus session.",
+    rewardStar: "⭐ +1 Star",
+    resultHome: "Back to Home",
     // S-11 Focus setup
     setupTitle: "Focus", // PROPOSED
     custom: "Custom",
@@ -265,6 +396,7 @@ export const en = {
     outsideTitle: "Outside night window", // PRD 7.2 screen name
     outsideBody: "It's outside your night window.", // PRD 17 S20
     startNap: "Start as a nap (no star)", // PRD FR-NI-02
+    changeBedtime: "Change bedtime",
     // Screen rule: in the late-start period S-20 shows "Start my night anyway", "Start as a nap (no star)" and "Cancel".
     // At other times it shows only "Start as a nap (no star)" and "Cancel".
     startAnyway: "Start my night anyway",
@@ -330,6 +462,27 @@ export const en = {
     bannerLate: "Alarms may be late", // PRD 9.1.1
     bannerOff: "Alarms are off. Tap Fix to allow them.", // PROPOSED
     lowVolume: "Your alarm volume is very low.", // the button uses common.fix ("Fix")
+    permissionFixTitle: "Alarm permissions",
+    permissionFixMessage: "Open your device settings to allow alarms.",
+    volumeFixTitle: "Alarm volume",
+    volumeFixMessage: "Raise your device's alarm volume in settings.",
+    showPermissionBanner: "Show permission banner",
+    hidePermissionBanner: "Hide permission banner",
+    showVolumeBanner: "Show low-volume banner",
+    hideVolumeBanner: "Hide low-volume banner",
+    deleteTitle: "Delete alarm",
+    deleteMessage: "Delete the {time} alarm?",
+    deleteFailed: "Could not delete this alarm.",
+    loadFailed: "Could not load alarms.",
+    updateFailed: "Could not update this alarm.",
+    alarmLabel: "Alarm",
+    missionSummary: "{mission} mission",
+    alarmCount: "{count} / {maximum} alarms",
+    toggleAlarm: "Toggle alarm",
+    editAlarm: "Edit alarm",
+    loading: "Loading alarms",
+    limitReachedTitle: "Alarm limit reached",
+    limitReachedMessage: "You can create a maximum of {count} alarms.",
   },
   alarmEdit: {
     title: "Edit alarm", // PROPOSED
@@ -341,6 +494,8 @@ export const en = {
     mission: "Mission",
     missionMaths: "Maths",
     missionShake: "Shake",
+    selectedMark: "✓",
+    unselectedMark: "○",
     level: "Level",
     levelEasy: "Easy",
     levelMedium: "Medium",
@@ -349,6 +504,33 @@ export const en = {
     problemsOne: "{count} problem",
     sound: "Sound",
     soundMorningBell: "Morning Bell", // PRD FR-AL-03 default sound
+    soundSoftChimes: "Soft Chimes",
+    soundBirdsong: "Birdsong",
+    soundRisingTone: "Rising Tone",
+    soundClassicBeep: "Classic Beep",
+    soundStrongBell: "Strong Bell",
+    previewSound: "Preview {sound}",
+    preview: "Preview",
+    timeHint: "Use 24-hour time (HH:mm).",
+    invalidTimeTitle: "Invalid time",
+    invalidTimeMessage: "Enter a time in 24-hour format, for example 07:30.",
+    duplicateAlarmMessage: "An alarm with this time and repeat days already exists.",
+    labelTitle: "Label too long",
+    labelLimitMessage: "Use 30 characters or fewer.",
+    labelCharacters: "{count}/{maximum} characters",
+    mathsDifficulty: "Difficulty",
+    mathsProblems: "Number of problems",
+    shakeLevel: "Shake level",
+    shakeLevelOption: "{difficulty} · {count} shakes",
+    once: "Alarm rings once.",
+    everyDay: "Alarm repeats every day.",
+    noSnoozeOnIphone: "Snooze is unavailable on this iPhone.",
+    snoozeLimit: "Up to {count} times, {minutes} minutes each.",
+    saveFailed: "Could not save this alarm.",
+    shakeUnavailableTitle: "Unavailable",
+    shakeUnavailableMessage: "The Shake mission is currently disabled.",
+    previewFailed: "Could not play this sound preview.",
+    saving: "Saving...",
     vibration: "Vibration",
     snooze: "Snooze",
     skipNext: "Skip next alarm", // PRD FR-AL-13
@@ -418,6 +600,19 @@ export const en = {
   history: {
     title: "History",
     empty: "Your week will appear here.",
+    loading: "Loading history",
+    loadFailed: "Could not load history.",
+    focus: "Focus session",
+    night: "Night",
+    nap: "Nap",
+    bloom: "Bloomed",
+    bud: "Bud",
+    star: "Star collected",
+    faintStar: "Faint star",
+    noStar: "No star",
+    plannedDuration: "Planned: {minutes} min",
+    estimatedSleep: "Estimated sleep: {duration}",
+    pickups: "Pickups: {count}",
     napRow: "Nap · {duration}",
     focusMinutes: "{minutes} min focus",
     flowers: "{count} flowers",
@@ -456,6 +651,7 @@ export const en = {
   // ---- S-60 Settings: section names ------------------------------------------
   settings: {
     title: "Settings",
+    subtitle: "Manage your app preferences here.",
     nightSleep: "Night and sleep",
     focus: "Focus",
     alarms: "Alarms",

@@ -125,7 +125,7 @@ export default function SessionMonitorTestScreen() {
               events.slice().reverse().map((event) => (
                 <View key={`${event.seq}-${event.session_id}`} style={styles.event}>
                   <View style={styles.eventHeader}>
-                    <Text style={styles.eventType}>{event.type.replaceAll('_', ' ')}</Text>
+                    <Text style={styles.eventType}>{event.type.replace(/_/g, ' ')}</Text>
                     <Text style={styles.eventSequence}>#{event.seq}</Text>
                   </View>
                   <Text style={styles.eventTime}>{event.at}</Text>

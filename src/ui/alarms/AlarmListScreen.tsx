@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -14,13 +14,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { rules } from '../../../config/rules';
-import { t } from '../../../t';
+import { t } from '../../text/t';
 import {
   deleteAlarm,
   listAlarms,
   saveAlarm,
   type Alarm,
 } from '../../services/data';
+import { useTheme } from '../theme';
 
 interface Props {
   onAdd: () => void;
@@ -40,6 +41,11 @@ const DAYS = [
 declare const __DEV__: boolean;
 
 export default function AlarmListScreen({ onAdd, onEdit }: Props) {
+  const { colors, spacing, radius, layout } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, spacing, radius, layout),
+    [colors, spacing, radius, layout],
+  );
   const [alarms, setAlarms] = useState<Alarm[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyAlarmId, setBusyAlarmId] = useState<string | null>(null);
@@ -48,31 +54,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
   const mounted = useRef(false);
 
-  // Load alarms from the database
-  const loadAlarms = useCallback(async () => {
-    try {
-      const result = await listAlarms();
-
-      if (mounted.current) {
-        setAlarms(result);
-      }
-    } catch (error) {
-      console.error('Unable to load alarms:', error);
-
-      if (mounted.current) {
-        Alert.alert(
-          t('common.error'),
-          t('alarmList.loadFailed'),
-        );
-      }
-    } finally {
-      if (mounted.current) {
-        setLoading(false);
-      }
-    }
-  }, []);
-
-  // Initial loading without synchronous state updates in the effect
+  // Load alarms when the screen opens
   useEffect(() => {
     let active = true;
     mounted.current = true;
@@ -110,6 +92,8 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
   // Enable or disable an alarm
   const toggleAlarm = async (alarm: Alarm, enabled: boolean) => {
+    if (busyAlarmId !== null) return;
+
     setBusyAlarmId(alarm.id);
 
     try {
@@ -120,11 +104,13 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
       await saveAlarm(updatedAlarm);
 
-      setAlarms((current) =>
-        current.map((item) =>
-          item.id === alarm.id ? updatedAlarm : item,
-        ),
-      );
+      if (mounted.current) {
+        setAlarms((current) =>
+          current.map((item) =>
+            item.id === alarm.id ? updatedAlarm : item,
+          ),
+        );
+      }
     } catch (error) {
       console.error('Unable to update alarm:', error);
 
@@ -133,47 +119,76 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
         t('alarmList.updateFailed'),
       );
     } finally {
-      setBusyAlarmId(null);
+      if (mounted.current) {
+        setBusyAlarmId(null);
+      }
     }
   };
 
   // Delete the selected alarm
   const removeAlarm = async (alarm: Alarm) => {
-    try {
-      setBusyAlarmId(alarm.id);
+    if (busyAlarmId !== null) return;
 
+    setBusyAlarmId(alarm.id);
+
+    try {
       await deleteAlarm(alarm.id);
 
-      // Update the list immediately
-      setAlarms((current) =>
-        current.filter((item) => item.id !== alarm.id),
-      );
+      if (mounted.current) {
+        setAlarms((current) =>
+          current.filter((item) => item.id !== alarm.id),
+        );
 
-      // Refresh the saved alarms
-      await loadAlarms();
+        try {
+          const refreshedAlarms = await listAlarms();
 
-      console.log('Alarm deleted successfully:', alarm.id);
+          if (mounted.current) {
+            setAlarms(refreshedAlarms);
+          }
+        } catch (error) {
+          console.error('Unable to refresh alarms after deletion:', error);
+
+          if (mounted.current) {
+            Alert.alert(
+              t('common.error'),
+              t('alarmList.loadFailed'),
+            );
+          }
+        }
+      }
     } catch (error) {
-      console.error('Unable to delete alarm:', error);
+      console.error('DELETE ERROR DETAILS:', error);
+
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error name:', error.name);
+      }
 
       Alert.alert(
         t('common.error'),
         t('alarmList.deleteFailed'),
       );
     } finally {
-      setBusyAlarmId(null);
+      if (mounted.current) {
+        setBusyAlarmId(null);
+      }
     }
   };
 
   // Confirm before deleting
   const confirmDelete = (alarm: Alarm) => {
+    if (busyAlarmId !== null) return;
+
     const message = t('alarmList.deleteMessage', {
       time: alarm.time,
     });
 
-    // Browser confirmation for Expo Web
+    // Browser confirmation
     if (Platform.OS === 'web') {
-      const confirmed = (globalThis as typeof globalThis & { confirm: (message: string) => boolean }).confirm(message);
+      const browserGlobal = globalThis as unknown as {
+        confirm?: (message?: string) => boolean;
+      };
+      const confirmed = browserGlobal.confirm?.(message) ?? false;
 
       if (confirmed) {
         void removeAlarm(alarm);
@@ -220,7 +235,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
   if (loading) {
     return (
       <SafeAreaView style={styles.loading}>
-        <ActivityIndicator size="large" color="#F5D76E" />
+        <ActivityIndicator size="large" color={colors.accent} />
         <Text style={styles.muted}>
           {t('alarmList.loading')}
         </Text>
@@ -321,7 +336,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
         {alarms.length === 0 ? (
           <View style={styles.emptyCard}>
-            <Text style={styles.emptyIcon}>Ã¢â€”Â·</Text>
+            <Text style={styles.emptyIcon}>◷</Text>
             <Text style={styles.emptyTitle}>
               {t('alarmList.empty')}
             </Text>
@@ -335,6 +350,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
                 accessibilityRole="button"
                 accessibilityLabel={t('alarmList.editAlarm')}
                 activeOpacity={0.8}
+                disabled={busyAlarmId !== null}
               >
                 <Text style={styles.time}>
                   {alarm.time}
@@ -372,24 +388,24 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
 
                   <Switch
                     value={alarm.enabled}
-                    disabled={busyAlarmId === alarm.id}
+                    disabled={busyAlarmId !== null}
                     onValueChange={(value) =>
                       void toggleAlarm(alarm, value)
                     }
                     accessibilityLabel={t('alarmList.toggleAlarm')}
                     trackColor={{
-                      false: '#465064',
-                      true: '#547D58',
+                      false: colors.controlOff,
+                      true: colors.accent,
                     }}
                     thumbColor={
-                      alarm.enabled ? '#F5D76E' : '#D5D8DF'
+                      alarm.enabled ? colors.onAccent : colors.surface
                     }
                   />
                 </View>
 
                 <TouchableOpacity
                   onPress={() => confirmDelete(alarm)}
-                  disabled={busyAlarmId === alarm.id}
+                  disabled={busyAlarmId !== null}
                   accessibilityRole="button"
                   accessibilityLabel={t('alarmEdit.delete')}
                   style={styles.deleteButton}
@@ -410,6 +426,8 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
             style={styles.addButton}
             onPress={onAdd}
             accessibilityRole="button"
+            accessibilityLabel={t('alarmList.add')}
+            disabled={busyAlarmId !== null}
           >
             <Text style={styles.addButtonText}>
               + {t('alarmList.add')}
@@ -428,152 +446,165 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-  },
-  loading: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 12,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-  heading: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 35,
-    gap: 12,
-  },
-  devToggles: {
-    gap: 8,
-  },
-  devButton: {
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: '#344156',
-  },
-  devText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-  banner: {
-    backgroundColor: '#493728',
-    borderRadius: 14,
-    padding: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
-  },
-  bannerText: {
-    color: '#FFFFFF',
-    flex: 1,
-  },
-  fixButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  fixText: {
-    color: '#F5D76E',
-    fontWeight: 'bold',
-  },
-  emptyCard: {
-    backgroundColor: '#172235',
-    borderRadius: 18,
-    padding: 28,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  emptyIcon: {
-    color: '#F5D76E',
-    fontSize: 48,
-  },
-  emptyTitle: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 12,
-    textAlign: 'center',
-  },
-  muted: {
-    color: '#AAB3C5',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  alarmCard: {
-    backgroundColor: '#172235',
-    borderRadius: 18,
-    padding: 18,
-  },
-  alarmDetails: {
-    marginBottom: 12,
-  },
-  time: {
-    color: '#F5D76E',
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  label: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '600',
-    marginTop: 4,
-  },
-  repeat: {
-    color: '#AAB3C5',
-    marginTop: 5,
-  },
-  mission: {
-    color: '#91B995',
-    marginTop: 7,
-    fontSize: 13,
-  },
-  actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  switchLabel: {
-    color: '#AAB3C5',
-  },
-  deleteButton: {
-    padding: 9,
-  },
-  deleteText: {
-    color: '#FF8585',
-    fontWeight: '600',
-  },
-  addButton: {
-    backgroundColor: '#547D58',
-    borderRadius: 14,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  limitText: {
-    color: '#AAB3C5',
-    textAlign: 'center',
-    marginTop: 2,
-  },
-});
+function createStyles(
+  colors: ReturnType<typeof useTheme>['colors'],
+  spacing: ReturnType<typeof useTheme>['spacing'],
+  radius: ReturnType<typeof useTheme>['radius'],
+  layout: ReturnType<typeof useTheme>['layout'],
+) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    loading: {
+      flex: 1,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: spacing.md,
+    },
+    header: {
+      paddingHorizontal: spacing.xl,
+      paddingTop: 16,
+      paddingBottom: 16,
+    },
+    heading: {
+      color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+    },
+    content: {
+      paddingHorizontal: layout.screenPadding,
+      paddingBottom: 35,
+      gap: spacing.md,
+    },
+    devToggles: {
+      gap: spacing.sm,
+    },
+    devButton: {
+      borderRadius: radius.sm,
+      padding: 10,
+      backgroundColor: colors.disabledBackground,
+    },
+    devText: {
+      color: colors.text,
+      textAlign: 'center',
+    },
+    banner: {
+      backgroundColor: colors.warningBackground,
+      borderRadius: radius.card,
+      padding: spacing.lg,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    bannerText: {
+      color: colors.warningText,
+      flex: 1,
+    },
+    fixButton: {
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+    },
+    fixText: {
+      color: colors.warningText,
+      fontWeight: 'bold',
+    },
+    emptyCard: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: 28,
+      alignItems: 'center',
+      marginTop: spacing.sm,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    emptyIcon: {
+      color: colors.accent,
+      fontSize: 48,
+    },
+    emptyTitle: {
+      color: colors.text,
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: spacing.md,
+      textAlign: 'center',
+    },
+    muted: {
+      color: colors.mutedText,
+      fontSize: 14,
+      textAlign: 'center',
+    },
+    alarmCard: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: 18,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    alarmDetails: {
+      marginBottom: spacing.md,
+    },
+    time: {
+      color: colors.accent,
+      fontSize: 36,
+      fontWeight: 'bold',
+    },
+    label: {
+      color: colors.text,
+      fontSize: 17,
+      fontWeight: '600',
+      marginTop: 4,
+    },
+    repeat: {
+      color: colors.textSecondary,
+      marginTop: 5,
+    },
+    mission: {
+      color: colors.textSecondary,
+      marginTop: 7,
+      fontSize: 13,
+    },
+    actions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    switchRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    switchLabel: {
+      color: colors.textSecondary,
+    },
+    deleteButton: {
+      padding: 9,
+    },
+    deleteText: {
+      color: colors.danger,
+      fontWeight: '600',
+    },
+    addButton: {
+      backgroundColor: colors.accent,
+      borderRadius: radius.button,
+      padding: spacing.lg,
+      alignItems: 'center',
+      marginTop: 4,
+    },
+    addButtonText: {
+      color: colors.onAccent,
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    limitText: {
+      color: colors.mutedText,
+      textAlign: 'center',
+      marginTop: 2,
+    },
+  });
+}

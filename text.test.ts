@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { en } from "./en";
-import { t, type TextKey } from "./t";
+import { en } from "./src/text/en";
+import { t, type TextKey } from "./src/text/t";
 import { appConfig } from "./appConfig";
 
 (globalThis as any).__DEV__ = true;

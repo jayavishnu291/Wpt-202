@@ -143,6 +143,11 @@ export const rules = {
   },
 } as const;
 
+export const TIME_RULES = {
+  nightWindowHalfHours: rules.night.windowBeforeBedtimeHours,
+  lateStartHours: rules.night.lateStartHours,
+} as const;
+
 export const switches = {
   "SW-01": false, // iPhone lock detection
   "SW-02": false, // iPhone re-ring

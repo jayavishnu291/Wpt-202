@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Platform,
@@ -15,8 +15,10 @@ import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { isOn, rules, switches } from '../../../config/rules';
-import { t } from '../../../t';
+import { countLabelCharacters, limitLabel } from '../../domain/label';
+import { t } from '../../text/t';
 import type { Alarm } from '../../services/data';
+import { useTheme } from '../theme';
 
 interface Props {
   initialAlarm?: Alarm | null;
@@ -112,17 +114,16 @@ function initialShakeLevel(alarm?: Alarm | null): number {
     : rules.alarms.shakeLevels[0];
 }
 
-function limitLabel(value: string): string {
-  return Array.from(value)
-    .slice(0, rules.alarms.maximumLabelCharacters)
-    .join('');
-}
-
 export default function AlarmEditScreen({
   initialAlarm,
   onSave,
   onCancel,
 }: Props) {
+  const { colors, spacing, radius, layout } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, spacing, radius, layout),
+    [colors, spacing, radius, layout],
+  );
   const shakeEnabled = isOn('SW-06');
 
   const showSnooze =
@@ -182,6 +183,14 @@ export default function AlarmEditScreen({
   );
 
   const [saving, setSaving] = useState(false);
+  const headingKey = initialAlarm ? 'alarmEdit.title' : 'alarmEdit.titleNew';
+  const saveKey = saving ? 'alarmEdit.saving' : 'alarmEdit.save';
+  const mathMarkKey = mission === 'math'
+    ? 'alarmEdit.selectedMark'
+    : 'alarmEdit.unselectedMark';
+  const shakeMarkKey = mission === 'shake'
+    ? 'alarmEdit.selectedMark'
+    : 'alarmEdit.unselectedMark';
 
   useEffect(() => () => player.pause(), [player]);
 
@@ -277,6 +286,7 @@ export default function AlarmEditScreen({
         <TouchableOpacity
           onPress={onCancel}
           accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
           style={styles.backButton}
         >
           <Text style={styles.backText}>
@@ -285,7 +295,7 @@ export default function AlarmEditScreen({
         </TouchableOpacity>
 
         <Text style={styles.heading}>
-          {t(initialAlarm ? 'alarmEdit.title' : 'alarmEdit.titleNew')}
+          {t(headingKey)}
         </Text>
 
         <View style={styles.card}>
@@ -295,7 +305,7 @@ export default function AlarmEditScreen({
             value={time}
             onChangeText={setTime}
             placeholder={rules.alarms.defaultTime}
-            placeholderTextColor="#7E8AA0"
+            placeholderTextColor={colors.mutedText}
             keyboardType="numbers-and-punctuation"
             maxLength={5}
             accessibilityLabel={t('alarmEdit.time')}
@@ -343,19 +353,20 @@ export default function AlarmEditScreen({
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>{t('alarmEdit.label')}</Text>
 
+          {/* Limit in onChangeText: native maxLength counts UTF-16 code units,
+              which would cut emoji labels off before 30 characters. */}
           <TextInput
             value={label}
             onChangeText={(value) => setLabel(limitLabel(value))}
             placeholder={t('alarmEdit.labelHint')}
-            placeholderTextColor="#7E8AA0"
-            maxLength={rules.alarms.maximumLabelCharacters}
+            placeholderTextColor={colors.mutedText}
             accessibilityLabel={t('alarmEdit.label')}
             style={styles.textInput}
           />
 
           <Text style={styles.hint}>
             {t('alarmEdit.labelCharacters', {
-              count: Array.from(label).length,
+              count: countLabelCharacters(label),
               maximum: rules.alarms.maximumLabelCharacters,
             })}
           </Text>
@@ -377,10 +388,11 @@ export default function AlarmEditScreen({
               {t('alarmEdit.missionMaths')}
             </Text>
             <Text style={styles.optionMark}>
-              {mission === 'math' ? '✓' : '○'}
+              {t(mathMarkKey)}
             </Text>
           </TouchableOpacity>
 
+          {/* text-ok: UI visibility condition */}
           {mission === 'math' && (
             <View style={styles.nestedSection}>
               <Text style={styles.hint}>
@@ -464,10 +476,11 @@ export default function AlarmEditScreen({
                   {t('alarmEdit.missionShake')}
                 </Text>
                 <Text style={styles.optionMark}>
-                  {mission === 'shake' ? '✓' : '○'}
+                  {t(shakeMarkKey)}
                 </Text>
               </TouchableOpacity>
 
+              {/* text-ok: UI visibility condition */}
               {mission === 'shake' && (
                 <View style={styles.nestedSection}>
                   <Text style={styles.hint}>
@@ -526,7 +539,9 @@ export default function AlarmEditScreen({
                   {t(item.textKey)}
                 </Text>
                 <Text style={styles.optionMark}>
-                  {sound === item.id ? '✓' : '○'}
+                  {t(sound === item.id
+                    ? 'alarmEdit.selectedMark'
+                    : 'alarmEdit.unselectedMark')}
                 </Text>
               </TouchableOpacity>
 
@@ -563,8 +578,11 @@ export default function AlarmEditScreen({
               value={vibration}
               onValueChange={setVibration}
               accessibilityLabel={t('alarmEdit.vibration')}
-              trackColor={{ false: '#465064', true: '#547D58' }}
-              thumbColor={vibration ? '#F5D76E' : '#D5D8DF'}
+              trackColor={{
+                false: colors.controlOff,
+                true: colors.accent,
+              }}
+              thumbColor={vibration ? colors.onAccent : colors.surface}
             />
           </View>
 
@@ -586,8 +604,11 @@ export default function AlarmEditScreen({
                 value={snooze}
                 onValueChange={setSnooze}
                 accessibilityLabel={t('alarmEdit.snooze')}
-                trackColor={{ false: '#465064', true: '#547D58' }}
-                thumbColor={snooze ? '#F5D76E' : '#D5D8DF'}
+                trackColor={{
+                  false: colors.controlOff,
+                  true: colors.accent,
+                }}
+                thumbColor={snooze ? colors.onAccent : colors.surface}
               />
             </View>
           ) : (
@@ -607,7 +628,7 @@ export default function AlarmEditScreen({
           ]}
         >
           <Text style={styles.saveText}>
-            {t(saving ? 'alarmEdit.saving' : 'alarmEdit.save')}
+            {t(saveKey)}
           </Text>
         </TouchableOpacity>
 
@@ -625,187 +646,200 @@ export default function AlarmEditScreen({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0B1020',
-  },
-  content: {
-    padding: 20,
-    paddingBottom: 40,
-  },
-  backButton: {
-    alignSelf: 'flex-start',
-    marginBottom: 16,
-    paddingVertical: 6,
-  },
-  backText: {
-    color: '#F5D76E',
-    fontSize: 16,
-  },
-  heading: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  card: {
-    backgroundColor: '#172235',
-    borderRadius: 16,
-    padding: 18,
-    marginBottom: 15,
-  },
-  sectionTitle: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  timeInput: {
-    color: '#F5D76E',
-    fontSize: 38,
-    fontWeight: 'bold',
-    borderBottomWidth: 1,
-    borderBottomColor: '#465064',
-    paddingVertical: 8,
-  },
-  textInput: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#465064',
-    borderRadius: 10,
-    padding: 13,
-  },
-  hint: {
-    color: '#AAB3C5',
-    fontSize: 12,
-    marginTop: 8,
-  },
-  daysRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  dayButton: {
-    minWidth: 36,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#344156',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-  selectedDay: {
-    backgroundColor: '#F5D76E',
-  },
-  dayText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 12,
-  },
-  selectedDayText: {
-    color: '#172235',
-    fontWeight: 'bold',
-  },
-  option: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 13,
-    paddingHorizontal: 12,
-    borderRadius: 10,
-    marginBottom: 8,
-    backgroundColor: '#202E43',
-  },
-  selectedOption: {
-    borderWidth: 1,
-    borderColor: '#F5D76E',
-  },
-  optionText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-  },
-  optionMark: {
-    color: '#F5D76E',
-    fontSize: 19,
-    fontWeight: 'bold',
-  },
-  nestedSection: {
-    paddingHorizontal: 10,
-    paddingBottom: 12,
-  },
-  choicesRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    flexWrap: 'wrap',
-  },
-  choice: {
-    backgroundColor: '#344156',
-    borderRadius: 10,
-    minWidth: 42,
-    paddingVertical: 10,
-    paddingHorizontal: 13,
-    alignItems: 'center',
-  },
-  choiceText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  soundRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#202E43',
-    borderRadius: 10,
-    marginBottom: 8,
-    paddingLeft: 12,
-  },
-  soundName: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 13,
-  },
-  previewButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-  },
-  previewText: {
-    color: '#F5D76E',
-    fontWeight: '600',
-  },
-  disabledOption: {
-    opacity: 0.4,
-  },
-  settingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-  },
-  snoozeInfo: {
-    flex: 1,
-  },
-  saveButton: {
-    backgroundColor: '#547D58',
-    borderRadius: 14,
-    padding: 17,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  saveText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 17,
-  },
-  cancelButton: {
-    padding: 15,
-    alignItems: 'center',
-  },
-  cancelText: {
-    color: '#AAB3C5',
-    fontSize: 15,
-  },
-});
+function createStyles(
+  colors: ReturnType<typeof useTheme>['colors'],
+  spacing: ReturnType<typeof useTheme>['spacing'],
+  radius: ReturnType<typeof useTheme>['radius'],
+  layout: ReturnType<typeof useTheme>['layout'],
+) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    content: {
+      padding: layout.screenPadding,
+      paddingBottom: 40,
+    },
+    backButton: {
+      alignSelf: 'flex-start',
+      marginBottom: spacing.lg,
+      paddingVertical: 6,
+    },
+    backText: {
+      color: colors.accent,
+      fontSize: 16,
+    },
+    heading: {
+      color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginBottom: spacing.xl,
+    },
+    card: {
+      backgroundColor: colors.card,
+      borderRadius: radius.card,
+      padding: layout.cardPadding,
+      marginBottom: spacing.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    sectionTitle: {
+      color: colors.text,
+      fontSize: 17,
+      fontWeight: 'bold',
+      marginBottom: spacing.lg,
+    },
+    timeInput: {
+      color: colors.accent,
+      fontSize: 38,
+      fontWeight: 'bold',
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      paddingVertical: spacing.sm,
+    },
+    textInput: {
+      color: colors.text,
+      fontSize: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius.sm,
+      padding: spacing.md,
+    },
+    hint: {
+      color: colors.mutedText,
+      fontSize: 12,
+      marginTop: spacing.sm,
+    },
+    daysRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    dayButton: {
+      minWidth: 36,
+      height: 40,
+      borderRadius: radius.pill,
+      backgroundColor: colors.disabledBackground,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 5,
+    },
+    selectedDay: {
+      backgroundColor: colors.accent,
+    },
+    dayText: {
+      color: colors.text,
+      fontWeight: '600',
+      fontSize: 12,
+    },
+    selectedDayText: {
+      color: colors.onAccent,
+      fontWeight: 'bold',
+    },
+    option: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 13,
+      paddingHorizontal: spacing.md,
+      borderRadius: radius.sm,
+      marginBottom: spacing.sm,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    selectedOption: {
+      borderWidth: 1,
+      borderColor: colors.accent,
+    },
+    optionText: {
+      color: colors.text,
+      fontSize: 15,
+    },
+    optionMark: {
+      color: colors.accent,
+      fontSize: 19,
+      fontWeight: 'bold',
+    },
+    nestedSection: {
+      paddingHorizontal: 10,
+      paddingBottom: spacing.md,
+    },
+    choicesRow: {
+      flexDirection: 'row',
+      gap: 10,
+      marginTop: 10,
+      marginBottom: 10,
+      flexWrap: 'wrap',
+    },
+    choice: {
+      backgroundColor: colors.disabledBackground,
+      borderRadius: radius.sm,
+      minWidth: 42,
+      paddingVertical: 10,
+      paddingHorizontal: 13,
+      alignItems: 'center',
+    },
+    choiceText: {
+      color: colors.text,
+      fontWeight: 'bold',
+    },
+    soundRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.surface,
+      borderRadius: radius.sm,
+      marginBottom: spacing.sm,
+      paddingLeft: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    soundName: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 13,
+    },
+    previewButton: {
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+    },
+    previewText: {
+      color: colors.accent,
+      fontWeight: '600',
+    },
+    disabledOption: {
+      opacity: 0.4,
+    },
+    settingRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing.sm,
+    },
+    snoozeInfo: {
+      flex: 1,
+    },
+    saveButton: {
+      backgroundColor: colors.accent,
+      borderRadius: radius.button,
+      padding: 17,
+      alignItems: 'center',
+      marginTop: spacing.sm,
+    },
+    saveText: {
+      color: colors.onAccent,
+      fontWeight: 'bold',
+      fontSize: 17,
+    },
+    cancelButton: {
+      padding: 15,
+      alignItems: 'center',
+    },
+    cancelText: {
+      color: colors.mutedText,
+      fontSize: 15,
+    },
+  });
+}

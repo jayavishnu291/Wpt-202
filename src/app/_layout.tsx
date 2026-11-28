@@ -9,7 +9,8 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { getDatabase } from '../services/data';
-import { configureAlarmEngine } from '../services/alarmEngine';
+import { t } from '../text/t';
+import { ThemeProvider } from '../ui/theme';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -20,8 +21,7 @@ export default function RootLayout() {
 
     getDatabase()
       .then(() => {
-    configureAlarmEngine();
-    if (mounted) {
+        if (mounted) {
           setReady(true);
         }
       })
@@ -41,7 +41,7 @@ export default function RootLayout() {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text>Unable to initialize the database.</Text>
+        <Text>{t('common.databaseInitFailed')}</Text>
       </View>
     );
   }
@@ -55,13 +55,15 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="focus" />
         <Stack.Screen name="dev" />
       </Stack>
-    </>
+    </ThemeProvider>
   );
 }
 
