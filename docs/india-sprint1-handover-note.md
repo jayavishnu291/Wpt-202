@@ -13,18 +13,18 @@ India built the shared foundations for Sprint 1: the rules config, date/time hel
 | Card (Planka link) | PRD references | Status |
 |---|---|---|
 | [I1 Repo and app project](https://tasks.whitepixeltechnologies.in/cards/1893643514005161240) | see card | Partly done |
-| [I2 Business rule config](https://tasks.whitepixeltechnologies.in/cards/1893643514013549850) | see card | Done |
-| [I3 Shared text file and `t()` helper](https://tasks.whitepixeltechnologies.in/cards/1893643514021938460) | PRD 17, 9.1.1, 9.11 | Partly done (two text tests fail because some screens still have typed-in text; not every PRD 17 line re-checked) |
-| [I4 Bug tracker and results sheet](https://tasks.whitepixeltechnologies.in/cards/1893643514013549849) | PRD 19, 20; BRD 23 | Done |
-| [I5 Brand guide content](https://tasks.whitepixeltechnologies.in/cards/1893643514072270110) | PRD 9.1.2 | Partly done |
-| [I6 Date and time helpers](https://tasks.whitepixeltechnologies.in/cards/1893643514063881501) | see card | Done |
-| [I7 Handover template and India note](https://tasks.whitepixeltechnologies.in/cards/1893643514105824543) | PRD 20; BRD 22.4, 22.5 | Done |
-| [I8 Device info helper](https://tasks.whitepixeltechnologies.in/cards/1893643514147767584) | see card | Partly done |
-| [I9 FAQ content](https://tasks.whitepixeltechnologies.in/cards/1893643514206487841) | see card | Partly done |
-| [I10 Six alarm sounds](https://tasks.whitepixeltechnologies.in/cards/1893643514256819490) | PRD FR-AL-03 | Partly done |
-| [I11 Privacy and terms pages](https://tasks.whitepixeltechnologies.in/cards/1893643514332316963) | see card | Draft in `site/` (older copy still in `i11/`; shows "WPT 202" until the app name is final; web address waits on W4) |
-| [I12 Landing page](https://tasks.whitepixeltechnologies.in/cards/1893643515489944883) | see card | Partly done (file is `landingpage.html`, not `index.html`; styling needs JavaScript; images load from outside the repo; web address waits on W4) |
-| [I13 Automatic checks (CI), import rules, PR template](https://tasks.whitepixeltechnologies.in/cards/1893643515565442356) | PRD 14.4; BRD 22.3–22.5; Tech Architecture 2, 5.3, 13, 15 | Done (PR CI passed on PR #33) |
+| [I2 Business rule config](https://tasks.whitepixeltechnologies.in/cards/1893643514013549849) | see card | Done |
+| [I3 Shared text file and `t()` helper](https://tasks.whitepixeltechnologies.in/cards/1893643514013549850) | PRD 17, 9.1.1, 9.11 | Partly done (two text tests fail because some screens still have typed-in text; not every PRD 17 line re-checked) |
+| [I4 Bug tracker and results sheet](https://tasks.whitepixeltechnologies.in/cards/1893643515489944883) | PRD 19, 20; BRD 23 | Done |
+| [I5 Brand guide content](https://tasks.whitepixeltechnologies.in/cards/1893643514063881501) | PRD 9.1.2 | Partly done |
+| [I6 Date and time helpers](https://tasks.whitepixeltechnologies.in/cards/1893643514021938460) | see card | Done |
+| [I7 Handover template and India note](https://tasks.whitepixeltechnologies.in/cards/1893643514332316963) | PRD 20; BRD 22.4, 22.5 | Done |
+| [I8 Device info helper](https://tasks.whitepixeltechnologies.in/cards/1893643514072270110) | see card | Partly done |
+| [I9 FAQ content](https://tasks.whitepixeltechnologies.in/cards/1893643514105824543) | see card | Partly done |
+| [I10 Six alarm sounds](https://tasks.whitepixeltechnologies.in/cards/1893643515565442356) | PRD FR-AL-03 | Partly done |
+| [I11 Privacy and terms pages](https://tasks.whitepixeltechnologies.in/cards/1893643514147767584) | see card | Draft in `site/` (older copy still in `i11/`; shows "WPT 202" until the app name is final; web address waits on W4) |
+| [I12 Landing page](https://tasks.whitepixeltechnologies.in/cards/1893643514206487841) | see card | Partly done (file is `landingpage.html`, not `index.html`; styling needs JavaScript; images load from outside the repo; web address waits on W4) |
+| [I13 Automatic checks (CI), import rules, PR template](https://tasks.whitepixeltechnologies.in/cards/1893643514256819490) | PRD 14.4; BRD 22.3–22.5; Tech Architecture 2, 5.3, 13, 15 | Done (PR CI passed on PR #33) |
 
 ## 3. How to check each item
 
