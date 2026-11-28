@@ -1,26 +1,33 @@
+
 /**
  * src/dev/GardenTestScreen.tsx
  *
  * DEV ONLY - WPT 202 FC-6 Garden Drawing Test.
- * Shows the full garden (150 flowers + 31 stars) on one screen so it can be
- * tested on a real Android phone (PRD FC-6, NFR-07, AC-GA-3).
- *
- * Standalone: it only imports the layout and the scene. It is not connected to
- * App.tsx, navigation or Expo Router. Do not import it from production screens.
+ * Shows the full garden (150 flowers + 31 stars) on one screen.
  */
 import { useMemo } from 'react';
-import { StatusBar, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import {
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 
 import { createGardenLayout } from '../domain/gardenLayout';
 import { GardenScene } from '../ui/garden/GardenScene';
 
-const BACKGROUND_COLOR = '#0B1020'; // same as the sky, so there is no flash while drawing
+const BACKGROUND_COLOR = '#0B1020';
 const LABEL_TEXT_COLOR = '#E8ECF5';
 
-export function GardenTestScreen() {
+interface GardenTestScreenProps {
+  onBack: () => void;
+}
+
+export function GardenTestScreen({ onBack }: GardenTestScreenProps) {
   const { width, height } = useWindowDimensions();
 
-  // Created once per screen size. It is NOT rebuilt on normal re-renders.
   const layout = useMemo(
     () => (width > 0 && height > 0 ? createGardenLayout(width, height) : null),
     [width, height],
@@ -34,6 +41,7 @@ export function GardenTestScreen() {
   return (
     <View style={[styles.root, { width, height }]}>
       {layout !== null && <GardenScene layout={layout} reduceMotion={true} />}
+
       {layout !== null && (
         <View pointerEvents="none" style={labelStyle}>
           <Text style={styles.labelText}>
@@ -44,6 +52,19 @@ export function GardenTestScreen() {
           </Text>
         </View>
       )}
+
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Back to Home"
+        onPress={onBack}
+        style={({ pressed }) => [
+          styles.backButton,
+          { top: (StatusBar.currentHeight ?? 0) + 8 },
+          pressed && styles.backButtonPressed,
+        ]}
+      >
+        <Text style={styles.backButtonText}>Back to Home</Text>
+      </Pressable>
     </View>
   );
 }
@@ -52,6 +73,7 @@ export default GardenTestScreen;
 
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
     backgroundColor: BACKGROUND_COLOR,
     overflow: 'hidden',
   },
@@ -71,5 +93,21 @@ const styles = StyleSheet.create({
     color: LABEL_TEXT_COLOR,
     fontSize: 11,
     opacity: 0.75,
+  },
+  backButton: {
+    position: 'absolute',
+    right: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+  },
+  backButtonPressed: {
+    opacity: 0.7,
+  },
+  backButtonText: {
+    color: LABEL_TEXT_COLOR,
+    fontSize: 13,
+    fontWeight: '600',
   },
 });

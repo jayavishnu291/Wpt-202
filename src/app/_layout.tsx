@@ -8,8 +8,7 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { getDatabase } from '../services/data';
-import { configureAlarmEngine } from '../services/alarmEngine';
+import { getDatabase } from '../data/db';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -20,8 +19,7 @@ export default function RootLayout() {
 
     getDatabase()
       .then(() => {
-    configureAlarmEngine();
-    if (mounted) {
+        if (mounted) {
           setReady(true);
         }
       })
@@ -59,7 +57,6 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="dev" />
       </Stack>
     </>
   );

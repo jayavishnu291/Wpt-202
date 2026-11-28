@@ -1,124 +1,311 @@
 
-import React, { useState } from 'react';
-import { Text, StyleSheet, Pressable, Switch, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { t } from '../../../t';
+import { useState } from 'react';
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 
-export default function SetTimesScreen() {
-  const [bedtime, setBedtime] = useState('23:00');
-  const [wakeTime, setWakeTime] = useState('07:00');
-  const [reminder, setReminder] = useState(true);
+const COLORS = {
+  background: '#F7F5EF',
+  white: '#FFFFFF',
+  text: '#1E2430',
+  textSoft: '#4A5160',
+  accent: '#3A7D44',
+  accentPressed: '#2F6638',
+  border: '#E6E4DC',
+};
 
+const TOP_SPACE =
+  Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) + 16 : 56;
+
+interface SetTimesScreenProps {
+  initialBedtime?: { hours: number; minutes: number };
+  initialWakeUpTime?: { hours: number; minutes: number };
+  initialReminderEnabled?: boolean;
+  showReminder?: boolean;
+  onContinue: (settings: {
+    bedtime: { hours: number; minutes: number };
+    wakeUpTime: { hours: number; minutes: number };
+    reminderEnabled: boolean;
+  }) => void;
+  onBack: () => void;
+}
+
+function formatTime(hours: number, minutes: number): string {
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const displayHour = hours % 12 || 12;
+  return `${displayHour}:${String(minutes).padStart(2, '0')} ${period}`;
+}
+
+function adjustTime(
+  time: { hours: number; minutes: number },
+  change: number,
+) {
+  const total = (time.hours * 60 + time.minutes + change + 1440) % 1440;
+  return {
+    hours: Math.floor(total / 60),
+    minutes: total % 60,
+  };
+}
+
+function TimePicker({
+  label,
+  time,
+  onChange,
+}: {
+  label: string;
+  time: { hours: number; minutes: number };
+  onChange: (time: { hours: number; minutes: number }) => void;
+}) {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>
-        {t('onboarding.timesTitle')}
-      </Text>
+    <View style={styles.timeCard}>
+      <Text style={styles.timeLabel}>{label}</Text>
 
-      <Text style={styles.label}>
-        {t('onboarding.bedtimeLabel')}
-      </Text>
-      <Pressable
-        style={styles.timeButton}
-        onPress={() =>
-          setBedtime(bedtime === '23:00' ? '22:00' : '23:00')
-        }
-      >
-        <Text style={styles.timeText}>{bedtime}</Text>
-        <Text style={styles.hint}>Tap to change</Text>
-      </Pressable>
+      <View style={styles.timeControls}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Earlier ${label}`}
+          onPress={() => onChange(adjustTime(time, -30))}
+          style={styles.adjustButton}
+        >
+          <Text style={styles.adjustText}>−</Text>
+        </Pressable>
 
-      <Text style={styles.label}>
-        {t('onboarding.wakeTimeLabel')}
-      </Text>
-      <Pressable
-        style={styles.timeButton}
-        onPress={() =>
-          setWakeTime(wakeTime === '07:00' ? '06:00' : '07:00')
-        }
-      >
-        <Text style={styles.timeText}>{wakeTime}</Text>
-        <Text style={styles.hint}>Tap to change</Text>
-      </Pressable>
-
-      <View style={styles.reminderRow}>
-        <Text style={styles.reminderText}>
-          {t('onboarding.bedtimeReminder')}
+        <Text style={styles.timeValue}>
+          {formatTime(time.hours, time.minutes)}
         </Text>
-        <Switch
-          value={reminder}
-          onValueChange={setReminder}
-        />
+
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Later ${label}`}
+          onPress={() => onChange(adjustTime(time, 30))}
+          style={styles.adjustButton}
+        >
+          <Text style={styles.adjustText}>+</Text>
+        </Pressable>
       </View>
 
-      <Pressable
-        style={styles.button}
-        onPress={() => router.replace('/(tabs)')}
+      <Text style={styles.helper}>Adjust in 30-minute steps</Text>
+    </View>
+  );
+}
+
+export default function SetTimesScreen({
+  initialBedtime = { hours: 23, minutes: 0 },
+  initialWakeUpTime = { hours: 7, minutes: 0 },
+  initialReminderEnabled = true,
+  showReminder = true,
+  onContinue,
+  onBack,
+}: SetTimesScreenProps) {
+  const [bedtime, setBedtime] = useState(initialBedtime);
+  const [wakeUpTime, setWakeUpTime] = useState(initialWakeUpTime);
+  const [reminderEnabled, setReminderEnabled] = useState(
+    initialReminderEnabled,
+  );
+
+  return (
+    <View style={styles.root}>
+      <ScrollView
+        contentContainerStyle={[styles.content, { paddingTop: TOP_SPACE }]}
+        showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.buttonText}>
-          {t('onboarding.timesSave')}
+        <Pressable
+          accessibilityRole="button"
+          onPress={onBack}
+          style={styles.backButton}
+        >
+          <Text style={styles.backText}>‹ Back</Text>
+        </Pressable>
+
+        <Text accessibilityRole="header" style={styles.heading}>
+          Set your times
         </Text>
-      </Pressable>
-    </SafeAreaView>
+
+        <Text style={styles.subtitle}>
+          Choose when your day ends and when your morning begins. You can
+          change these later.
+        </Text>
+
+        <TimePicker
+          label="Bedtime"
+          time={bedtime}
+          onChange={setBedtime}
+        />
+
+        <TimePicker
+          label="Wake-up time"
+          time={wakeUpTime}
+          onChange={setWakeUpTime}
+        />
+
+        {showReminder && (
+          <View style={styles.reminderCard}>
+            <View style={styles.reminderText}>
+              <Text style={styles.reminderTitle}>
+                Remind me at bedtime
+              </Text>
+              <Text style={styles.helper}>
+                Get a gentle reminder when bedtime arrives.
+              </Text>
+            </View>
+
+            <Switch
+              value={reminderEnabled}
+              onValueChange={setReminderEnabled}
+              trackColor={{ false: '#C9C9C9', true: '#A6CDAA' }}
+              thumbColor={reminderEnabled ? COLORS.accent : '#F4F3F0'}
+              accessibilityLabel="Remind me at bedtime"
+            />
+          </View>
+        )}
+      </ScrollView>
+
+      <View style={styles.footer}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() =>
+            onContinue({
+              bedtime,
+              wakeUpTime,
+              reminderEnabled: showReminder
+                ? reminderEnabled
+                : false,
+            })
+          }
+          style={({ pressed }) => [
+            styles.button,
+            pressed && styles.buttonPressed,
+          ]}
+        >
+          <Text style={styles.buttonText}>Continue</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    padding: 25,
+    backgroundColor: COLORS.background,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: 35,
+  content: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
-  label: {
+  backButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 10,
+    paddingRight: 20,
+    marginBottom: 18,
+  },
+  backText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#555555',
+    color: COLORS.accent,
+  },
+  heading: {
+    fontSize: 30,
+    lineHeight: 38,
+    fontWeight: '700',
+    color: COLORS.text,
     marginBottom: 10,
   },
-  timeButton: {
-    backgroundColor: '#F2F0FF',
-    padding: 18,
-    borderRadius: 12,
-    marginBottom: 25,
+  subtitle: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLORS.textSoft,
+    marginBottom: 26,
   },
-  timeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#6C63FF',
+  timeCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: 20,
+    marginBottom: 16,
   },
-  hint: {
-    fontSize: 12,
-    color: '#888888',
-    marginTop: 5,
+  timeLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.textSoft,
+    marginBottom: 16,
   },
-  reminderRow: {
+  timeControls: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 35,
+    justifyContent: 'space-between',
+  },
+  adjustButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: '#EDF2E9',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  adjustText: {
+    fontSize: 26,
+    fontWeight: '600',
+    color: COLORS.accent,
+  },
+  timeValue: {
+    fontSize: 25,
+    fontWeight: '700',
+    color: COLORS.text,
+  },
+  helper: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: COLORS.textSoft,
+    marginTop: 12,
+  },
+  reminderCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: 18,
+    marginTop: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   reminderText: {
-    fontSize: 15,
-    color: '#555555',
     flex: 1,
+    paddingRight: 12,
+  },
+  reminderTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.text,
+  },
+  footer: {
+    paddingHorizontal: 24,
+    paddingTop: 10,
+    paddingBottom: Platform.OS === 'ios' ? 28 : 16,
   },
   button: {
-    backgroundColor: '#6C63FF',
-    padding: 16,
-    borderRadius: 12,
+    minHeight: 56,
+    borderRadius: 16,
+    backgroundColor: COLORS.accent,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonPressed: {
+    backgroundColor: COLORS.accentPressed,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '700',
+    color: COLORS.white,
   },
 });
