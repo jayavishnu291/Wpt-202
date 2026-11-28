@@ -21,7 +21,7 @@ import { Pressable, Text, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
 
 import { t } from "../../text";
-import { minTouchSize, radius, spacing, useTheme } from "../theme";
+import { fontFamilies, minTouchSize, radius, spacing, useTheme } from "../theme";
 import { AppText } from "./AppText";
 
 export type BannerProps = {
@@ -94,7 +94,7 @@ export function Banner({
               text.small,
               {
                 color: colors.warningText,
-                fontFamily: "Nunito_700Bold",
+                fontFamily: fontFamilies.bold,
                 lineHeight: 18,
                 textAlign: "center",
               },
