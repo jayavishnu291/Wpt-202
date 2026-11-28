@@ -426,6 +426,7 @@ export default function AlarmListScreen({ onAdd, onEdit }: Props) {
             style={styles.addButton}
             onPress={onAdd}
             accessibilityRole="button"
+            accessibilityLabel={t('alarmList.add')}
             disabled={busyAlarmId !== null}
           >
             <Text style={styles.addButtonText}>

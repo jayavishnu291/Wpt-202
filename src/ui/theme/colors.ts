@@ -31,6 +31,7 @@ export const dayColors: ThemeColors = {
   background: "#F7F5EF",
   surface: "#FFFFFF",
   card: "#FFFFFF",
+  // text-ok: theme colour token, not on-screen text
   text: "#1E2430",
   mutedText: "#55606E",
   textSecondary: "#55606E",
@@ -55,6 +56,7 @@ export const nightColors: ThemeColors = {
   background: "#0B1020",
   surface: "#161C30",
   card: "#161C30",
+  // text-ok: theme colour token, not on-screen text
   text: "#E8ECF5",
   mutedText: "#A8B0C4",
   textSecondary: "#A8B0C4",

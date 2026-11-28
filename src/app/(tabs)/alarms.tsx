@@ -70,11 +70,35 @@ export default function AlarmsScreen() {
       setSelectedAlarm(null);
     } catch (error) {
       console.error('Unable to save alarm:', error);
-
-      Alert.alert(
-        t('common.error'),
-        t('alarmEdit.saveFailed'),
-      );
+      if (error instanceof Error && error.message === 'Duplicate alarm.') {
+        Alert.alert(
+          t('alarmEdit.invalidTimeTitle'),
+          t('alarmEdit.duplicateAlarmMessage'),
+        );
+      } else if (
+        error instanceof Error &&
+        error.message === 'Alarm limit reached.'
+      ) {
+        Alert.alert(
+          t('alarmList.limitReachedTitle'),
+          t('alarmList.limitReachedMessage', {
+            count: rules.alarms.maximumAlarms,
+          }),
+        );
+      } else if (
+        error instanceof Error &&
+        error.message === 'Alarm label is too long.'
+      ) {
+        Alert.alert(
+          t('alarmEdit.labelTitle'),
+          t('alarmEdit.labelLimitMessage'),
+        );
+      } else {
+        Alert.alert(
+          t('common.error'),
+          t('alarmEdit.saveFailed'),
+        );
+      }
     }
   };
 

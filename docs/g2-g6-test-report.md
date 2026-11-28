@@ -2,44 +2,88 @@
 
 ## Environment
 
-- Platform: Expo SDK 58 / React Native 0.88
-- Branch: `golf/navigation`
-- Automated test date: 2026-11-20
-- Phone brand: Pending
-- Phone model: Pending
-- Android version: Pending
+- Platform: Expo SDK 58 / React Native 0.88.1
+- Working repository: `C:\Users\BHUVANESWARI V\WPT-202-sync`
+- Integration branch: `golf/sprint1-integration`
+- Base commit: `c619ace0a3471fc2f2492747d46331e2ea821c16`
+- Report updated: 2026-11-28
+- Phone brand/model/Android version: **PENDING**
+- Android SDK / `adb`: **NOT AVAILABLE**
 
-## Test Results
+## Automated validation actually executed
 
-| Test case | Expected result | Actual result | Status | Bug details |
-|---|---|---|---|---|
-| Home tab navigation | Home opens through Expo Router | Home route is registered and uses an Expo Router link | Pass | None |
-| Onboarding navigation | Welcome, how-it-works, and set-times screens transition correctly | Expo Router links and replace navigation are implemented | Pass | None |
-| Focus navigation | Setup, running, and result screens transition correctly | Expo Router links and replace navigation are implemented | Pass | None |
-| Alarm list | Saved alarms are displayed | Database-backed alarm list loads from `listAlarms` | Pass | None |
-| Alarm empty state | Empty state is shown without alarms | Correct empty card is rendered | Pass | None |
-| Disabled alarm | Disabled alarm remains visible and editable | Disabled state is stored and displayed | Pass | None |
-| Five-alarm limit | No sixth alarm can be added | UI and repository enforce the maximum of five | Pass | None |
-| Alarm updates | Toggle, edit, save, and delete update the list | State and database operations update the list | Pass | None |
-| Duplicate alarm | Duplicate time and repeat-day entries are rejected | Repository and screen both validate duplicates | Pass | None |
-| Invalid alarm data | Invalid time and repeat-day values are rejected safely | Validation and safe row parsing reject invalid data | Pass | None |
-| Add alarm | New alarm can be created | Alarm edit screen creates and saves a new alarm | Pending device | Requires Android Dev APK testing |
-| Edit alarm | Existing values are preserved and can be changed | Initial alarm values populate the editor | Pass | None |
-| Repeat-day circles | Day selections can be added or removed | Repeat-day buttons update `repeat_days` | Pending device | Requires Android Dev APK testing |
-| Alarm label | Optional label can be entered and saved | Label input limits input to the configured character maximum | Pass | None |
-| Alarm mission | Maths or Shake mission can be selected | Mission selection and mission-specific fields are implemented | Pending device | Requires Android Dev APK testing |
-| Alarm sound preview | Selected sound can be previewed | Expo Audio preview is implemented | Pending device | Native audio/device testing required |
-| Android visual layout | Alarm screens fit Android layouts | Static implementation complete | Pending device | Device testing required |
+| Command | Result |
+|---|---|
+| `npm run typecheck` | **PASSED** |
+| `npm run lint` | **PASSED** |
+| `npm test -- --runInBand` | **PASSED**: 13 suites, 196 tests |
+| `npm run test:data -- --runInBand` | **PASSED**: 5 suites, 13 tests |
+| `npm run check:text` | **PASSED**: 25 files scanned, 0 problems |
+| `npm run test:text` | **PASSED**: 14 tests |
 
-## Automated Evidence
+## G2 code inspection and implementation
 
-- `npm run lint`: Passed.
-- `npm run typecheck`: Passed.
-- `npm test -- --runInBand`: 13 suites passed, 197 tests passed.
-- `npm run test:text`: 13 text tests passed.
-- `npm run check:text`: 16 files scanned, 0 problems.
-- Metro `http://127.0.0.1:8081/status`: HTTP 200.
+- The four bottom tabs remain registered: Home, History, Alarms and Settings.
+- Onboarding and Focus are root-level Expo Router stacks and remain outside the bottom-tab navigator.
+- The onboarding child components are stored under `src/ui/onboarding/`; `src/app/onboarding/` contains only `index.tsx`, so no helper route is exposed.
+- The active Focus screen handles Android hardware back presses by consuming the event while mounted.
+- The active Focus screen now has a real countdown and removes its back listener and interval on unmount.
+- Tab bar height includes the safe-area bottom inset.
+- Safe-area views are used by tabs, onboarding, alarms and Focus screens.
+- Shared strings use `t()` and visible/accessibility strings are in `src/text/en.ts`.
+- No obsolete translation imports or broken navigation paths were found.
 
-## Pending Dependency
+### G2 physical tests remaining
 
-Team Hotel has not provided `expo-dev-client` or a matching Android development APK. Physical Android testing cannot be completed until the development build is installed.
+All G2 physical-device checks remain PENDING:
+
+- Verify the four tabs on Android.
+- Verify onboarding and Focus do not show the bottom tab bar.
+- Press Android hardware back during an active Focus session.
+- Verify notch/status-bar and bottom-navigation safe areas.
+- Verify old onboarding helper deep links do not open standalone routes.
+
+## G6 code inspection and implementation
+
+- Maximum alarm count is enforced at the UI and repository levels.
+- Add Alarm is hidden at five alarms.
+- Create, edit, enable, disable, delete and delete confirmation are implemented.
+- Time, repeat days and label editing are implemented.
+- Label limits use `Intl.Segmenter` grapheme clusters with a Unicode-aware fallback.
+- Repository validation now accepts 30 user-perceived label characters and rejects labels above the limit.
+- Maths and Shake missions are implemented; Shake is controlled by `SW-06`.
+- Maths validation enforces configured difficulty and problem limits.
+- Morning Bell, Soft Chimes, Birdsong, Rising Tone, Classic Beep and Strong Bell are available with preview playback.
+- Vibration and snooze persist; snooze remains platform/feature aware.
+- Defaults are 07:00, every day, Maths medium, two problems, Morning Bell, vibration enabled and snooze disabled.
+- Database persistence uses the existing `DatabaseAdapter` and alarm repository.
+- No duplicate database implementation or database bypass was added.
+- Schema migration 002 preserves existing alarm rows and sets the database-level snooze default to disabled.
+- Invalid time, repeat days, label, mission, level, count and sound values are rejected at repository boundaries where applicable.
+
+### G6 physical tests remaining
+
+All G6 physical-device checks remain PENDING:
+
+- Create five alarms and verify Add disappears, then reappears after deletion.
+- Edit and persist every alarm field.
+- Verify FR-AL-03 defaults on a new alarm.
+- Enter 30/35 plain characters and emoji/ZWJ/combining-character labels.
+- Verify all six sound previews on the target Android runtime.
+- Toggle vibration and snooze.
+- Temporarily set `SW-06` false and verify Shake visibility/saving; restore the flag afterward.
+- Verify alarm scheduling, ringing and mission behavior on a physical Android phone.
+
+## Hotel review
+
+**PENDING.** The alarm repository and migration changes require Hotel approval before they are considered accepted integration work:
+
+- Grapheme-aware label validation and legacy-row truncation.
+- Mission, level, count and sound validation.
+- Alarm schema migration 002 and the snooze default.
+
+No Hotel approval has been claimed.
+
+## Android physical testing
+
+**NOT COMPLETED.** No Android device or SDK/`adb` environment was available for this pass. No physical result is reported as passed.

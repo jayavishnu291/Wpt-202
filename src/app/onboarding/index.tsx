@@ -9,12 +9,16 @@ import { useRouter } from 'expo-router';
 
 import { isOn } from '../../../config/rules';
 import { getSettings, saveSettings } from '../../services/data';
+import { t } from '../../text/t';
 
-import WelcomeScreen from './welcome';
-import HowItWorksScreen from './how-it-works';
-import SetTimesScreen from './set-times';
-import PermissionSheet from './permission-sheet';
-import OemGuideScreen from './oem-guide';
+// Child screens are UI components, not Expo Router routes. They live outside
+// src/app so direct URLs such as /onboarding/welcome cannot render them with
+// missing callbacks.
+import WelcomeScreen from '../../ui/onboarding/welcome';
+import HowItWorksScreen from '../../ui/onboarding/how-it-works';
+import SetTimesScreen from '../../ui/onboarding/set-times';
+import PermissionSheet from '../../ui/onboarding/permission-sheet';
+import OemGuideScreen from '../../ui/onboarding/oem-guide';
 
 type Step =
   | 'loading'
@@ -65,7 +69,7 @@ export default function OnboardingFlow() {
         console.error('Failed to load onboarding settings:', error);
 
         if (mounted) {
-          setErrorMessage('Unable to load your settings. Please restart the app.');
+          setErrorMessage(t('onboarding.loadError'));
           setStep('error');
         }
       });
@@ -95,7 +99,7 @@ export default function OnboardingFlow() {
       setStep('permissions');
     } catch (error) {
       console.error('Failed to save onboarding settings:', error);
-      setErrorMessage('Unable to save your settings. Please try again.');
+      setErrorMessage(t('onboarding.saveError'));
       setStep('error');
     }
   };
@@ -106,7 +110,7 @@ export default function OnboardingFlow() {
       router.replace('/(tabs)');
     } catch (error) {
       console.error('Failed to complete onboarding:', error);
-      setErrorMessage('Unable to finish setup. Please try again.');
+      setErrorMessage(t('onboarding.finishError'));
       setStep('error');
     }
   };

@@ -2,6 +2,7 @@
 import { getDatabase } from '../db';
 import type { DatabaseAdapter } from '../db/adapter';
 import { rules } from '../../../config/rules';
+import { countLabelCharacters, limitLabel } from '../../domain/label';
 
 export interface Alarm {
   id: string;
@@ -60,7 +61,7 @@ function fromRow(row: AlarmRow): Alarm | null {
   const alarm: Alarm = {
     ...row,
     label: typeof row.label === 'string'
-      ? row.label.slice(0, rules.alarms.maximumLabelCharacters)
+      ? limitLabel(row.label)
       : '',
     repeat_days: [...new Set(repeatDays)],
     enabled: row.enabled === 1,
@@ -108,8 +109,59 @@ export async function saveAlarm(
     throw new Error('Alarm repeat days are invalid.');
   }
 
-  if (alarm.label.length > rules.alarms.maximumLabelCharacters) {
+  if (countLabelCharacters(alarm.label) > rules.alarms.maximumLabelCharacters) {
     throw new Error('Alarm label is too long.');
+  }
+
+  if (
+    alarm.mission_type !== null &&
+    alarm.mission_type !== 'math' &&
+    alarm.mission_type !== 'maths' &&
+    alarm.mission_type !== 'shake'
+  ) {
+    throw new Error('Alarm mission is invalid.');
+  }
+
+  if (
+    alarm.sound !== null &&
+    ![
+      'morning-bell',
+      'soft-chimes',
+      'birdsong',
+      'rising-tone',
+      'classic-beep',
+      'strong-bell',
+    ].includes(alarm.sound)
+  ) {
+    throw new Error('Alarm sound is invalid.');
+  }
+
+  if (alarm.mission_type === 'math' || alarm.mission_type === 'maths') {
+    if (
+      alarm.level !== null &&
+      !rules.alarms.mathsDifficultyLevels.some((level) => level === alarm.level)
+    ) {
+      throw new Error('Alarm mission level is invalid.');
+    }
+
+    if (
+      alarm.count !== null &&
+      (
+        alarm.count < rules.alarms.mathsMinimumProblems ||
+        alarm.count > rules.alarms.mathsMaximumProblems
+      )
+    ) {
+      throw new Error('Alarm mission count is invalid.');
+    }
+  }
+
+  if (alarm.mission_type === 'shake') {
+    if (
+      alarm.level !== null &&
+      !rules.alarms.shakeLevels.some((level) => level === alarm.level)
+    ) {
+      throw new Error('Alarm mission level is invalid.');
+    }
   }
 
   const existing = await listAlarms(db);

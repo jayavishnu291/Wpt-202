@@ -8,26 +8,17 @@
  * SELF-CONTAINED: imports only from 'react' and 'react-native'.
  * - NAVIGATION IS NOT CONNECTED. The button calls the optional `onGetStarted`
  *   prop. When nothing is passed, it only logs in development.
- * - Text is kept in one TEXT object below, ready to move into the shared text
- *   file and be replaced by the shared t() function (see the notes at the end).
+ * - Text comes from the shared text system through t().
  */
 import { Platform, Pressable, ScrollView, StatusBar, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-
-// ---------------------------------------------------------------------------
-// Text (move to the shared text file and use t() when it exists)
-// ---------------------------------------------------------------------------
-const TEXT = {
-  title: 'Grow flowers by day. Collect stars by night.',
-  message: 'Put your phone down and watch your garden and night sky grow. Free, with no account needed.',
-  button: 'Get started',
-  buttonHint: 'Goes to the next screen, How it works',
-} as const;
+import { t } from '../../text/t';
 
 // ---------------------------------------------------------------------------
 // Look (Day theme from PRD 8.1; the illustration colours are placeholders)
 // ---------------------------------------------------------------------------
 const COLORS = {
   background: '#F7F5EF',
+  // text-ok: colour token, not on-screen text
   text: '#1E2430',
   textSoft: '#4A5160', // softer text, still above 4.5:1 contrast on the background
   accent: '#3A7D44',
@@ -160,20 +151,20 @@ export default function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
       >
         <Illustration width={illustrationWidth} height={illustrationHeight} />
         <Text accessibilityRole="header" style={styles.title}>
-          {TEXT.title}
+          {t('onboarding.welcomeTitle')}
         </Text>
-        <Text style={styles.message}>{TEXT.message}</Text>
+        <Text style={styles.message}>{t('onboarding.welcomeMessage')}</Text>
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: BOTTOM_SPACE }]}>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={TEXT.button}
-          accessibilityHint={TEXT.buttonHint}
+          accessibilityLabel={t('onboarding.getStarted')}
+          accessibilityHint={t('onboarding.welcomeButtonHint')}
           onPress={handleGetStarted}
           style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
         >
-          <Text style={styles.buttonText}>{TEXT.button}</Text>
+          <Text style={styles.buttonText}>{t('onboarding.getStarted')}</Text>
         </Pressable>
       </View>
     </View>

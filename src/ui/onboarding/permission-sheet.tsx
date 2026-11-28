@@ -6,11 +6,13 @@ import {
   Text,
   View,
 } from 'react-native';
+import { t, type TextKey } from '../../text/t';
 
 const COLORS = {
   overlay: 'rgba(11, 16, 32, 0.55)',
   background: '#F7F5EF',
   white: '#FFFFFF',
+  // text-ok: colour token, not on-screen text
   text: '#1E2430',
   textSoft: '#4A5160',
   accent: '#3A7D44',
@@ -27,42 +29,36 @@ export type PermissionType =
 
 const PERMISSION_CONTENT: Record<
   PermissionType,
-  { title: string; message: string; icon: string }
+  { titleKey: TextKey; messageKey: TextKey; icon: string }
 > = {
   notifications: {
-    title: 'Allow notifications',
-    message:
-      'Notifications can gently remind you when bedtime arrives and help you stay connected with your daily routine.',
+    titleKey: 'onboarding.permissionContent.notifications.title',
+    messageKey: 'onboarding.permissionContent.notifications.message',
     icon: '\u{1F514}',
   },
   alarms: {
-    title: 'Allow alarms',
-    message:
-      'Alarm access helps the app remind you when it is time to wake up.',
+    titleKey: 'onboarding.permissionContent.alarms.title',
+    messageKey: 'onboarding.permissionContent.alarms.message',
     icon: '\u{23F0}',
   },
   exactAlarms: {
-    title: 'Allow exact alarms',
-    message:
-      'Exact alarm access helps schedule your wake-up alarm at the time you choose.',
+    titleKey: 'onboarding.permissionContent.exactAlarms.title',
+    messageKey: 'onboarding.permissionContent.exactAlarms.message',
     icon: '\u{23F0}',
   },
   fullScreenAlarm: {
-    title: 'Allow full-screen alarms',
-    message:
-      'Full-screen alarm access helps your wake-up alarm appear clearly when it is time to wake up.',
+    titleKey: 'onboarding.permissionContent.fullScreenAlarm.title',
+    messageKey: 'onboarding.permissionContent.fullScreenAlarm.message',
     icon: '\u{1F305}',
   },
   usageAccess: {
-    title: 'Allow usage access',
-    message:
-      'Usage access helps the app understand when your phone is being used so it can support your nighttime routine.',
+    titleKey: 'onboarding.permissionContent.usageAccess.title',
+    messageKey: 'onboarding.permissionContent.usageAccess.message',
     icon: '\u{1F4F1}',
   },
   displayOverApps: {
-    title: 'Allow display over other apps',
-    message:
-      'This access can help important alarm screens appear above other apps when needed.',
+    titleKey: 'onboarding.permissionContent.displayOverApps.title',
+    messageKey: 'onboarding.permissionContent.displayOverApps.message',
     icon: '\u{1F4AC}',
   },
 };
@@ -83,8 +79,8 @@ export default function PermissionSheet({
   permissionType = 'notifications',
   title,
   message,
-  continueLabel = 'Continue',
-  notNowLabel = 'Not now',
+  continueLabel = t('onboarding.permissionContinue'),
+  notNowLabel = t('onboarding.permissionNotNow'),
   onContinue,
   onNotNow,
 }: PermissionSheetProps) {
@@ -107,15 +103,15 @@ export default function PermissionSheet({
           </View>
 
           <Text accessibilityRole="header" style={styles.title}>
-            {title ?? content.title}
+            {title ?? t(content.titleKey)}
           </Text>
 
           <Text style={styles.message}>
-            {message ?? content.message}
+            {message ?? t(content.messageKey)}
           </Text>
 
           <Text style={styles.note}>
-            You can make this choice later in your settings.
+            {t('onboarding.permissionNote')}
           </Text>
 
           <Pressable

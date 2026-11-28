@@ -8,10 +8,12 @@ import {
   Text,
   View,
 } from 'react-native';
+import { t, type TextKey } from '../../text/t';
 
 const COLORS = {
   background: '#F7F5EF',
   white: '#FFFFFF',
+  // text-ok: colour token, not on-screen text
   text: '#1E2430',
   textSoft: '#4A5160',
   accent: '#3A7D44',
@@ -20,60 +22,12 @@ const COLORS = {
 };
 
 const GUIDES = [
-  {
-    brand: 'Xiaomi / Redmi / POCO',
-    steps: [
-      'Open Settings and select Apps.',
-      'Find your app under Manage apps.',
-      'Open Battery saver and choose No restrictions, if available.',
-      'Check Autostart and allow it if your device provides that option.',
-    ],
-  },
-  {
-    brand: 'Samsung',
-    steps: [
-      'Open Settings and select Battery.',
-      'Open Background usage limits.',
-      'Check Sleeping apps and Deep sleeping apps.',
-      'If needed, add your app to Never sleeping apps.',
-    ],
-  },
-  {
-    brand: 'OnePlus / OPPO / realme',
-    steps: [
-      'Open Settings and find Battery settings.',
-      'Look for App battery management or Background activity.',
-      'Allow background activity for your app, if available.',
-      'Check Auto launch or Startup manager if your device provides it.',
-    ],
-  },
-  {
-    brand: 'Vivo / iQOO',
-    steps: [
-      'Open Settings and find Battery.',
-      'Look for Background power consumption management.',
-      'Allow background activity for your app, if available.',
-      'Check Autostart settings if your device provides them.',
-    ],
-  },
-  {
-    brand: 'Huawei / HONOR',
-    steps: [
-      'Open Settings and select Apps.',
-      'Find your app and open App launch settings.',
-      'If available, manage automatic launch and background activity manually.',
-      'Allow the background activity needed by your app.',
-    ],
-  },
-  {
-    brand: 'Pixel / Stock Android',
-    steps: [
-      'Open Settings and select Apps.',
-      'Choose your app and open App battery usage.',
-      'Review the background usage setting.',
-      'Allow background usage if required by your device.',
-    ],
-  },
+  { id: 'xiaomi' },
+  { id: 'samsung' },
+  { id: 'oneplus' },
+  { id: 'vivo' },
+  { id: 'huawei' },
+  { id: 'pixel' },
 ] as const;
 
 const TOP_SPACE =
@@ -99,36 +53,38 @@ export default function OemGuideScreen({
           onPress={onBack}
           style={styles.backButton}
         >
-          <Text style={styles.backText}>‹ Back</Text>
+          <Text style={styles.backText}>‹ {t('common.back')}</Text>
         </Pressable>
 
         <Text accessibilityRole="header" style={styles.heading}>
-          Phone settings guide
+          {t('onboarding.oemGuide.title')}
         </Text>
 
         <Text style={styles.subtitle}>
-          Some Android phones limit background activity to save battery.
-          Choose your phone brand to see where these settings may be found.
+          {t('onboarding.oemGuide.subtitle')}
         </Text>
 
         {GUIDES.map((guide) => (
-          <View key={guide.brand} style={styles.card}>
-            <Text style={styles.brand}>{guide.brand}</Text>
+          <View key={guide.id} style={styles.card}>
+            <Text style={styles.brand}>
+              {t(`onboarding.oemGuide.${guide.id}.brand`)}
+            </Text>
 
-            {guide.steps.map((step, index) => (
-              <View key={index} style={styles.step}>
+            {[1, 2, 3, 4].map((stepNumber) => (
+              <View key={stepNumber} style={styles.step}>
                 <View style={styles.stepNumber}>
-                  <Text style={styles.stepNumberText}>{index + 1}</Text>
+                  <Text style={styles.stepNumberText}>{stepNumber}</Text>
                 </View>
-                <Text style={styles.stepText}>{step}</Text>
+                <Text style={styles.stepText}>
+                  {t(`onboarding.oemGuide.${guide.id}.step${stepNumber}` as TextKey)}
+                </Text>
               </View>
             ))}
           </View>
         ))}
 
         <Text style={styles.disclaimer}>
-          Settings names and availability vary by phone model and Android
-          version. You can skip these steps and review them later.
+          {t('onboarding.oemGuide.disclaimer')}
         </Text>
       </ScrollView>
 
@@ -141,7 +97,7 @@ export default function OemGuideScreen({
             pressed && styles.buttonPressed,
           ]}
         >
-          <Text style={styles.buttonText}>Continue to garden</Text>
+          <Text style={styles.buttonText}>{t('onboarding.oemGuide.continueToGarden')}</Text>
         </Pressable>
       </View>
     </View>

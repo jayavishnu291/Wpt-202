@@ -10,10 +10,12 @@ import {
   Text,
   View,
 } from 'react-native';
+import { t } from '../../text/t';
 
 const COLORS = {
   background: '#F7F5EF',
   white: '#FFFFFF',
+  // text-ok: colour token, not on-screen text
   text: '#1E2430',
   textSoft: '#4A5160',
   accent: '#3A7D44',
@@ -38,7 +40,9 @@ interface SetTimesScreenProps {
 }
 
 function formatTime(hours: number, minutes: number): string {
-  const period = hours >= 12 ? 'PM' : 'AM';
+  const period = hours >= 12
+    ? t('onboarding.timePm')
+    : t('onboarding.timeAm');
   const displayHour = hours % 12 || 12;
   return `${displayHour}:${String(minutes).padStart(2, '0')} ${period}`;
 }
@@ -70,7 +74,7 @@ function TimePicker({
       <View style={styles.timeControls}>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={`Earlier ${label}`}
+          accessibilityLabel={`${t('onboarding.earlier')} ${label}`}
           onPress={() => onChange(adjustTime(time, -30))}
           style={styles.adjustButton}
         >
@@ -83,7 +87,7 @@ function TimePicker({
 
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={`Later ${label}`}
+          accessibilityLabel={`${t('onboarding.later')} ${label}`}
           onPress={() => onChange(adjustTime(time, 30))}
           style={styles.adjustButton}
         >
@@ -91,7 +95,7 @@ function TimePicker({
         </Pressable>
       </View>
 
-      <Text style={styles.helper}>Adjust in 30-minute steps</Text>
+      <Text style={styles.helper}>{t('onboarding.adjustTimeHint')}</Text>
     </View>
   );
 }
@@ -121,26 +125,25 @@ export default function SetTimesScreen({
           onPress={onBack}
           style={styles.backButton}
         >
-          <Text style={styles.backText}>‹ Back</Text>
+          <Text style={styles.backText}>‹ {t('common.back')}</Text>
         </Pressable>
 
         <Text accessibilityRole="header" style={styles.heading}>
-          Set your times
+          {t('onboarding.timesTitle')}
         </Text>
 
         <Text style={styles.subtitle}>
-          Choose when your day ends and when your morning begins. You can
-          change these later.
+          {t('onboarding.timesSubtitle')}
         </Text>
 
         <TimePicker
-          label="Bedtime"
+          label={t('onboarding.bedtimeLabel')}
           time={bedtime}
           onChange={setBedtime}
         />
 
         <TimePicker
-          label="Wake-up time"
+          label={t('onboarding.wakeTimeLabel')}
           time={wakeUpTime}
           onChange={setWakeUpTime}
         />
@@ -149,10 +152,10 @@ export default function SetTimesScreen({
           <View style={styles.reminderCard}>
             <View style={styles.reminderText}>
               <Text style={styles.reminderTitle}>
-                Remind me at bedtime
+                {t('onboarding.bedtimeReminder')}
               </Text>
               <Text style={styles.helper}>
-                Get a gentle reminder when bedtime arrives.
+                {t('onboarding.reminderHint')}
               </Text>
             </View>
 
@@ -161,7 +164,7 @@ export default function SetTimesScreen({
               onValueChange={setReminderEnabled}
               trackColor={{ false: '#C9C9C9', true: '#A6CDAA' }}
               thumbColor={reminderEnabled ? COLORS.accent : '#F4F3F0'}
-              accessibilityLabel="Remind me at bedtime"
+              accessibilityLabel={t('onboarding.bedtimeReminder')}
             />
           </View>
         )}
@@ -184,7 +187,7 @@ export default function SetTimesScreen({
             pressed && styles.buttonPressed,
           ]}
         >
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>{t('onboarding.continueButton')}</Text>
         </Pressable>
       </View>
     </View>

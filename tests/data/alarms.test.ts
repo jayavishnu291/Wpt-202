@@ -28,7 +28,7 @@ describe('Alarm repository', () => {
       mission_type: 'math',
       level: 2,
       count: 5,
-      sound: 'default',
+      sound: 'morning-bell',
       vibration: true,
       snooze_on: false,
       snoozes_used: 1,
@@ -51,7 +51,7 @@ describe('Alarm repository', () => {
       mission_type: 'math',
       level: 2,
       count: 5,
-      sound: 'default',
+      sound: 'morning-bell',
       vibration: true,
       snooze_on: false,
       snoozes_used: 0,
@@ -102,5 +102,48 @@ describe('Alarm repository', () => {
       next_trigger_at: null,
       skip_next: false,
     }, db)).rejects.toThrow('Alarm limit reached.');
+  });
+
+  it('accepts a grapheme-safe 30-character label and limits repository reads', async () => {
+    const alarm: Alarm = {
+      id: 'alarm-unicode',
+      time: '08:00',
+      repeat_days: [0, 1, 2, 3, 4, 5, 6],
+      label: '😀'.repeat(30),
+      enabled: true,
+      mission_type: 'math',
+      level: 2,
+      count: 2,
+      sound: 'morning-bell',
+      vibration: true,
+      snooze_on: false,
+      snoozes_used: 0,
+      next_trigger_at: null,
+      skip_next: false,
+    };
+
+    await expect(saveAlarm(alarm, db)).resolves.toBeUndefined();
+    await expect(listAlarms(db)).resolves.toEqual([alarm]);
+  });
+
+  it('rejects invalid mission and sound values', async () => {
+    const alarm: Alarm = {
+      id: 'alarm-validation',
+      time: '08:30',
+      repeat_days: [1],
+      label: 'Test',
+      enabled: true,
+      mission_type: 'invalid',
+      level: 2,
+      count: 2,
+      sound: 'invalid-sound',
+      vibration: true,
+      snooze_on: false,
+      snoozes_used: 0,
+      next_trigger_at: null,
+      skip_next: false,
+    };
+
+    await expect(saveAlarm(alarm, db)).rejects.toThrow('Alarm mission is invalid.');
   });
 });

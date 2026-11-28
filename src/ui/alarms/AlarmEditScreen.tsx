@@ -15,6 +15,7 @@ import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { isOn, rules, switches } from '../../../config/rules';
+import { countLabelCharacters, limitLabel } from '../../domain/label';
 import { t } from '../../text/t';
 import type { Alarm } from '../../services/data';
 import { useTheme } from '../theme';
@@ -111,12 +112,6 @@ function initialShakeLevel(alarm?: Alarm | null): number {
     rules.alarms.shakeLevels.some((value) => value === level)
     ? level
     : rules.alarms.shakeLevels[0];
-}
-
-function limitLabel(value: string): string {
-  return Array.from(value)
-    .slice(0, rules.alarms.maximumLabelCharacters)
-    .join('');
 }
 
 export default function AlarmEditScreen({
@@ -291,6 +286,7 @@ export default function AlarmEditScreen({
         <TouchableOpacity
           onPress={onCancel}
           accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
           style={styles.backButton}
         >
           <Text style={styles.backText}>
@@ -357,19 +353,20 @@ export default function AlarmEditScreen({
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>{t('alarmEdit.label')}</Text>
 
+          {/* Limit in onChangeText: native maxLength counts UTF-16 code units,
+              which would cut emoji labels off before 30 characters. */}
           <TextInput
             value={label}
             onChangeText={(value) => setLabel(limitLabel(value))}
             placeholder={t('alarmEdit.labelHint')}
             placeholderTextColor={colors.mutedText}
-            maxLength={rules.alarms.maximumLabelCharacters}
             accessibilityLabel={t('alarmEdit.label')}
             style={styles.textInput}
           />
 
           <Text style={styles.hint}>
             {t('alarmEdit.labelCharacters', {
-              count: Array.from(label).length,
+              count: countLabelCharacters(label),
               maximum: rules.alarms.maximumLabelCharacters,
             })}
           </Text>

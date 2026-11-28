@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -14,7 +14,12 @@ export default function FocusRunningScreen() {
   const { duration } = useLocalSearchParams<{ duration?: string }>();
 
   const minutes = Number(duration) || 25;
-  const timerText = `${minutes}:00`;
+  const [remainingSeconds, setRemainingSeconds] = useState(minutes * 60);
+  const timerText = `${Math.floor(remainingSeconds / 60)
+    .toString()
+    .padStart(2, '0')}:${(remainingSeconds % 60)
+    .toString()
+    .padStart(2, '0')}`;
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
@@ -22,15 +27,30 @@ export default function FocusRunningScreen() {
       () => true
     );
 
-    return () => subscription.remove();
-  }, []);
+    const interval = setInterval(() => {
+      setRemainingSeconds((current) =>
+        current > 0 ? current - 1 : 0,
+      );
+    }, 1000);
+
+    return () => {
+      subscription.remove();
+      clearInterval(interval);
+    };
+  }, [minutes]);
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{t('focus.runScreenTitle')}</Text>
 
       <View style={styles.timerCircle}>
-        <Text style={styles.timer}>{timerText}</Text>
+        <Text
+          style={styles.timer}
+          accessibilityRole="timer"
+          accessibilityLabel={t('focus.timeLeft', { time: timerText })}
+        >
+          {timerText}
+        </Text>
         <Text style={styles.label}>{t('focus.minutes')}</Text>
       </View>
 

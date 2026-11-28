@@ -8,9 +8,11 @@ import {
   View,
   Platform,
 } from 'react-native';
+import { t } from '../../text/t';
 
 const COLORS = {
   background: '#F7F5EF',
+  // text-ok: colour token, not on-screen text
   text: '#1E2430',
   textSoft: '#4A5160',
   accent: '#3A7D44',
@@ -25,23 +27,20 @@ const STEPS = [
   {
     number: '01',
     symbol: '\u{1F331}',
-    title: 'Focus to grow flowers',
-    description:
-      'Stay focused on what matters. Each completed focus session helps your garden grow.',
+    titleKey: 'onboarding.howPoint1',
+    descriptionKey: 'onboarding.howPoint1Description',
   },
   {
     number: '02',
     symbol: '\u{2B50}',
-    title: 'Put your phone down at night to collect stars',
-    description:
-      'Give yourself a break from your phone at night and collect stars for your garden.',
+    titleKey: 'onboarding.howPoint2',
+    descriptionKey: 'onboarding.howPoint2Description',
   },
   {
     number: '03',
     symbol: '\u{1F305}',
-    title: 'Wake up with a small mission',
-    description:
-      'Begin your morning with a gentle reminder and enjoy the garden you have grown.',
+    titleKey: 'onboarding.howPoint3',
+    descriptionKey: 'onboarding.howPoint3Description',
   },
 ] as const;
 
@@ -65,19 +64,19 @@ export default function HowItWorksScreen({
       >
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Go back"
+          accessibilityLabel={t('onboarding.howBack')}
           onPress={onBack}
           style={styles.backButton}
         >
-          <Text style={styles.backText}>‹ Back</Text>
+          <Text style={styles.backText}>‹ {t('common.back')}</Text>
         </Pressable>
 
         <Text accessibilityRole="header" style={styles.heading}>
-          How it works
+          {t('onboarding.howTitle')}
         </Text>
 
         <Text style={styles.subtitle}>
-          Small steps during the day and night help your garden grow.
+          {t('onboarding.howSubtitle')}
         </Text>
 
         {STEPS.map((step) => (
@@ -89,8 +88,8 @@ export default function HowItWorksScreen({
               <Text style={styles.number}>{step.number}</Text>
             </View>
 
-            <Text style={styles.cardTitle}>{step.title}</Text>
-            <Text style={styles.description}>{step.description}</Text>
+            <Text style={styles.cardTitle}>{t(step.titleKey)}</Text>
+            <Text style={styles.description}>{t(step.descriptionKey)}</Text>
           </View>
         ))}
       </ScrollView>
@@ -104,7 +103,7 @@ export default function HowItWorksScreen({
             pressed && styles.buttonPressed,
           ]}
         >
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>{t('onboarding.continueButton')}</Text>
         </Pressable>
       </View>
     </View>

@@ -1,5 +1,5 @@
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export const INITIAL_SCHEMA = `
 CREATE TABLE IF NOT EXISTS settings (
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS alarms (
   count INTEGER,
   sound TEXT,
   vibration INTEGER NOT NULL DEFAULT 1,
-  snooze_on INTEGER NOT NULL DEFAULT 1,
+  snooze_on INTEGER NOT NULL DEFAULT 0,
   snoozes_used INTEGER NOT NULL DEFAULT 0,
   next_trigger_at TEXT,
   skip_next INTEGER NOT NULL DEFAULT 0

@@ -20,6 +20,8 @@ export default function FocusSetupScreen() {
         <Pressable
           style={styles.adjustButton}
           onPress={() => setDuration(Math.max(5, duration - 5))}
+          accessibilityRole="button"
+          accessibilityLabel={t('focus.decreaseDuration')}
         >
           <Text style={styles.adjustText}>−</Text>
         </Pressable>
@@ -29,6 +31,8 @@ export default function FocusSetupScreen() {
         <Pressable
           style={styles.adjustButton}
           onPress={() => setDuration(Math.min(120, duration + 5))}
+          accessibilityRole="button"
+          accessibilityLabel={t('focus.increaseDuration')}
         >
           <Text style={styles.adjustText}>+</Text>
         </Pressable>
