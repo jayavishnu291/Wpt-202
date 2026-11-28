@@ -1,27 +1,32 @@
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Exact alarm scheduling -->
+    <!-- Exact alarm permissions -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
-    <!-- Alarm vibration and wake lock -->
+    <!-- Vibration, wake lock and audio -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <!-- Foreground ringing service -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
-    <!-- Alarm notifications and full-screen alerts -->
+    <!-- Notifications and full-screen alarm -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
-    <!-- Restore alarms after device restart -->
+    <!-- Restore alarms after restart -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application>
 
         <receiver
             android:name="expo.modules.alarmengine.AlarmReceiver"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="false" />
 
@@ -43,17 +48,20 @@
 
         <service
             android:name="expo.modules.alarmengine.AlarmRingingService"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="mediaPlayback" />
+            android:foregroundServiceType="systemExempted|mediaPlayback" />
 
         <activity
             android:name="expo.modules.alarmengine.AlarmRingActivity"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="false"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
-            android:excludeFromRecents="true" />
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask" />
 
     </application>
 

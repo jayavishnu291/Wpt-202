@@ -9,6 +9,7 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { getDatabase } from '../services/data';
+import { configureAlarmEngine } from '../services/alarmEngine';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -19,7 +20,8 @@ export default function RootLayout() {
 
     getDatabase()
       .then(() => {
-        if (mounted) {
+    configureAlarmEngine();
+    if (mounted) {
           setReady(true);
         }
       })
