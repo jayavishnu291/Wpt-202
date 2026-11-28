@@ -20,16 +20,10 @@ export default function SettingsScreen() {
       <Text style={styles.subtitle}>
         {t('settings.subtitle')}
       </Text>
-
-      {__DEV__ ? (
-        <Link href="/dev/session-monitor" asChild>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.devButton}
-          >
-            <Text style={styles.devButtonText}>
-              {t('developer.sessionMonitorTestTools')}
-            </Text>
+      {__DEV__ || process.env.EXPO_PUBLIC_BLOCKING_TEST === '1' ? (
+        <Link href="/dev" asChild>
+          <Pressable accessibilityRole="button" style={styles.devButton}>
+            <Text style={styles.devButtonText}>{t('developer.sessionMonitorTestTools')}</Text>
           </Pressable>
         </Link>
       ) : null}

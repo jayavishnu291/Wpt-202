@@ -1,3 +1,5 @@
+import { TIME_RULES } from '../../config/rules';
+
 // Pure time helpers. No React / RN / Expo imports. Never reads the clock:
 // every function receives "now" (or other times) as input.
 // PRD 9.5.1, 11.2, 12, 9.3 edge cases.
@@ -253,4 +255,58 @@ export function elapsedMs(startMonotonicMs: number, nowMonotonicMs: number): num
 
 export function elapsedMinutes(startMonotonicMs: number, nowMonotonicMs: number): number {
   return Math.floor(elapsedMs(startMonotonicMs, nowMonotonicMs) / MS_PER_MIN);
+}
+// Home screen theme and primary action helpers.
+export type HomePrimaryAction = "start_night" | "start_focus";
+
+function getHomeTimeParts(
+  now: Date,
+  bedtimeHours: number,
+  bedtimeMinutes: number,
+) {
+  const nowMs = now.getTime();
+
+  if (!Number.isFinite(nowMs)) {
+    throw new RangeError("now must be a valid Date");
+  }
+
+  const bedtimeMin = bedtimeHours * 60 + bedtimeMinutes;
+  validateMinuteOfDay(bedtimeMin, "bedtimeMin");
+
+  return {
+    nowMs,
+    offsetMinutes: -now.getTimezoneOffset(),
+    bedtimeMin,
+  };
+}
+
+export function shouldUseNightTheme(
+  now: Date,
+  bedtimeHours: number,
+  bedtimeMinutes: number,
+): boolean {
+  const { nowMs, offsetMinutes, bedtimeMin } = getHomeTimeParts(
+    now,
+    bedtimeHours,
+    bedtimeMinutes,
+  );
+
+  return isInNightWindow(nowMs, offsetMinutes, bedtimeMin, TIME_RULES);
+}
+
+export function getHomePrimaryAction(
+  now: Date,
+  bedtimeHours: number,
+  bedtimeMinutes: number,
+): HomePrimaryAction {
+  const { nowMs, offsetMinutes, bedtimeMin } = getHomeTimeParts(
+    now,
+    bedtimeHours,
+    bedtimeMinutes,
+  );
+
+  return isInNightWindow(nowMs, offsetMinutes, bedtimeMin, TIME_RULES) ||
+    isInLateStartPeriod(nowMs, offsetMinutes, bedtimeMin, TIME_RULES)
+    ? "start_night"
+    : "start_focus";
 }

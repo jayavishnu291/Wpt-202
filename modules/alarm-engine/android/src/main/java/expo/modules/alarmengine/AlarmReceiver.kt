@@ -10,6 +10,7 @@ class AlarmReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     val id = intent.getIntExtra("alarm_id", 1001)
     Log.i("WPT202AlarmEngine", "Alarm fired id=$id")
+    AlarmEngineConfig.log(context, "fired", "id=$id")
     AlarmStore.remove(context, id)
     val service = Intent(context, AlarmRingingService::class.java).putExtra("alarm_id", id)
     try {
@@ -17,6 +18,7 @@ class AlarmReceiver : BroadcastReceiver() {
       else context.startService(service)
     } catch (e: Exception) {
       Log.e("WPT202AlarmEngine", "Cannot start ringing service", e)
+      AlarmEngineConfig.log(context, "service_start_failed", e.javaClass.simpleName)
     }
   }
 }

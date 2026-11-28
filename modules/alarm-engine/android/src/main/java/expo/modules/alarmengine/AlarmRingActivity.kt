@@ -36,19 +36,19 @@ class AlarmRingActivity : Activity() {
         }
 
         val title = TextView(this).apply {
-            text = "WPT202 ALARM"
+            text = AlarmEngineConfig.text(this@AlarmRingActivity, "title", "Alarm")
             textSize = 30f
             gravity = Gravity.CENTER
         }
 
         val message = TextView(this).apply {
-            text = "Your alarm is ringing!"
+            text = AlarmEngineConfig.text(this@AlarmRingActivity, "body", "")
             textSize = 20f
             gravity = Gravity.CENTER
         }
 
         val stopButton = Button(this).apply {
-            text = "STOP ALARM"
+            text = AlarmEngineConfig.text(this@AlarmRingActivity, "stop", "Stop")
             textSize = 22f
 
             setOnClickListener {

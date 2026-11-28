@@ -1,4 +1,4 @@
-export { dayColors, nightColors, themeColors } from "./colors";
+export { dayColors, getTheme, nightColors, themeColors } from "./colors";
 export type { ThemeColors, ThemeMode } from "./colors";
 export { layout, minTouchSize, radius, spacing } from "./tokens";
 export { fontFamilies, textStyles } from "./typography";

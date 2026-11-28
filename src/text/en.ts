@@ -14,7 +14,9 @@
 export const en = {
   common: {
     back: "Back", // PROPOSED
+    close: "Close",
     cancel: "Cancel", // PROPOSED
+    estimate: "(estimate)",
     done: "Done", // PROPOSED
     fix: "Fix", // PRD AC-ON-3
     later: "Later", // PRD FR-ON-10
@@ -35,7 +37,10 @@ export const en = {
 
   // Developer-only tools
   developer: {
+    devTools: "Developer tools", // DEV ONLY, never in a store build
     sessionMonitorTestTools: "Session monitor test tools",
+    gardenTest: "FC-6 Garden Test",
+    openGardenTest: "Open FC-6 Garden Test",
   },
 
   // ---- S-01 to S-05 -------------------------------------------------------
@@ -292,6 +297,23 @@ export const en = {
     title: "Home",
     subtitle: "Grow flowers by day. Collect stars by night.",
     focusToday: "Focus today", // PROPOSED label for "today's focus minutes"
+    startFocusHint: "Starts a focus session to grow a flower",
+    startNightHint: "Starts night mode to collect stars",
+    lastNightTapHint: "Opens morning report",
+    starEarned: "Star earned",
+    faintStarEarned: "Faint star earned",
+    blockingDescription: "Block distracting apps during focus and sleep.",
+    blockingSetup: "Set up",
+    blockingSetupHint: "Opens app blocking setup",
+    scoreEstimateLabel: "Sleep score (estimate)",
+    morningReportTitle: "Morning Report (S-40)",
+    morningReportSubtitle: "Sleep summary and star reveal",
+    focusSetupTitle: "Focus Setup (S-11)",
+    focusSetupSubtitle: "Choose duration and start session",
+    nightModeTitle: "Night Mode (S-21)",
+    nightModeSubtitle: "Night session in progress",
+    appBlockingTitle: "App Blocking Setup (S-61)",
+    appBlockingSubtitle: "Choose apps to block during focus and sleep",
     nextAlarm: "Next alarm",
     nightStreak: "Night streak",
     streak: "{count} nights", // PROPOSED

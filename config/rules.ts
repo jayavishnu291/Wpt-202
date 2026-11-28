@@ -143,11 +143,16 @@ export const rules = {
   },
 } as const;
 
+export const TIME_RULES = {
+  nightWindowHalfHours: rules.night.windowBeforeBedtimeHours,
+  lateStartHours: rules.night.lateStartHours,
+} as const;
+
 export const switches = {
-  "SW-01": true, // iPhone lock detection
-  "SW-02": true, // iPhone re-ring
-  "SW-03": "A" as "A" | "B" | "C", // iPhone snooze: "A" | "B" | "C"
-  "SW-04": true, // iPhone volume ramp
+  "SW-01": false, // iPhone lock detection
+  "SW-02": false, // iPhone re-ring
+  "SW-03": "B" as "A" | "B" | "C", // iPhone snooze: "A" | "B" | "C"
+  "SW-04": false, // iPhone volume ramp
   "SW-05": true, // Android blocking
   "SW-06": true, // Shake mission
   "SW-07": true, // Bigger or rarer flowers
